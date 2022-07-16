@@ -6,7 +6,7 @@
 Rap Rock 'N Roll was an interactive music system created by Paramount Interactive in 1993. Here is what it looked/functioned like running inside of a Windows 7 virtual machine with awful audio latency and glitches:
 
 
-The objective of this prohect is to recreate this interactive application so that it can run inside of a browser.
+The objective of this project is to recreate this interactive application so that it can run inside of a browser.
 
 
 
