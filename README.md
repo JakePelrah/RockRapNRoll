@@ -10,27 +10,6 @@ The objective of this prohect is to recreate this interactive application so tha
 
 
 
-## Original Game Art
-
-![Africa](public/images/genre/africa.png)
-![Big Band](public/images/genre/bigBand.png)
-![Blues](public/images/genre/blues.png)
-![Latin](public/images/genre/latin.png)
-![Rap](public/images/genre/rap.png)
-![Reggae](public/images/genre/reggae.png)
-![Rock](public/images/genre/rock.png)
-![Soulful](public/images/genre/soulful.png)
-![StreetJazz](public/images/genre/streetJazz.png)
-![TechnoPop](public/images/genre/technoPop.png)
-
-
-
-
-# Extracting Sound Files
-Use [SoundApp 68K](https://www.macintoshrepository.org/1615-soundapp)
-
-
-
 Starting the game:
 
 1. npm install
