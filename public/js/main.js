@@ -658,7 +658,7 @@ const Reggae =
     'samples': [
         '../genres/Reggae/samples/AMERICA.wav', '../genres/Reggae/samples/BNINAFRC.wav', '../genres/Reggae/samples/BRMITDWN.wav',
         '../genres/Reggae/samples/CHA.wav', '../genres/Reggae/samples/CNGASHK1.wav', '../genres/Reggae/samples/DNCHALL.wav',
-        '../genres/Reggae/samples/DNCHLNIT.wav', '../genres/Reggae/samples/RICKAMAN.wav', '../genres/Reggae/samples/Empty.wav',
+        '../genres/Reggae/samples/DNCHLNIT.wav', '../genres/Reggae/samples/RICKAMAN.wav', 
         '../genres/Reggae/samples/FLUTE1.wav', '../genres/Reggae/samples/FLUTE2.wav', '../genres/Reggae/samples/FLUTENT3.wav',
         '../genres/Reggae/samples/FLUTENT4.wav', '../genres/Reggae/samples/GUITCD1.wav', '../genres/Reggae/samples/GUITCD2.wav',
         '../genres/Reggae/samples/GUITCD3.wav', '../genres/Reggae/samples/GUITCD4.wav', '../genres/Reggae/samples/GUITPCKN.wav',
