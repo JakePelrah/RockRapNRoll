@@ -1334,7 +1334,7 @@ const Reverb = {
     'irs': ['../irs/large_room.wav',]
 }
 
-const reverbOn = true
+const reverbOn = false
 let audioCtx = null
 let songalizer = null
 let samplesBuffer = []
