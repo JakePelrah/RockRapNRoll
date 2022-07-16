@@ -921,7 +921,7 @@ const Rock =
 const Soulful =
 {
     'style': 'Soulful',
-    'background': '../genres/Soulful/images/Soulful.png',
+    'background': '../genres/Soulful/images/soulful.png',
     'song_images': ['../genres/Soulful/images/song_1.png', '../genres/Soulful/images/song_2.png', '../genres/Soulful/images/song_3.png',
         '../genres/Soulful/images/song_4.png', '../genres/Soulful/images/song_5.png', '../genres/Soulful/images/song_6.png',
         '../genres/Soulful/images/song_7.png', '../genres/Soulful/images/song_8.png', '../genres/Soulful/images/song_9.png',
@@ -1061,7 +1061,7 @@ const Soulful =
 const StreetJazz =
 {
     'style': 'StreetJazz',
-    'background': '../genres/StreetJazz/images/StreetJazz.png',
+    'background': '../genres/StreetJazz/images/streetJazz.png',
     'song_images': ['../genres/StreetJazz/images/song_1.png', '../genres/StreetJazz/images/song_2.png', '../genres/StreetJazz/images/song_3.png',
         '../genres/StreetJazz/images/song_4.png', '../genres/StreetJazz/images/song_5.png', '../genres/StreetJazz/images/song_6.png',
         '../genres/StreetJazz/images/song_7.png', '../genres/StreetJazz/images/song_8.png', '../genres/StreetJazz/images/song_9.png',
@@ -1193,7 +1193,7 @@ const StreetJazz =
 const TechnoPop =
 {
     'style': 'TechnoPop',
-    'background': '../genres/TechnoPop/images/TechnoPop.png',
+    'background': '../genres/TechnoPop/images/technoPop.png',
     'song_images': ['../genres/TechnoPop/images/song_1.png', '../genres/TechnoPop/images/song_2.png', '../genres/TechnoPop/images/song_3.png',
         '../genres/TechnoPop/images/song_4.png', '../genres/TechnoPop/images/song_5.png', '../genres/TechnoPop/images/song_6.png',
         '../genres/TechnoPop/images/song_7.png', '../genres/TechnoPop/images/song_8.png', '../genres/TechnoPop/images/song_9.png',
