@@ -539,7 +539,7 @@ const Rap =
         '../genres/Rap/samples/HPHPCLTR.wav', '../genres/Rap/samples/HPHPSL.wav', '../genres/Rap/samples/HPSNR.wav',
         '../genres/Rap/samples/HRNHT.wav', '../genres/Rap/samples/HTSNR.wav', '../genres/Rap/samples/JB.wav',
         '../genres/Rap/samples/JSTHNGN.wav', '../genres/Rap/samples/KDYKAT.wav', '../genres/Rap/samples/KNWLDGE.wav',
-        '../genres/Rap/samples/LKYLOOP.wav', '../genres/Rap/samples/MCBEAT.wav', '../genres/Rap/samples/MLTIHIT.WAV',
+        '../genres/Rap/samples/LKYLOOP.wav', '../genres/Rap/samples/MCBEAT.wav', '../genres/Rap/samples/MLTIHIT.wav',
         '../genres/Rap/samples/MSWTHME.wav', '../genres/Rap/samples/OKTNSLNGN.wav', '../genres/Rap/samples/OKTN.wav',
         '../genres/Rap/samples/ORCHHT.wav', '../genres/Rap/samples/RADIO4.wav', '../genres/Rap/samples/RADIOSRN.wav',
         '../genres/Rap/samples/RENEGADE!.wav', '../genres/Rap/samples/RPNBLEEP.wav', '../genres/Rap/samples/RPSNR.wav',
