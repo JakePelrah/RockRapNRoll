@@ -1858,7 +1858,6 @@ class Songalizer {
 
             currentSong.src = `../genres/${style}/images/a${id}.png`
 
-
             const prevSongIndex = this.currentTrackIndex - 1 < 0 ? this.tracks.length - 1 : this.currentTrackIndex - 1
             const prevSong = songs[prevSongIndex]
             prevSong.src = `../genres/${style}/images/song_${prevSong.id.split('_')[1]}.png`
