@@ -1384,6 +1384,13 @@ function mainMenu() {
         const genreTitle = document.createElement('h1')
         genreTitle.innerText = genre[0]
         genreTitle.addEventListener('click', () => {
+
+            if(audioCtx.state === 'suspended'){
+                audioCtx.resume().then(function() {
+                    console.log('Resuming audio context.')
+                  });
+            }
+
             selectedGenre = genres[genreTitle.innerText]
             buildGame(selectedGenre)
             mainMenuDiv.remove()
