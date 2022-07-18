@@ -1,7 +1,7 @@
 let audioCtx = null
 let songalizer = null
 let samplesBuffer = []
-var genres = {}
+var genres = null
 let selectedGenre = null
 const dragImage = new Image()
 dragImage.src = '../images/outline.png'
@@ -19,10 +19,20 @@ async function init() {
     }
 
     try {
-        //CACHE THIS IN LOCALSTORAGE
+
         // fetch available styles here
-        const res = await fetch('/data')
-        genres = await res.json()
+        if(!localStorage.getItem('genres')){
+            console.log('fetching data')
+            const res = await fetch('/data')
+            const json = await res.json()
+            localStorage.setItem('genres', JSON.stringify(json))                
+            genres = JSON.parse(localStorage.getItem('genres'))
+        }
+
+        else{
+            genres = JSON.parse(localStorage.getItem('genres'))
+            console.log('Already fetched data')
+        }
     }
     catch (e) {
         genres = { 'CONTACT ADMINISTRATOR': null }
@@ -590,23 +600,10 @@ class Songalizer {
 
 
 function playSampleById(id, start) {
-
     let convolver
     const src = audioCtx.createBufferSource()
     src.buffer = samplesBuffer.find(x => x.id === id).audioBuffer
-
-    if (false) {
-        // if (reverbOn) {
-        convolver = audioCtx.createConvolver();
-        convolver.buffer = irsBuffer[0].audioBuffer
-        src.connect(convolver)
-        convolver.connect(audioCtx.destination)
-    }
-
-    else {
-        src.connect(audioCtx.destination)
-    }
-
+    src.connect(audioCtx.destination)
     src.start(start)
     return src
 }
@@ -621,23 +618,17 @@ function playDetunedSampleById(id, amt) {
 }
 
 
+// Drag and Drop fuctions
 function allowDrop(ev) {
     ev.preventDefault();
 }
-
-
 function drag(ev) {
     const { id, width, height } = ev.target
     ev.dataTransfer.setData('text', id);
-
-
     ev.dataTransfer.setDragImage(dragImage, width, height);
 }
-
-
 function drop(ev) {
     ev.preventDefault();
-
     const MAX_SONGS = 10
     if (songalizer.tracks.length < MAX_SONGS) {
 
@@ -666,27 +657,3 @@ function drop(ev) {
 
 
 window.addEventListener('load', init)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
