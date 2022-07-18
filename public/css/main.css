@@ -162,12 +162,23 @@ width: 122px;
    position: absolute;
    left: 438px;
    top: 530px;
-
 }
 #controls>button {
    margin: 8px;
    width: 100px;
    height: 32px;
+}
+
+#navigation{
+   position: absolute;
+   left:55px;
+   top:540px;
+}
+
+#navigation > button{
+   margin: 12px;
+   width: 50px;
+   height: 20px;
 }
 
 
@@ -212,3 +223,5 @@ select:focus {
    padding: 10px;
    cursor: pointer;
 }
+
+

@@ -1,14 +1,11 @@
 const express = require('express')
-const cookieParser = require('cookie-parser')
 const fs = require('fs')
-const { send } = require('process')
 
 const port = 8080
 const app = express()
 
 
 
-app.use(cookieParser())
 app.use(express.static('public'))
 
 

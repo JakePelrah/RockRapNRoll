@@ -239,8 +239,39 @@ async function buildGame() {
     clearButton.setAttribute('id', 'clear')
     clearButton.innerText = 'CLEAR'
     controlDiv.appendChild(clearButton)
-
     gameWrapper.appendChild(controlDiv)
+
+
+    // navigation 
+    const navigationDiv = document.createElement('div')
+    navigationDiv.setAttribute('id','navigation')
+
+    const quitButton = document.createElement('button')
+    quitButton.setAttribute('id', 'quit')
+    quitButton.innerText = 'QUIT'
+    quitButton.addEventListener('click', ()=>{
+
+        //remove everything in game wrapper
+    const gameWrapper = document.getElementById('game-wrapper')
+    gameWrapper.innerHTML = ''
+    mainMenu()
+    })
+    navigationDiv.appendChild(quitButton)
+
+    const menuButton = document.createElement('button')
+    menuButton.setAttribute('id', 'menu')
+    menuButton.innerText = 'MENU'
+    menuButton.addEventListener('click', ()=>{
+
+        //remove everything in game wrapper
+    const gameWrapper = document.getElementById('game-wrapper')
+    gameWrapper.innerHTML = ''
+    mainMenu()
+    })
+    navigationDiv.appendChild(menuButton)
+    gameWrapper.appendChild(navigationDiv)
+    
+
 
 
 
