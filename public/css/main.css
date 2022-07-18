@@ -231,3 +231,9 @@ select:focus {
 }
 
 
+#recording{
+   position: absolute;
+   left:300px;
+   top:-50px;
+
+}

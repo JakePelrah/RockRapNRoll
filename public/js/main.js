@@ -281,16 +281,25 @@ async function buildGame() {
     gameWrapper.appendChild(navigationDiv)
 
 
+    const recordDiv = document.createElement('div')
+    recordDiv.setAttribute('id', 'recording')
+
+    const audioElem = document.createElement('audio')
+    audioElem.setAttribute('controls', true)
+    recordDiv.appendChild(audioElem)
+
     const record = document.createElement('button')
     record.innerText= 'RECORD'
     record.addEventListener('click', ()=> recorder.start())
-    gameWrapper.appendChild(record)
+    recordDiv.appendChild(record)
+
 
     const stop = document.createElement('button')
     stop.innerText= 'STOP'
     stop.addEventListener('click', ()=> recorder.stop())
-    gameWrapper.appendChild(stop)
+    recordDiv.appendChild(stop)
 
+    gameWrapper.appendChild(recordDiv)
 
 
     recorder = new Recorder()
