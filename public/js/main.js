@@ -254,7 +254,7 @@ async function buildGame() {
     const quitButton = document.createElement('button')
     quitButton.setAttribute('id', 'quit')
     quitButton.addEventListener('click', function () {
-
+        samplesBuffer = []
         songalizer.stopSongalizer()
 
         //remove everything in game wrapper
@@ -268,7 +268,7 @@ async function buildGame() {
     const menuButton = document.createElement('button')
     menuButton.setAttribute('id', 'menu')
     menuButton.addEventListener('click', function () {
-
+        samplesBuffer = []
         songalizer.stopSongalizer()
 
         //remove everything in game wrapper
