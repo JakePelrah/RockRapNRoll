@@ -1,5 +1,6 @@
 body {
    background-color: black;
+  
 }
 
 
@@ -24,19 +25,19 @@ user-select: none;
 }
  
 #songs {
-   position: absolute;
    display: flex;
+   position: absolute;
+   left: 10px;
+   top: 46px;
    flex-direction: column;
-   padding-top: 44px;
-   padding-left: 10px;
-   gap: 3.5px;
+   gap: 5px;
 
 }
-
 #songs>div {
    height: 46px;
    width: 45px;
    cursor: grab;
+
 }
 
 
@@ -48,11 +49,13 @@ user-select: none;
    color: wheat;
    width: 130px;
    height: 500px;
+
 }
 
 #song-names > h1 {
    margin-bottom: 34px;
    cursor:pointer;
+
 }
 
 
@@ -157,10 +160,11 @@ width: 122px;
    position: absolute;
    display: flex;
    gap: 3px;
-   left: 240px;
+   left: 241px;
    top: 460px;
    width: 530px;
    height: 50px;
+   
 }
 #slots>img {
    height: 50px;
