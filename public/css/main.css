@@ -15,33 +15,43 @@ body {
    transform: translateX(-50%) translateY(-50%);
 }
 
-
+.no-select{
+user-select: none;
+-moz-user-select: none;
+-khtml-user-select: none;
+-webkit-user-select: none;
+-o-user-select: none;
+}
+ 
 #songs {
    position: absolute;
    display: flex;
    flex-direction: column;
-   padding-top: 45px;
+   padding-top: 44px;
    padding-left: 10px;
-   gap: 1px;
+   gap: 3.5px;
+
 }
-#songs>img {
-   height: 50px;
-   width: 50px;
+
+#songs>div {
+   height: 46px;
+   width: 45px;
    cursor: grab;
-   opacity: 0;
 }
 
 
 #song-names {
    position: absolute;
    left: 70px;
-   top: 25px;
+   top: 48px;
    font-size: 8px;
    color: wheat;
-   width: 140px;
+   width: 130px;
+   height: 500px;
 }
+
 #song-names > h1 {
-   padding-top: 22px;
+   margin-bottom: 34px;
    cursor:pointer;
 }
 

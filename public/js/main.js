@@ -21,14 +21,13 @@ async function init() {
 
     try {
 
-        // fetch available styles here
+        // fetch and cache available styles here
         if (!localStorage.getItem('genres')) {
             const res = await fetch('/data')
             const json = await res.json()
             localStorage.setItem('genres', JSON.stringify(json))
             genres = JSON.parse(localStorage.getItem('genres'))
         }
-
         else {
             genres = JSON.parse(localStorage.getItem('genres'))
         }
@@ -44,8 +43,19 @@ async function init() {
 
 function mainMenu() {
 
-    // set background image
+    // stop any playing songs 
+    if (songalizer) {
+        songalizer.stopSongalizer()
+    }
+
+    //clear samples buffer
+    samplesBuffer = []
+
+    // intialize game wrapper 
     const gameWrapper = document.getElementById('game-wrapper')
+    gameWrapper.innerHTML = ''
+
+    // set background image
     gameWrapper.style.backgroundImage = `url(../images/mainMenu.png)`
     gameWrapper.style.backgroundSize = '100% 100%'
 
@@ -106,17 +116,23 @@ async function buildGame() {
 
 
     // sample buttons
-    const samplesDiv = document.createElement('div')
-    samplesDiv.setAttribute('id', 'songs')
+    const songsDiv = document.createElement('div')
+    songsDiv.setAttribute('id', 'songs')
     selectedGenre.songalizer.map((song, i) => {
-        const imgElem = document.createElement('img')
-        imgElem.setAttribute('id', `song_${i + 1}`)
-        imgElem.setAttribute('data-sample-id', song.id)
-        imgElem.setAttribute('ondragstart', 'drag(event)')
-        imgElem.setAttribute('src', selectedGenre.song_images[i])
-        samplesDiv.appendChild(imgElem)
+        const songElem = document.createElement('div')
+        songElem.setAttribute('id', `song_${i + 1}`)
+        songElem.setAttribute('data-sample-id', song.id)
+        songsDiv.appendChild(songElem)
     })
-    gameWrapper.appendChild(samplesDiv)
+    gameWrapper.appendChild(songsDiv)
+
+
+    // slots
+    const slotsDiv = document.createElement('div')
+    slotsDiv.setAttribute('id', 'slots')
+    gameWrapper.appendChild(slotsDiv)
+
+
 
     // sample names
     const sampleNamesDiv = document.createElement('div')
@@ -218,13 +234,6 @@ async function buildGame() {
     pitchEmKeysElem.appendChild(keySelect)
     gameWrapper.appendChild(pitchEmKeysElem)
 
-    // slots
-    const slotsDiv = document.createElement('div')
-    slotsDiv.setAttribute('id', 'slots')
-    slotsDiv.setAttribute('ondrop', 'drop(event)')
-    slotsDiv.setAttribute('ondragover', 'allowDrop(event)')
-    gameWrapper.appendChild(slotsDiv)
-
 
     // controls
     const controlDiv = document.createElement('div')
@@ -243,7 +252,6 @@ async function buildGame() {
     clearButton.style.background = `url("../genres/${style}/images/clear.png") no-repeat`
     clearButton.style.backgroundSize = '100% 100%'
     controlDiv.appendChild(clearButton)
-
     gameWrapper.appendChild(controlDiv)
 
 
@@ -253,30 +261,11 @@ async function buildGame() {
 
     const quitButton = document.createElement('button')
     quitButton.setAttribute('id', 'quit')
-    quitButton.addEventListener('click', function () {
-        samplesBuffer = []
-        songalizer.stopSongalizer()
-
-        //remove everything in game wrapper
-        const gameWrapper = document.getElementById('game-wrapper')
-        gameWrapper.innerHTML = ''
-        mainMenu()
-
-    })
     navigationDiv.appendChild(quitButton)
 
     const menuButton = document.createElement('button')
     menuButton.setAttribute('id', 'menu')
-    menuButton.addEventListener('click', function () {
-        samplesBuffer = []
-        songalizer.stopSongalizer()
 
-        //remove everything in game wrapper
-        const gameWrapper = document.getElementById('game-wrapper')
-
-        gameWrapper.innerHTML = ''
-        mainMenu()
-    })
     navigationDiv.appendChild(menuButton)
     gameWrapper.appendChild(navigationDiv)
 
@@ -289,14 +278,14 @@ async function buildGame() {
     recordDiv.appendChild(audioElem)
 
     const record = document.createElement('button')
-    record.innerText= 'RECORD'
-    record.addEventListener('click', ()=> recorder.start())
+    record.innerText = 'RECORD'
+    record.addEventListener('click', () => recorder.start())
     recordDiv.appendChild(record)
 
 
     const stop = document.createElement('button')
-    stop.innerText= 'STOP'
-    stop.addEventListener('click', ()=> recorder.stop())
+    stop.innerText = 'STOP'
+    stop.addEventListener('click', () => recorder.stop())
     recordDiv.appendChild(stop)
 
     gameWrapper.appendChild(recordDiv)
@@ -304,6 +293,7 @@ async function buildGame() {
 
     recorder = new Recorder()
     songalizer = new Songalizer()
+    Navigation('navigation')
     new Vocalizer()
     new SongPreview('song-names')
     Controls('controls')
@@ -314,6 +304,22 @@ async function buildGame() {
     new PitchEm('pitchEmNums', numMap)
     new KeyMap(selectedGenre.keyMap)
 }
+
+function Navigation(id) {
+
+    const navigation = document.getElementById(id)
+    const [quitButton, menuButton] = navigation.querySelectorAll('button')
+
+    quitButton.addEventListener('click', function () {
+        mainMenu()
+    })
+    menuButton.addEventListener('click', function () {
+        mainMenu()
+    })
+}
+
+
+
 
 
 function Controls(id) {
@@ -503,6 +509,41 @@ class Songalizer {
         this.tracks = []
         this.counter = 0
 
+
+        this.selectedSong = null
+
+        this.songs = document.getElementById('songs').querySelectorAll('div')
+
+        this.songs.forEach(song => {
+
+            song.onmousedown = () => {
+
+                this.selectedSong = song
+                document.body.style.cursor = 'url(../images/outline.png) 0 0, auto'
+                console.log(`Selected song: ${this.selectedSong}`)
+            }
+
+            document.onmouseup =()=>{
+                document.body.style.cursor = 'grab'
+                this.selectedSong = null
+            }
+        })
+
+        this.slots.onmouseup = ()=>{
+            
+            const id = this.selectedSong.getAttribute('data-sample-id')
+            const imgElem = document.createElement('img')
+            imgElem.setAttribute('id', this.selectedSong.id )
+            imgElem.setAttribute('data-sample-id', id)
+            imgElem.setAttribute('src', `../genres/${selectedGenre.style}/images/${this.selectedSong.id}.png` )
+            this.slots.appendChild(imgElem)
+            const { audioBuffer } = samplesBuffer.find(x => x.id === id)
+            songalizer.tracks.push({ id, audioBuffer })
+            this.selectedSong = null
+        }
+
+
+
         // setup web worker
         this.timerWorker = new Worker('js/songalizerworker.js');
         this.timerWorker.onmessage = (e) => {
@@ -617,8 +658,8 @@ class Songalizer {
 
 
 function playSampleById(id, start) {
-    let convolver
     const src = audioCtx.createBufferSource()
+    console.log(id, start)
     src.buffer = samplesBuffer.find(x => x.id === id).audioBuffer
     src.connect(audioCtx.destination)
     src.connect(recorder.dest)
@@ -637,44 +678,6 @@ function playDetunedSampleById(id, amt) {
 }
 
 
-// Drag and Drop fuctions
-function allowDrop(ev) {
-    ev.preventDefault();
-}
-function drag(ev) {
-    const { id, width, height } = ev.target
-    ev.dataTransfer.setData('text', id);
-    ev.dataTransfer.setDragImage(dragImage, width, height);
-}
-function drop(ev) {
-    ev.preventDefault();
-    const MAX_SONGS = 10
-    if (songalizer.tracks.length < MAX_SONGS) {
-
-        // get and clone sample image
-        var data = ev.dataTransfer.getData('text');
-        const nodeCopy = document.getElementById(data).cloneNode(true)
-        nodeCopy.setAttribute('draggable', false)
-
-        //append to slots if dropped on a sample image
-        if (ev.target.parentElement.id === 'slots') {
-            ev.target.parentElement.appendChild(nodeCopy)
-        }
-        else {
-            ev.target.appendChild(nodeCopy)
-        }
-
-        // get audio buffer and push to songalizer 
-        const id = nodeCopy.getAttribute('data-sample-id')
-        const { audioBuffer } = samplesBuffer.find(x => x.id === id)
-        songalizer.tracks.push({ id, audioBuffer })
-    }
-    else {
-        console.log('Songalizer full')
-    }
-}
-
-
 class Recorder {
 
     constructor() {
@@ -682,26 +685,25 @@ class Recorder {
         this.dest = audioCtx.createMediaStreamDestination()
         this.mediaRecorder = new MediaRecorder(this.dest.stream, { mimeType: 'audio/webm' })
 
-        this.mediaRecorder.ondataavailable =  (evt)=> {
+        this.mediaRecorder.ondataavailable = (evt) => {
             // push each chunk (blobs) in an array
             console.log(this.chunks)
             this.chunks.push(evt.data);
         };
 
-        this.mediaRecorder.onstop =  (evt)=> {
+        this.mediaRecorder.onstop = (evt) => {
             // Make blob out of our blobs, and open it.
             const blob = new Blob(this.chunks, { 'type': 'audio/webm; codecs=0' });
             document.querySelector("audio").src = URL.createObjectURL(blob);
         };
     }
 
-
-    start(){
+    start() {
         console.log('starting')
         this.mediaRecorder.start()
     }
 
-    stop(){
+    stop() {
         console.log('stoping')
         this.mediaRecorder.stop()
     }
