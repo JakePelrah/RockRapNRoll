@@ -104,15 +104,7 @@ async function buildGame() {
         samplesBuffer.push({ id, audioBuffer })
     }
 
-    // load impulse responses
-    // for (const path of Reverb.irs) {
-    //     const res = await fetch(path)
-    //     const arrayBuffer = await res.arrayBuffer()
-    //     const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer)
-    //     const id = path.split(/\.WAV|\.wav|\//)[2]
-    //     irsBuffer.push({ id, audioBuffer })
-    // }
-
+   
 
     // sample buttons
     const samplesDiv = document.createElement('div')
@@ -241,13 +233,18 @@ async function buildGame() {
 
     const startButton = document.createElement('button')
     startButton.setAttribute('id', 'start-stop')
-    startButton.innerText = 'START'
+    startButton.style.background =  `url("../genres/${selectedGenre.style}/images/start.png") no-repeat`
+    startButton.style.backgroundSize = '100% 100%'
     controlDiv.appendChild(startButton)
+     
+   
 
     const clearButton = document.createElement('button')
     clearButton.setAttribute('id', 'clear')
-    clearButton.innerText = 'CLEAR'
+    clearButton.style.background =  `url("../genres/${selectedGenre.style}/images/clear.png") no-repeat`
+    clearButton.style.backgroundSize = '100% 100%'
     controlDiv.appendChild(clearButton)
+
     gameWrapper.appendChild(controlDiv)
 
 
@@ -257,7 +254,6 @@ async function buildGame() {
 
     const quitButton = document.createElement('button')
     quitButton.setAttribute('id', 'quit')
-    quitButton.innerText = 'QUIT'
     quitButton.addEventListener('click', function () {
 
         songalizer.stopSongalizer()
@@ -272,7 +268,6 @@ async function buildGame() {
 
     const menuButton = document.createElement('button')
     menuButton.setAttribute('id', 'menu')
-    menuButton.innerText = 'MENU'
     menuButton.addEventListener('click', function () {
 
         songalizer.stopSongalizer()
@@ -312,17 +307,20 @@ function Controls(id) {
 
         if (!songalizer.isPlaying && songalizer.tracks.length > 0) {
             songalizer.toggle()
-            startStop.innerText = 'STOP'
+            startStop.style.background =  `url("../genres/${selectedGenre.style}/images/stop.png") no-repeat`
+            startStop.style.backgroundSize = '100% 100%'
         }
         else if (songalizer.isPlaying) {
             songalizer.stopSongalizer()
-            startStop.innerText = 'START'
+            startStop.style.background =  `url("../genres/${selectedGenre.style}/images/start.png") no-repeat`
+            startStop.style.backgroundSize = '100% 100%'
         }
     })
 
     clear.addEventListener('click', () => {
         songalizer.clearSongalizer()
-        startStop.innerText = 'START'
+        startStop.style.background =  `url("../genres/${selectedGenre.style}/images/start.png") no-repeat`
+        startStop.style.backgroundSize = '100% 100%'
 
     })
 }
