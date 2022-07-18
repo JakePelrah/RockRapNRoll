@@ -1,16 +1,6 @@
-
-
-const Reverb = {
-    'irs': ['../irs/large_room.wav',]
-}
-const reverbOn = false
-let irsBuffer = []
-
-
 let audioCtx = null
 let songalizer = null
 let samplesBuffer = []
-// var genres = { Africa, BigBand, Blues, Latin, Rap, Reggae, Rock, Soulful, StreetJazz, TechnoPop }
 var genres = { } 
 let selectedGenre = null
 const dragImage = new Image()
@@ -28,10 +18,14 @@ async function init() {
         console.log('Web Audio Not Supported')
     }
 
-    // fetch available style here
-    const res = await fetch('/data')
-    genres  =  await res.json()
-
+    try{
+    // fetch available styles here
+        const res = await fetch('/data')
+        genres  =  await res.json()
+    }
+    catch(e){
+        genres = {'CONTACT ADMINISTRATOR':null}
+    }
 
     // display main menu
     mainMenu()
@@ -102,13 +96,13 @@ async function buildGame() {
     }
 
     // load impulse responses
-    for (const path of Reverb.irs) {
-        const res = await fetch(path)
-        const arrayBuffer = await res.arrayBuffer()
-        const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer)
-        const id = path.split(/\.WAV|\.wav|\//)[2]
-        irsBuffer.push({ id, audioBuffer })
-    }
+    // for (const path of Reverb.irs) {
+    //     const res = await fetch(path)
+    //     const arrayBuffer = await res.arrayBuffer()
+    //     const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer)
+    //     const id = path.split(/\.WAV|\.wav|\//)[2]
+    //     irsBuffer.push({ id, audioBuffer })
+    // }
 
 
     // sample buttons
@@ -562,7 +556,8 @@ function playSampleById(id, start) {
     const src = audioCtx.createBufferSource()
     src.buffer = samplesBuffer.find(x => x.id === id).audioBuffer
 
-    if (reverbOn) {
+    if(false){
+    // if (reverbOn) {
         convolver = audioCtx.createConvolver();
         convolver.buffer = irsBuffer[0].audioBuffer
         src.connect(convolver)
