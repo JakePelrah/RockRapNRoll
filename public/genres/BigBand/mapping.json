@@ -1,0 +1,121 @@
+{
+    "style": "BigBand",
+    "background": "../genres/BigBand/images/bigBand.png",
+    "song_images": ["../genres/BigBand/images/song_1.png", "../genres/BigBand/images/song_2.png", "../genres/BigBand/images/song_3.png",
+        "../genres/BigBand/images/song_4.png", "../genres/BigBand/images/song_5.png", "../genres/BigBand/images/song_6.png",
+        "../genres/BigBand/images/song_7.png", "../genres/BigBand/images/song_8.png", "../genres/BigBand/images/song_9.png",
+        "../genres/BigBand/images/song_10.png"],
+    "asong_images": ["../genres/BigBand/images/asong_1.png", "../genres/BigBand/images/asong_2.png", "../genres/BigBand/images/asong_3.png",
+        "../genres/BigBand/images/asong_4.png", "../genres/BigBand/images/asong_5.png", "../genres/BigBand/images/asong_6.png",
+        "../genres/BigBand/images/asong_7.png", "../genres/BigBand/images/asong_8.png", "../genres/BigBand/images/asong_9.png",
+        "../genres/BigBand/images/asong_10.png"],
+    "vibe_image": "../genres/BigBand/images/vibe.png",
+    "bop_image": "../genres/BigBand/images/bop.png",
+    "samples": [
+        "../genres/BigBand/samples/BARI1.wav", "../genres/BigBand/samples/BARILP1.wav", "../genres/BigBand/samples/BARILP2.wav",
+        "../genres/BigBand/samples/BARILP3.wav", "../genres/BigBand/samples/BARINT2.wav",
+        "../genres/BigBand/samples/BARINT5.wav", "../genres/BigBand/samples/BONELP1.wav", "../genres/BigBand/samples/BPLICUS.wav",
+        "../genres/BigBand/samples/CRNCPIA.wav",
+        "../genres/BigBand/samples/MTLP.wav", "../genres/BigBand/samples/MTNT4.wav",
+        "../genres/BigBand/samples/MTNT5.wav", "../genres/BigBand/samples/MTNT6.wav",
+        "../genres/BigBand/samples/RHTMSEC.wav", "../genres/BigBand/samples/SAX1.wav", "../genres/BigBand/samples/SAX10.wav",
+        "../genres/BigBand/samples/SAX5.wav", "../genres/BigBand/samples/SAX6.wav", "../genres/BigBand/samples/SAX9.wav",
+        "../genres/BigBand/samples/SHTCRS.wav", "../genres/BigBand/samples/SKAT1.wav", "../genres/BigBand/samples/SKAT10.wav",
+        "../genres/BigBand/samples/SKAT11.wav", "../genres/BigBand/samples/SKAT13.wav", "../genres/BigBand/samples/SKAT3.wav",
+        "../genres/BigBand/samples/SKAT6.wav", "../genres/BigBand/samples/SKAT7.wav", "../genres/BigBand/samples/SKAT9.wav",
+        "../genres/BigBand/samples/SOLI.wav", "../genres/BigBand/samples/STRAHD.wav", "../genres/BigBand/samples/Street Jazz.wav",
+        "../genres/BigBand/samples/SWNGON.wav", "../genres/BigBand/samples/T.O.wav",
+        "../genres/BigBand/samples/THBDGE.wav", "../genres/BigBand/samples/TRMBN13.wav", "../genres/BigBand/samples/TRMPT13.wav",
+        "../genres/BigBand/samples/TRMPT5.wav", "../genres/BigBand/samples/VMPHRE.wav",
+        "../genres/BigBand/samples/WLKNSOLO.wav"
+    ],
+    "songalizer": [
+        { "id": "STRAHD", "title": "Straight Ahead" },
+        { "id": "BPLICUS", "title": "Boplicitous" },
+        { "id": "SWNGON", "title": "Swing On" },
+        { "id": "SOLI", "title": "Soli" },
+        { "id": "RHTMSEC", "title": "Rhythm Section" },
+        { "id": "VMPHRE", "title": "Vamp Hire" },
+        { "id": "THBDGE", "title": "The Bridge" },
+        { "id": "WLKNSOLO", "title": "Walking Solo" },
+        { "id": "CRNCPIA", "title": "Cornucopia" },
+        { "id": "SHTCRS", "title": "Shout Chorus" }
+    ],
+    "vocalizer": [
+        { "id": "SKAT10", "title": "Skat 10" },
+        { "id": "SKAT11", "title": "Skat 11" },
+        { "id": "SKAT3", "title": "Skat 3" },
+        { "id": "SKAT9", "title": "Skat 9" },
+        { "id": "SKAT7", "title": "Skat 7" },
+        { "id": "SKAT13", "title": "Skat 13" },
+        { "id": "SKAT6", "title": "Skat 6" },
+        { "id": "SKAT1", "title": "Skat 1" }
+    ],
+    "vibeBop": [
+        { "id": "BARILP1", "title": "Bari Loop 1" },
+        { "id": "BARILP2", "title": "Bari Loop 2" },
+        { "id": "BARILP3", "title": "Bari Loop 3" },
+        { "id": "BARINT2", "title": "Bari Note 2" },
+        { "id": "BARINT5", "title": "Bari Note 5" },
+        { "id": "SAX6", "title": "Sax 6" },
+        { "id": "SAX9", "title": "Sax 9" },
+        { "id": "SAX10", "title": "Sax 10" },
+        { "id": "BONELP1", "title": "Bone Loop 1" },
+        { "id": "TRMPT13", "title": "Trumpet 13" },
+        { "id": "MTNT4", "title": "Mute Note 4" },
+        { "id": "MTNT6", "title": "Mute Note 6" }
+    ],
+    "pitchem": {
+        "numbers": [
+            { "id": "BARINT2", "title": "Bari Note 2" },
+            { "id": "BARINT5", "title": "Bari Note 5" },
+            { "id": "BARILP1", "title": "Bari Loop 1" },
+            { "id": "BARILP2", "title": "Bari Loop 2" },
+            { "id": "BARILP3", "title": "Bari Loop 3" }
+        ],
+       "numMap": {
+            "Backquote": -1200, "Digit1": -1000, "Digit2": -800,
+            "Digit3": -700, "Digit4": -500, "Digit5": -300,
+            "Digit6": -100, "Digit7": 0, "Digit8": 200,
+            "Digit9": 400, "Digit0": 700, "Minus": 900, "Equal": 1200
+        },
+        "keys": [
+            { "id": "BONELP1", "title": "Bone Loop 1" },
+            { "id": "MTLP", "title": "Mute Loop" },
+            { "id": "MTNT4", "title": "Mute Note 4" },
+            { "id": "MTNT5", "title": "Mute Note 5" },
+            { "id": "MTNT6", "title": "Mute Note 6" }
+        ],
+        "keyMap": {
+            "KeyQ": -800, "KeyW": -700, "KeyE": -500,
+            "KeyR": -300, "KeyT": -100, "KeyY": 0,
+            "KeyU": 200, "KeyI": 400, "KeyO": 500,
+            "KeyP": 700, "BracketLeft": 900, "BracketRight":1100,
+            "Backslash": 1200
+        }
+    },
+    "keyMap": [
+        { "id": "BARI1", "title": "Bari", "key": "KeyA" },
+        { "id": "BARILP1", "title": "Bari Loop 1", "key": "KeyS" },
+        { "id": "BARILP2", "title": "Bari Loop 2", "key": "KeyD" },
+        { "id": "BARILP3", "title": "Bari Loop 3", "key": "KeyF" },
+        { "id": "BARINT2", "title": "Bari Note 2", "key": "KeyG" },
+        { "id": "BARINT5", "title": "Bari Note 5", "key": "KeyH" },
+        { "id": "SAX1", "title": "Sax 1", "key": "KeyJ" },
+        { "id": "SAX5", "title": "Sax 5", "key": "KeyK" },
+        { "id": "SAX6", "title": "Sax 6", "key": "KeyL" },
+        { "id": "SAX9", "title": "Sax 9", "key": "Semicolon" },
+        { "id": "SAX10", "title": "Sax 10", "key": "Quote" },
+        { "id": "TRMBN13", "title": "Trombone 13", "key": "KeyZ" },
+        { "id": "BONELP1", "title": "Bone Loop 1", "key": "KeyX" },
+        { "id": "TRMPT5", "title": "Trumpet 5", "key": "KeyC" },
+        { "id": "TRMPT13", "title": "Trumpet 13", "key": "KeyV" },
+        { "id": "MTLP", "title": "Mute Loop", "key": "KeyB" },
+        { "id": "MTNT4", "title": "Mute Note 4", "key": "KeyN" },
+        { "id": "MTNT5", "title": "Mute Note 5", "key": "KeyM" },
+        { "id": "MTNT6", "title": "Mute Note 6", "key": "Comma" },
+        { "id": "SKAT1", "title": "Skat 1", "key": "Period" },
+        { "id": "SKAT13", "title": "Skat 13", "key": "Slash" }
+    ]
+}
+
