@@ -89,10 +89,10 @@ function mainMenu() {
 async function buildGame() {
 
     const gameWrapper = document.getElementById('game-wrapper')
-    const style = selectedGenre.style.lowercase()
+    const style = selectedGenre.style
 
     // set background image
-    gameWrapper.style.backgroundImage = `url(../genres/${style}/images/${style}.png)`
+    gameWrapper.style.backgroundImage = `url(../genres/${style}/images/${style.lowercase()}.png)`
     gameWrapper.style.backgroundSize = '100% 100%'
 
     // load samples
