@@ -22,7 +22,6 @@ async function init() {
 
         // fetch available styles here
         if(!localStorage.getItem('genres')){
-            console.log('fetching data')
             const res = await fetch('/data')
             const json = await res.json()
             localStorage.setItem('genres', JSON.stringify(json))                
@@ -31,7 +30,6 @@ async function init() {
 
         else{
             genres = JSON.parse(localStorage.getItem('genres'))
-            console.log('Already fetched data')
         }
     }
     catch (e) {
@@ -90,9 +88,10 @@ function mainMenu() {
 async function buildGame() {
 
     const gameWrapper = document.getElementById('game-wrapper')
-
+    const style = selectedGenre.style
+    
     // set background image
-    gameWrapper.style.backgroundImage = `url(${selectedGenre.background})`
+    gameWrapper.style.backgroundImage = `url(../genres/${style}/images/${style}.png)`
     gameWrapper.style.backgroundSize = '100% 100%'
 
     // load samples
@@ -105,8 +104,7 @@ async function buildGame() {
     }
 
    
-
-    // sample buttons
+   // sample buttons
     const samplesDiv = document.createElement('div')
     samplesDiv.setAttribute('id', 'songs')
     selectedGenre.songalizer.map((song, i) => {
@@ -233,7 +231,7 @@ async function buildGame() {
 
     const startButton = document.createElement('button')
     startButton.setAttribute('id', 'start-stop')
-    startButton.style.background =  `url("../genres/${selectedGenre.style}/images/start.png") no-repeat`
+    startButton.style.background =  `url("../genres/${style}/images/start.png") no-repeat`
     startButton.style.backgroundSize = '100% 100%'
     controlDiv.appendChild(startButton)
      
@@ -241,7 +239,7 @@ async function buildGame() {
 
     const clearButton = document.createElement('button')
     clearButton.setAttribute('id', 'clear')
-    clearButton.style.background =  `url("../genres/${selectedGenre.style}/images/clear.png") no-repeat`
+    clearButton.style.background =  `url("../genres/${style}/images/clear.png") no-repeat`
     clearButton.style.backgroundSize = '100% 100%'
     controlDiv.appendChild(clearButton)
 

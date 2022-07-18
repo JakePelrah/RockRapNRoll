@@ -207,6 +207,7 @@ select {
    text-align: center;
    font-weight: bold;
    overflow: hidden;
+   background-color: black;
 }
 select:focus {
    border: none;
