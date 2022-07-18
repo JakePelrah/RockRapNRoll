@@ -1,7 +1,7 @@
 let audioCtx = null
 let songalizer = null
 let samplesBuffer = []
-var genres = { } 
+var genres = {}
 let selectedGenre = null
 const dragImage = new Image()
 dragImage.src = '../images/outline.png'
@@ -18,13 +18,14 @@ async function init() {
         console.log('Web Audio Not Supported')
     }
 
-    try{
-    // fetch available styles here
+    try {
+        //CACHE THIS IN LOCALSTORAGE
+        // fetch available styles here
         const res = await fetch('/data')
-        genres  =  await res.json()
+        genres = await res.json()
     }
-    catch(e){
-        genres = {'CONTACT ADMINISTRATOR':null}
+    catch (e) {
+        genres = { 'CONTACT ADMINISTRATOR': null }
     }
 
     // display main menu
@@ -42,12 +43,12 @@ function mainMenu() {
     // create main menu div
     const mainMenuDiv = document.createElement('div')
     mainMenuDiv.setAttribute('id', 'main-menu')
-    
+
     //creat columns with 5 entries within main menu div
     let colDiv
     let entriesPerCol = 5
     Object.keys(genres).forEach((genre, i) => {
-        
+
         //create new column
         if (i % entriesPerCol === 0) {
             colDiv = document.createElement('div')
@@ -59,14 +60,12 @@ function mainMenu() {
         genreTitle.innerText = genre
         // resume audio context if suspened, when we click on a genre.
         genreTitle.addEventListener('click', () => {
-            if(audioCtx.state === 'suspended'){
-                audioCtx.resume().then(function() {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume().then(function () {
                     console.log('Resuming audio context.')
-                  });
+                });
             }
-            console.log(genres)
             selectedGenre = genres[genre]
-            console.log(genre)
             buildGame()
 
             // remove the menu when we click on a genre
@@ -244,33 +243,39 @@ async function buildGame() {
 
     // navigation 
     const navigationDiv = document.createElement('div')
-    navigationDiv.setAttribute('id','navigation')
+    navigationDiv.setAttribute('id', 'navigation')
 
     const quitButton = document.createElement('button')
     quitButton.setAttribute('id', 'quit')
     quitButton.innerText = 'QUIT'
-    quitButton.addEventListener('click', ()=>{
+    quitButton.addEventListener('click', function () {
+
+        songalizer.stopSongalizer()
 
         //remove everything in game wrapper
-    const gameWrapper = document.getElementById('game-wrapper')
-    gameWrapper.innerHTML = ''
-    mainMenu()
+        const gameWrapper = document.getElementById('game-wrapper')
+        gameWrapper.innerHTML = ''
+        mainMenu()
+
     })
     navigationDiv.appendChild(quitButton)
 
     const menuButton = document.createElement('button')
     menuButton.setAttribute('id', 'menu')
     menuButton.innerText = 'MENU'
-    menuButton.addEventListener('click', ()=>{
+    menuButton.addEventListener('click', function () {
+
+        songalizer.stopSongalizer()
 
         //remove everything in game wrapper
-    const gameWrapper = document.getElementById('game-wrapper')
-    gameWrapper.innerHTML = ''
-    mainMenu()
+        const gameWrapper = document.getElementById('game-wrapper')
+
+        gameWrapper.innerHTML = ''
+        mainMenu()
     })
     navigationDiv.appendChild(menuButton)
     gameWrapper.appendChild(navigationDiv)
-    
+
 
 
 
@@ -300,7 +305,7 @@ function Controls(id) {
             startStop.innerText = 'STOP'
         }
         else if (songalizer.isPlaying) {
-            songalizer.stop()
+            songalizer.stopSongalizer()
             startStop.innerText = 'START'
         }
     })
@@ -344,16 +349,16 @@ class PitchEm {
 
         const play = (e) => {
 
-       
-            if(!e.repeat){
-            Object.entries(keyMap).forEach((entry) => {
-                const code = e.code
-                if (entry[0] === code) {
-                    this.currentSample = playDetunedSampleById(select.value, keyMap[code])
-                }
-            })
+
+            if (!e.repeat) {
+                Object.entries(keyMap).forEach((entry) => {
+                    const code = e.code
+                    if (entry[0] === code) {
+                        this.currentSample = playDetunedSampleById(select.value, keyMap[code])
+                    }
+                })
+            }
         }
-    }
         //Use addEventListener, It allows adding more than one handler for an event.
         document.addEventListener('keydown', play, false)
     }
@@ -363,14 +368,14 @@ class PitchEm {
 class KeyMap {
     constructor(keyMap) {
         const play = (e) => {
-            if(!e.repeat){
-            keyMap.forEach((sample) => {
-                if (sample.key === e.code) {
-                    playSampleById(sample.id)
-                }
-            })
+            if (!e.repeat) {
+                keyMap.forEach((sample) => {
+                    if (sample.key === e.code) {
+                        playSampleById(sample.id)
+                    }
+                })
+            }
         }
-    }
         document.addEventListener('keydown', play)
     }
 }
@@ -484,10 +489,13 @@ class Songalizer {
         this.timerWorker.postMessage({ 'interval': this.lookahead })
     }
 
-    stop() {
+    stopSongalizer() {
+        
+        if(this.currentSource){
+            this.currentSource.stop()
+        }
         this.isPlaying = false
         this.counter = 0
-        this.currentSource.stop()
         this.currentSource = null
         this.timerWorker.postMessage('stop')
         const songs = document.getElementById('songs').querySelectorAll('img')
@@ -514,7 +522,7 @@ class Songalizer {
                 this.nextTrackTime = audioCtx.currentTime
             }
             else {
-                this.stop()
+                this.stopSongalizer()
             }
         }
         else {
@@ -548,7 +556,7 @@ class Songalizer {
     clearSongalizer() {
         if (this.isPlaying) {
             this.isPlaying = !this.isPlaying
-            this.stop()
+            this.stopSongalizer()
         }
         this.tracks = []
         this.slots.innerHTML = ''
@@ -587,19 +595,19 @@ function playSampleById(id, start) {
     const src = audioCtx.createBufferSource()
     src.buffer = samplesBuffer.find(x => x.id === id).audioBuffer
 
-    if(false){
-    // if (reverbOn) {
+    if (false) {
+        // if (reverbOn) {
         convolver = audioCtx.createConvolver();
         convolver.buffer = irsBuffer[0].audioBuffer
         src.connect(convolver)
         convolver.connect(audioCtx.destination)
     }
 
-    else{
+    else {
         src.connect(audioCtx.destination)
     }
 
-    src.start(start)   
+    src.start(start)
     return src
 }
 
