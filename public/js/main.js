@@ -1,5 +1,6 @@
 let audioCtx = null
 let songalizer = null
+let recorder = null
 let samplesBuffer = []
 var genres = null
 let selectedGenre = null
@@ -21,14 +22,14 @@ async function init() {
     try {
 
         // fetch available styles here
-        if(!localStorage.getItem('genres')){
+        if (!localStorage.getItem('genres')) {
             const res = await fetch('/data')
             const json = await res.json()
-            localStorage.setItem('genres', JSON.stringify(json))                
+            localStorage.setItem('genres', JSON.stringify(json))
             genres = JSON.parse(localStorage.getItem('genres'))
         }
 
-        else{
+        else {
             genres = JSON.parse(localStorage.getItem('genres'))
         }
     }
@@ -89,7 +90,7 @@ async function buildGame() {
 
     const gameWrapper = document.getElementById('game-wrapper')
     const style = selectedGenre.style
-    
+
     // set background image
     gameWrapper.style.backgroundImage = `url(../genres/${style}/images/${style}.png)`
     gameWrapper.style.backgroundSize = '100% 100%'
@@ -103,8 +104,8 @@ async function buildGame() {
         samplesBuffer.push({ id, audioBuffer })
     }
 
-   
-   // sample buttons
+
+    // sample buttons
     const samplesDiv = document.createElement('div')
     samplesDiv.setAttribute('id', 'songs')
     selectedGenre.songalizer.map((song, i) => {
@@ -231,15 +232,15 @@ async function buildGame() {
 
     const startButton = document.createElement('button')
     startButton.setAttribute('id', 'start-stop')
-    startButton.style.background =  `url("../genres/${style}/images/start.png") no-repeat`
+    startButton.style.background = `url("../genres/${style}/images/start.png") no-repeat`
     startButton.style.backgroundSize = '100% 100%'
     controlDiv.appendChild(startButton)
-     
-   
+
+
 
     const clearButton = document.createElement('button')
     clearButton.setAttribute('id', 'clear')
-    clearButton.style.background =  `url("../genres/${style}/images/clear.png") no-repeat`
+    clearButton.style.background = `url("../genres/${style}/images/clear.png") no-repeat`
     clearButton.style.backgroundSize = '100% 100%'
     controlDiv.appendChild(clearButton)
 
@@ -280,10 +281,19 @@ async function buildGame() {
     gameWrapper.appendChild(navigationDiv)
 
 
+    const record = document.createElement('button')
+    record.innerText= 'RECORD'
+    record.addEventListener('click', ()=> recorder.start())
+    gameWrapper.appendChild(record)
+
+    const stop = document.createElement('button')
+    stop.innerText= 'STOP'
+    stop.addEventListener('click', ()=> recorder.stop())
+    gameWrapper.appendChild(stop)
 
 
 
-
+    recorder = new Recorder()
     songalizer = new Songalizer()
     new Vocalizer()
     new SongPreview('song-names')
@@ -305,19 +315,19 @@ function Controls(id) {
 
         if (!songalizer.isPlaying && songalizer.tracks.length > 0) {
             songalizer.toggle()
-            startStop.style.background =  `url("../genres/${selectedGenre.style}/images/stop.png") no-repeat`
+            startStop.style.background = `url("../genres/${selectedGenre.style}/images/stop.png") no-repeat`
             startStop.style.backgroundSize = '100% 100%'
         }
         else if (songalizer.isPlaying) {
             songalizer.stopSongalizer()
-            startStop.style.background =  `url("../genres/${selectedGenre.style}/images/start.png") no-repeat`
+            startStop.style.background = `url("../genres/${selectedGenre.style}/images/start.png") no-repeat`
             startStop.style.backgroundSize = '100% 100%'
         }
     })
 
     clear.addEventListener('click', () => {
         songalizer.clearSongalizer()
-        startStop.style.background =  `url("../genres/${selectedGenre.style}/images/start.png") no-repeat`
+        startStop.style.background = `url("../genres/${selectedGenre.style}/images/start.png") no-repeat`
         startStop.style.backgroundSize = '100% 100%'
 
     })
@@ -434,6 +444,8 @@ class Vocalizer {
         const source = audioCtx.createBufferSource()
         source.buffer = samplesBuffer.find(x => x.id === id).audioBuffer
         source.connect(audioCtx.destination)
+        source.connect(recorder.dest)
+
 
 
         if (!this.isPlaying) {
@@ -496,8 +508,8 @@ class Songalizer {
     }
 
     stopSongalizer() {
-        
-        if(this.currentSource){
+
+        if (this.currentSource) {
             this.currentSource.stop()
         }
         this.isPlaying = false
@@ -600,6 +612,7 @@ function playSampleById(id, start) {
     const src = audioCtx.createBufferSource()
     src.buffer = samplesBuffer.find(x => x.id === id).audioBuffer
     src.connect(audioCtx.destination)
+    src.connect(recorder.dest)
     src.start(start)
     return src
 }
@@ -609,6 +622,7 @@ function playDetunedSampleById(id, amt) {
     src.buffer = samplesBuffer.find(x => x.id === id).audioBuffer
     src.detune.value = amt
     src.connect(audioCtx.destination)
+    src.connect(recorder.dest)
     src.start()
     return src
 }
@@ -650,6 +664,41 @@ function drop(ev) {
         console.log('Songalizer full')
     }
 }
+
+
+class Recorder {
+
+    constructor() {
+        this.chunks = []
+        this.dest = audioCtx.createMediaStreamDestination()
+        this.mediaRecorder = new MediaRecorder(this.dest.stream, { mimeType: 'audio/webm' })
+
+        this.mediaRecorder.ondataavailable =  (evt)=> {
+            // push each chunk (blobs) in an array
+            console.log(this.chunks)
+            this.chunks.push(evt.data);
+        };
+
+        this.mediaRecorder.onstop =  (evt)=> {
+            // Make blob out of our blobs, and open it.
+            const blob = new Blob(this.chunks, { 'type': 'audio/webm; codecs=0' });
+            document.querySelector("audio").src = URL.createObjectURL(blob);
+        };
+    }
+
+
+    start(){
+        console.log('starting')
+        this.mediaRecorder.start()
+    }
+
+    stop(){
+        console.log('stoping')
+        this.mediaRecorder.stop()
+    }
+}
+
+
 
 
 window.addEventListener('load', init)
