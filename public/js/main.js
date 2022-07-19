@@ -517,32 +517,44 @@ class Songalizer {
 
         this.songs.forEach(song => {
 
-            song.onmousedown = () => {
+            song.onmousedown = (ev) => {
 
                 this.selectedSong = song
                 console.log(dragImage.height)
-                document.body.style.cursor = 'url(../images/outline.png) 0 0, pointer'
+                song.style.background = 'url(../images/outline.png)'
+                song.style.backgroundSize= '100% 100%'
+                
+                document.body.style.cursor = 'url(../images/outline.png) 200 20, auto'
+                
                 console.log(`Selected song: ${this.selectedSong}`)
             }
 
-            document.onmouseup =()=>{
-                document.body.style.cursor = 'grab'
+            song.onmouseleave = ()=>{
+                song.style.background = ''
+            }
+
+            document.onmouseup = () => {
+                document.body.style.cursor = 'auto'
                 this.selectedSong = null
             }
         })
 
-        this.slots.onmouseup = ()=>{
-            
-            const id = this.selectedSong.getAttribute('data-sample-id')
-            const imgElem = document.createElement('img')
-            imgElem.setAttribute('id', this.selectedSong.id )
-            imgElem.setAttribute('data-sample-id', id)
-            imgElem.setAttribute('src', `../genres/${selectedGenre.style}/images/${this.selectedSong.id}.png` )
-            this.slots.appendChild(imgElem)
-            const { audioBuffer } = samplesBuffer.find(x => x.id === id)
-            songalizer.tracks.push({ id, audioBuffer })
+        this.slots.onmouseup = () => {
+
+            const MAX_SONGS = 10
+            if (songalizer.tracks.length < MAX_SONGS) {
+                const id = this.selectedSong.getAttribute('data-sample-id')
+                const imgElem = document.createElement('img')
+                imgElem.setAttribute('id', this.selectedSong.id)
+                imgElem.setAttribute('data-sample-id', id)
+                imgElem.setAttribute('src', `../genres/${selectedGenre.style}/images/${this.selectedSong.id}.png`)
+                this.slots.appendChild(imgElem)
+                const { audioBuffer } = samplesBuffer.find(x => x.id === id)
+                console.log(songalizer.tracks.length)
+                songalizer.tracks.push({ id, audioBuffer })
+            }
             this.selectedSong = null
-            document.body.style.cursor = 'grab'
+            document.body.style.cursor = 'auto'
 
         }
 
