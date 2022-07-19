@@ -45,8 +45,9 @@ body {
    top: 48px;
    font-size: 8px;
    color: wheat;
-   width: 130px;
+   width: 140px;
    height: 500px;
+   border: 1px solid red;
 }
 #song-names>h1 {
    margin-bottom: 33px;
