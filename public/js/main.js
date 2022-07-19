@@ -520,7 +520,8 @@ class Songalizer {
             song.onmousedown = () => {
 
                 this.selectedSong = song
-                document.body.style.cursor = 'url(../images/outline.png) 0 0, auto'
+                console.log(dragImage.height)
+                document.body.style.cursor = 'url(../images/outline.png) 0 0, pointer'
                 console.log(`Selected song: ${this.selectedSong}`)
             }
 
@@ -541,6 +542,8 @@ class Songalizer {
             const { audioBuffer } = samplesBuffer.find(x => x.id === id)
             songalizer.tracks.push({ id, audioBuffer })
             this.selectedSong = null
+            document.body.style.cursor = 'grab'
+
         }
 
 

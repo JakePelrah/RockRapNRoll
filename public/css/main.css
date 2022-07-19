@@ -1,6 +1,6 @@
 body {
    background-color: black;
-  
+
 }
 
 
@@ -16,14 +16,14 @@ body {
    transform: translateX(-50%) translateY(-50%);
 }
 
-.no-select{
-user-select: none;
--moz-user-select: none;
--khtml-user-select: none;
--webkit-user-select: none;
--o-user-select: none;
+.no-select {
+   user-select: none;
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -o-user-select: none;
 }
- 
+
 #songs {
    display: flex;
    position: absolute;
@@ -37,7 +37,6 @@ user-select: none;
    height: 46px;
    width: 45px;
    cursor: grab;
-
 }
 
 
@@ -49,13 +48,26 @@ user-select: none;
    color: wheat;
    width: 130px;
    height: 500px;
+}
+#song-names>h1 {
+   margin-bottom: 34px;
 
 }
 
-#song-names > h1 {
-   margin-bottom: 34px;
-   cursor:pointer;
+#slots {
+   position: absolute;
+   display: flex;
+   left: 239px;
+   top: 458px;
+   width: 530px;
+   height: 53px;
+   /* border: 1px solid red; */
+}
+#slots>img {
+   height: 53px;
+   width: 53px;
 
+   /* border: 1px solid red; */
 }
 
 
@@ -67,6 +79,7 @@ user-select: none;
    grid-template-columns: 38px 38px;
    gap: 2px 4px;
 }
+
 #vocalizer>button {
    height: 37px;
    width: 37px;
@@ -87,6 +100,7 @@ user-select: none;
    left: 275px;
    top: 108px;
 }
+
 .slider-wrapper input {
    width: 110px;
    height: 20px;
@@ -104,10 +118,12 @@ user-select: none;
    width: 130px;
    height: 160px;
 }
+
 #vibe>select {
    margin-top: 12px;
    margin-left: 10px;
 }
+
 #vibeTrigger {
    height: 130px;
    width: 130px;
@@ -124,10 +140,12 @@ user-select: none;
    width: 90px;
    height: 120px;
 }
+
 #bop>select {
    margin-top: 14px;
    margin-left: -14px;
 }
+
 #bopTrigger {
    height: 90px;
    width: 90px;
@@ -136,13 +154,14 @@ user-select: none;
 }
 
 
-#pitchEmNums  {
+#pitchEmNums {
    position: absolute;
    left: 633px;
    top: 362px;
 }
-#pitchEmNums > select{
-width: 122px;
+
+#pitchEmNums>select {
+   width: 122px;
 }
 
 
@@ -151,25 +170,12 @@ width: 122px;
    left: 633px;
    top: 400px;
 }
-#pitchEmKeys > select{
+
+#pitchEmKeys>select {
    width: 122px;
-   }
+}
 
 
-   #slots {
-   position: absolute;
-   display: flex;
-   gap: 3px;
-   left: 241px;
-   top: 460px;
-   width: 530px;
-   height: 50px;
-   
-}
-#slots>img {
-   height: 50px;
-   width: 50px;
-}
 
 
 #controls {
@@ -177,6 +183,7 @@ width: 122px;
    left: 438px;
    top: 530px;
 }
+
 #controls>button {
    margin: 8px;
    width: 100px;
@@ -185,13 +192,13 @@ width: 122px;
    border: none;
 }
 
-#navigation{
+#navigation {
    position: absolute;
-   left:55px;
-   top:540px;
+   left: 55px;
+   top: 540px;
 }
 
-#navigation > button{
+#navigation>button {
    margin: 12px;
    width: 50px;
    height: 20px;
@@ -223,31 +230,33 @@ select {
    overflow: hidden;
    background-color: black;
 }
+
 select:focus {
    border: none;
    outline: none;
 }
 
 
-#main-menu{
+#main-menu {
    display: flex;
    position: absolute;
-   left:300px;
-   top:120px;
+   left: 300px;
+   top: 120px;
    color: white;
    font-size: 14px;
 
 }
-#main-menu > div{
+
+#main-menu>div {
    flex-direction: column;
    padding: 10px;
    cursor: pointer;
 }
 
 
-#recording{
+#recording {
    position: absolute;
-   left:300px;
-   top:-50px;
+   left: 300px;
+   top: -50px;
 
 }
