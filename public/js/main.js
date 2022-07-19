@@ -4,8 +4,6 @@ let recorder = null
 let samplesBuffer = []
 var genres = null
 let selectedGenre = null
-const dragImage = new Image()
-dragImage.src = '../images/outline.png'
 
 
 async function init() {
@@ -120,6 +118,7 @@ async function buildGame() {
     songsDiv.setAttribute('id', 'songs')
     selectedGenre.songalizer.map((song, i) => {
         const songElem = document.createElement('div')
+        songElem.classList.add('gameControlElement')
         songElem.setAttribute('id', `song_${i + 1}`)
         songElem.setAttribute('data-sample-id', song.id)
         songsDiv.appendChild(songElem)
@@ -140,7 +139,7 @@ async function buildGame() {
     selectedGenre.songalizer.map(song => {
         const title = document.createElement('h1')
         title.innerText = song.title
-        title.setAttribute('class', 'song')
+        title.classList.add(...['song', 'gameControlElement'])
         title.setAttribute('data-sample-id', song.id)
         sampleNamesDiv.appendChild(title)
     })
@@ -152,6 +151,7 @@ async function buildGame() {
     vocalizerDiv.setAttribute('id', 'vocalizer')
     selectedGenre.vocalizer.map((song, i) => {
         const buttonElem = document.createElement('button')
+        buttonElem.classList.add('gameControlElement')
         buttonElem.setAttribute('data-sample-id', song.id)
         vocalizerDiv.appendChild(buttonElem)
     })
@@ -161,6 +161,8 @@ async function buildGame() {
     const volumeDiv = document.createElement('div')
     volumeDiv.setAttribute('class', 'slider-wrapper')
     const volumeSlider = document.createElement('input')
+    volumeSlider.classList.add('gameControlElement')
+    volumeSlider.setAttribute('id', 'volume')
     volumeSlider.setAttribute('type', 'range')
     volumeSlider.setAttribute('min', 0)
     volumeSlider.setAttribute('max', 11)
@@ -172,6 +174,7 @@ async function buildGame() {
 
     // vibe
     const vibeDiv = document.createElement('div')
+    vibeDiv.classList.add('gameControlElement')
     vibeDiv.setAttribute('id', 'vibe')
     const vibeTrigger = document.createElement('button')
     vibeTrigger.setAttribute('id', 'vibeTrigger')
@@ -182,6 +185,7 @@ async function buildGame() {
     // bop
     const bopDiv = document.createElement('div')
     bopDiv.setAttribute('id', 'bop')
+    bopDiv.classList.add('gameControlElement')
     const bopTrigger = document.createElement('button')
     bopTrigger.setAttribute('id', 'bopTrigger')
     bopTrigger.setAttribute('class', 'trigger')
@@ -206,6 +210,7 @@ async function buildGame() {
 
     // pitch-em
     const pitchEmNumsElem = document.createElement('div')
+    pitchEmNumsElem.classList.add('gameControlElement')
     pitchEmNumsElem.setAttribute('id', 'pitchEmNums')
     const numsSelect = document.createElement('select')
     numsSelect.setAttribute('id', 'num')
@@ -221,6 +226,7 @@ async function buildGame() {
 
 
     const pitchEmKeysElem = document.createElement('div')
+    pitchEmKeysElem.classList.add('gameControlElement')
     pitchEmKeysElem.setAttribute('id', 'pitchEmKeys')
     const keySelect = document.createElement('select')
     keySelect.setAttribute('id', 'alpha')
@@ -509,31 +515,29 @@ class Songalizer {
         this.slots = document.getElementById('slots')
         this.tracks = []
         this.counter = 0
-
-
         this.selectedSong = null
-
         this.songs = document.getElementById('songs').querySelectorAll('div')
 
+        
         this.songs.forEach(song => {
 
             song.onmousedown = (ev) => {
-
+         
                 this.selectedSong = song
-                console.log(dragImage.height)
-                song.style.background = 'url(../images/outline.png)'
-                song.style.backgroundSize= '100% 100%'
-                
-                document.body.style.cursor = 'url(../images/outline.png) 200 20, auto'
-                
-                console.log(`Selected song: ${this.selectedSong}`)
+                document.body.style.cursor = 'url(../images/outline.png) 20 20, auto'
+
+            
+                //disable pointer events on gameInputElements
+                document.querySelectorAll('.gameControlElement').forEach(elem => elem.style.pointerEvents = 'none')
             }
 
-            song.onmouseleave = ()=>{
+            song.onmouseleave = () => {
                 song.style.background = ''
             }
 
             document.onmouseup = () => {
+                //enable pointer events on gameInputElements
+                document.querySelectorAll('.gameControlElement').forEach(elem => elem.style.pointerEvents = 'auto')
                 document.body.style.cursor = 'auto'
                 this.selectedSong = null
             }
@@ -546,15 +550,18 @@ class Songalizer {
                 const id = this.selectedSong.getAttribute('data-sample-id')
                 const imgElem = document.createElement('img')
                 imgElem.setAttribute('id', this.selectedSong.id)
+                imgElem.setAttribute('draggable', false)
                 imgElem.setAttribute('data-sample-id', id)
                 imgElem.setAttribute('src', `../genres/${selectedGenre.style}/images/${this.selectedSong.id}.png`)
                 this.slots.appendChild(imgElem)
                 const { audioBuffer } = samplesBuffer.find(x => x.id === id)
-                console.log(songalizer.tracks.length)
                 songalizer.tracks.push({ id, audioBuffer })
             }
-            this.selectedSong = null
+
+            //enable pointer events on gameInputElements
+            document.querySelectorAll('.gameControlElement').forEach(elem => elem.style.pointerEvents = 'auto')
             document.body.style.cursor = 'auto'
+            this.selectedSong = null
 
         }
 

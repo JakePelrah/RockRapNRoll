@@ -1,6 +1,6 @@
 body {
    background-color: black;
-
+ 
 }
 
 
@@ -31,7 +31,6 @@ body {
    top: 46px;
    flex-direction: column;
    gap: 5px;
-
 }
 #songs>div {
    height: 46px;
@@ -50,7 +49,7 @@ body {
    height: 500px;
 }
 #song-names>h1 {
-   margin-bottom: 34px;
+   margin-bottom: 33px;
 }
 
 #slots {
@@ -60,13 +59,10 @@ body {
    top: 458px;
    width: 530px;
    height: 53px;
-   /* border: 1px solid red; */
 }
 #slots>img {
    height: 53px;
    width: 53px;
-
-   /* border: 1px solid red; */
 }
 
 
