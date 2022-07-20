@@ -1,6 +1,8 @@
+
+
 body {
    background-color: black;
- 
+   font-family:'Courier New', Courier, monospace
 }
 
 
@@ -27,7 +29,7 @@ body {
 #songs {
    display: flex;
    position: absolute;
-   left: 10px;
+   left: 10p;
    top: 46px;
    flex-direction: column;
    gap: 5px;
@@ -41,16 +43,15 @@ body {
 
 #song-names {
    position: absolute;
-   left: 70px;
-   top: 48px;
-   font-size: 8px;
-   color: wheat;
-   width: 140px;
-   height: 500px;
-
+   left: 60px;
+   top: 47px;
 }
-#song-names>h1 {
-   margin-bottom: 33px;
+
+#song-names>img {
+   display: block;
+   margin-bottom: 13px;
+   width: 143px;
+   height:39px;
 }
 
 #slots {
@@ -176,8 +177,8 @@ body {
 
 #controls {
    position: absolute;
-   left: 438px;
-   top: 530px;
+   left: 439px;
+   top: 532px;
 }
 
 #controls>button {
@@ -186,6 +187,7 @@ body {
    height: 32px;
    outline: none;
    border: none;
+   background: transparent;
 }
 
 #navigation {
@@ -237,18 +239,28 @@ select:focus {
    display: flex;
    position: absolute;
    left: 300px;
-   top: 120px;
-   color: white;
-   font-size: 14px;
-
+   top: 180px;
 }
 
+/* menu column */
 #main-menu>div {
    flex-direction: column;
-   padding: 10px;
+   width:200px;
    cursor: pointer;
 }
 
+/* menu title */
+#main-menu>div>button{
+   display: block;
+   font-size: 28px;
+   padding-bottom: 10px;
+   font-weight: bold;
+   color: white;
+   background: transparent;
+   cursor: pointer;
+   /* outline: none; */
+   border: none;
+}
 
 #recording {
    position: absolute;
