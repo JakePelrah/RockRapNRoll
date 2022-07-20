@@ -461,6 +461,7 @@ class Game {
 
     playSampleById({id, start=0, detuneAmt=0}) {
         const src = this.audioCtx.createBufferSource()
+        console.log(id)
         src.buffer = this.samplesBuffer.find(x => x.id === id).audioBuffer
         src.detune.value = detuneAmt
         src.connect(this.audioCtx.destination)
