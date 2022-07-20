@@ -43,15 +43,15 @@ body {
 
 #song-names {
    position: absolute;
-   left: 60px;
+   left:7.5%;
    top: 47px;
 }
 
 #song-names>img {
    display: block;
    margin-bottom: 13px;
-   width: 143px;
-   height:39px;
+   width: 121%;
+   height:121%;
 }
 
 #slots {
