@@ -115,6 +115,7 @@ class Game {
 
         // load samples
         for (const path of this.currentGenre.samples) {
+
             const res = await fetch(path)
             const arrayBuffer = await res.arrayBuffer()
             const audioBuffer = await this.audioCtx.decodeAudioData(arrayBuffer)
@@ -218,6 +219,7 @@ class Game {
         numsSelect.setAttribute('id', 'num')
 
         this.currentGenre.pitchem.numbers.map(song => {
+            console.log(song)
             const numOption = document.createElement('option')
             numOption.setAttribute('value', song.id)
             numOption.innerText = song.title
@@ -461,7 +463,6 @@ class Game {
 
     playSampleById({id, start=0, detuneAmt=0}) {
         const src = this.audioCtx.createBufferSource()
-        console.log(id)
         src.buffer = this.samplesBuffer.find(x => x.id === id).audioBuffer
         src.detune.value = detuneAmt
         src.connect(this.audioCtx.destination)
@@ -482,8 +483,10 @@ class PitchEm {
 
             if (!e.repeat) {
                 Object.entries(keyMap).forEach((entry) => {
+                    console.log(keyMap)
                     const code = e.code
                     if (entry[0] === code) {
+                        console.log(select.value)
                         this.currentSample = gameRef.playSampleById({id:select.value,  detuneAmt:keyMap[code]})
                     }
                 })

@@ -12,6 +12,7 @@
     "vibe_image": "../genres/Africa/images/vibe.png",
     "bop_image": "../genres/Africa/images/bop.png",
     "samples": [
+        
         "../genres/Africa/samples/ALNTLNG.wav", "../genres/Africa/samples/CHANT.wav", "../genres/Africa/samples/CMACMALE.wav",
         "../genres/Africa/samples/CMALE.wav", "../genres/Africa/samples/CMEIN.wav", "../genres/Africa/samples/CMALEAUWA.wav",
         "../genres/Africa/samples/CMALEHWUR.wav", "../genres/Africa/samples/EVRTCHNT.wav", "../genres/Africa/samples/FLGL2.wav",
