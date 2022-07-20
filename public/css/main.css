@@ -104,7 +104,6 @@ body {
    margin: 0;
    transform-origin: 75px 75px;
    transform: rotate(-90deg);
-   background-color: red;
 }
 
 
@@ -284,7 +283,6 @@ select:focus {
    position: absolute;
    left: 260px;
    top: 292px;
-   border:1px red solid;
 }
 
 #key-map > img{

@@ -558,11 +558,15 @@ class Songalizer {
         this.songs.forEach(song => {
 
             song.onmousedown = (ev) => {
+                console.log(ev)
                 this.selectedSong = song
-                document.body.style.cursor = 'url(../images/outline.png) 20 20, auto'
+                document.body.style.cursor = 'url(../images/outline.png) 20 20, pointer'
                 //disable pointer events on gameInputElements
                 document.querySelectorAll('.gameControlElement').forEach(elem => elem.style.pointerEvents = 'none')
             }
+
+
+            song.onmouseleave =(ev)=>console.log(document.body.style)
 
             document.onmouseup = () => {
 
