@@ -183,24 +183,16 @@ class Game {
 
 
         // vibe
-        const vibeDiv = document.createElement('div')
-        vibeDiv.classList.add('gameControlElement')
-        vibeDiv.setAttribute('id', 'vibe')
         const vibeTrigger = document.createElement('button')
-        vibeTrigger.setAttribute('id', 'vibeTrigger')
-        vibeTrigger.setAttribute('class', 'trigger')
-        vibeDiv.appendChild(vibeTrigger)
+        vibeTrigger.setAttribute('id', 'vibe-trigger')
         const vibeSelectElem = document.createElement('select')
+        vibeSelectElem.setAttribute('id', 'vibe-select')
 
         // bop
-        const bopDiv = document.createElement('div')
-        bopDiv.setAttribute('id', 'bop')
-        bopDiv.classList.add('gameControlElement')
         const bopTrigger = document.createElement('button')
-        bopTrigger.setAttribute('id', 'bopTrigger')
-        bopTrigger.setAttribute('class', 'trigger')
-        bopDiv.appendChild(bopTrigger)
+        bopTrigger.setAttribute('id', 'bop-trigger')
         const bopSelectElem = document.createElement('select')
+        bopSelectElem.setAttribute('id', 'bop-select')
 
         this.currentGenre.vibeBop.map(song => {
             const vibeOption = document.createElement('option')
@@ -213,10 +205,10 @@ class Game {
             bopOption.innerText = song.title
             bopSelectElem.appendChild(bopOption)
         })
-        vibeDiv.appendChild(vibeSelectElem)
-        bopDiv.appendChild(bopSelectElem)
-        gameWrapper.appendChild(vibeDiv)
-        gameWrapper.appendChild(bopDiv)
+        gameWrapper.appendChild(vibeTrigger)
+        gameWrapper.appendChild(vibeSelectElem)
+        gameWrapper.appendChild(bopSelectElem)
+        gameWrapper.appendChild(bopTrigger)
 
         // pitch-em
         const pitchEmNumsElem = document.createElement('div')
@@ -346,8 +338,8 @@ class Game {
         // these are all event listener setups
         this.songPreview('song-names')
         this.controls('controls')
-        this.dropDown('vibe', this.currentGenre.vibe_image)
-        this.dropDown('bop', this.currentGenre.bop_image)
+        this.dropDown('vibe-select', 'vibe-trigger', this.currentGenre.vibe_image)
+        this.dropDown('bop-select','bop-trigger', this.currentGenre.bop_image)
         this.keyMap(this.currentGenre.keyMap)
         this.navigation('navigation')
         const { keyMap, numMap } = this.currentGenre.pitchem
@@ -392,17 +384,18 @@ class Game {
     }
 
 
-    dropDown(id, img) {
-        const div = document.getElementById(id)
-        const select = div.querySelector('select')
-        const trigger = div.querySelector('.trigger')
+    dropDown(selectId, triggerId, img) {
+        const select = document.getElementById(selectId)
+        const trigger = document.getElementById(triggerId)
+        console.log(trigger)
 
+        console.log(select, trigger)
         const play = () => {
 
             //change the image to reflect the sound playing
             trigger.style.backgroundImage = `url(${img})`
             trigger.style.backgroundRepeat = 'no-repeat';
-            trigger.style.backgroundSize = '105% 105%'
+            trigger.style.backgroundSize = '100% 100%'
 
             //play sound
             const src = this.playSampleById({id:select.value})

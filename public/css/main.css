@@ -124,41 +124,44 @@ select:focus {
 }
 
 
-#vibe {
+#vibe-select {
    position: absolute;
-   left: 346px;
-   top: 120px;
-   width: 130px;
-   height: 160px;
+   left: 342px;
+   top: 252px;
+   margin-top: 12px;
+   margin-left: 10px;
+   border: 1px solid red;
+
 }
-#vibe>select {
+#vibe-trigger {
+   position: absolute;
+   left: 340px;
+   top: 121px;
+   height: 135px;
+   width: 135px;
+   background-color: transparent;
+   border: none;
+}
+
+
+#bop-select {
+   position: absolute;
+   left: 504px;
+   top: 198px;
    margin-top: 12px;
    margin-left: 10px;
 }
-#vibeTrigger {
-   height: 130px;
-   width: 130px;
-   background-color: transparent;
-   border: none;
-}
 
-
-#bop {
+#bop-trigger {
    position: absolute;
-   left: 525px;
-   top: 104px;
-   width: 90px;
-   height: 120px;
-}
-#bop>select {
-   margin-top: 14px;
-   margin-left: -14px;
-}
-#bopTrigger {
-   height: 90px;
-   width: 90px;
+   left: 520px;
+   top: 106px;
+   height: 94px;
+   width: 97px;
    background-color: transparent;
    border: none;
+   /* border: 1px solid purple; */
+
 }
 
 
@@ -278,7 +281,7 @@ select:focus {
    position: absolute;
    left: 8px;
    top: 55px;
-   padding: 10px;
+   padding-top: 30px;
    font-size: 18px;
    color: #DD0806;
 }
