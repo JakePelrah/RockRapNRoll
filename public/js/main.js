@@ -343,8 +343,8 @@ class Game {
         this.keyMap(this.currentGenre.keyMap)
         this.navigation('navigation')
         const { keyMap, numMap } = this.currentGenre.pitchem
-        this.pitchEm('pitchEmKeys', keyMap)
-        this.pitchEm('pitchEmNums', numMap)
+        new PitchEm('pitchEmKeys', keyMap, this)
+        new PitchEm('pitchEmNums', numMap, this)
     }
 
     navigation(id) {
@@ -408,22 +408,6 @@ class Game {
         trigger.addEventListener('click', play, false)
     }
 
-    pitchEm (id, keyMap){
-            const div = document.getElementById(id)
-            const select = div.querySelector('select')
-            const play = (e) => {
-                if (!e.repeat) {
-                    Object.entries(keyMap).forEach((entry) => {
-                        const code = e.code
-                        if (entry[0] === code) {
-                            this.currentSample = this.playSampleById({id:select.value, start:0,  detuneAmt:keyMap[code]})
-                        }
-                    })
-                }
-            }
-            document.addEventListener('keydown', play, false)
-        }
-    
         keyMap(keyMap) {
                 const play = (e) => {
                     if (!e.repeat) {
@@ -486,6 +470,28 @@ class Game {
     }
 }
 
+class PitchEm {
+
+    constructor(id, keyMap, gameRef) {
+        const div = document.getElementById(id)
+        const select = div.querySelector('select')
+
+        const play = (e) => {
+
+
+            if (!e.repeat) {
+                Object.entries(keyMap).forEach((entry) => {
+                    const code = e.code
+                    if (entry[0] === code) {
+                        this.currentSample = gameRef.playSampleById({id:select.value,  detuneAmt:keyMap[code]})
+                    }
+                })
+            }
+        }
+        //Use addEventListener, It allows adding more than one handler for an event.
+        document.addEventListener('keydown', play, false)
+    }
+}
 
 
 
