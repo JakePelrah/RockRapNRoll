@@ -304,7 +304,7 @@ class Game {
         //Bug reporting
         const supportDiv = document.createElement('support')
         supportDiv.setAttribute('id', 'support')
-        supportDiv.innerText = 'This game is under development, help me test RRR by submitting bug reports and suggestions!'
+        supportDiv.innerText = 'This game remake is in the development stage, help me test RRR by submitting bug reports and suggestions!'
         const bugLink = document.createElement('a')
         bugLink.href = "mailto: jpelrah@wpi.edu?subject=RRR%20Bug%20Submission&body=Briefly%20describe%20the%20bug.%20Also%20provide%20your%20operating%20system%28Win%2COSX%2CLinux...%29%20and%20the%20browser%28Chrome%2C%20Firefox...%29%20used%20to%20access%20the%20game.%0A%0AThank%20you%20for%20your%20contribution%21%20-%20Jake"
         bugLink.setAttribute('id','bug-link')
