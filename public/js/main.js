@@ -275,6 +275,29 @@ class Game {
         gameWrapper.appendChild(navigationDiv)
 
 
+
+        // keymap visual
+        const keyTrigger = document.createElement('button')
+        keyTrigger.setAttribute('id', 'key-trigger')
+        keyTrigger.onclick=()=>{
+            img.style.display = ''
+        }
+        gameWrapper.appendChild(keyTrigger)
+
+
+        const keyMapDiv = document.createElement('div')
+        keyMapDiv.setAttribute('id', 'key-map')
+        const img = document.createElement('img')
+        img.src = `../genres/${this.currentGenre.style}/images/key_map.png`
+        img.style.display = 'none'
+        
+        img.onclick = ()=>{
+            img.style.display = 'none'
+        }
+
+        keyMapDiv.appendChild(img)
+        gameWrapper.appendChild(keyMapDiv)
+
         // recording
         // const recordDiv = document.createElement('div')
         // recordDiv.setAttribute('id', 'recording')

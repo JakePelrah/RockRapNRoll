@@ -268,3 +268,27 @@ select:focus {
    top: -50px;
 
 }
+
+
+#key-trigger{
+   position: absolute;
+   left: 282px;
+   top: 402px;
+   width: 100px;
+   height: 30px;
+   background: transparent;
+   border: none;
+}
+
+#key-map{
+   position: absolute;
+   left: 260px;
+   top: 292px;
+   border:1px red solid;
+}
+
+#key-map > img{
+   width: 120%;
+   height: 120%;
+
+}
