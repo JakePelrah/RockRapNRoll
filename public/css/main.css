@@ -125,19 +125,19 @@ select:focus {
 #vocalizer {
    display: grid;
    position: absolute;
-   left: 660px;
-   top: 122px;
+   left: 661px;
+   top: 116px;
    grid-template-columns: 38px 38px;
    gap: 3px 4px;
 }
 #vocalizer>button {
-   height: 38px;
-   width: 39px;
+   height: 37px;
+   width: 40px;
    opacity: 0
 }
 #vocalizer>button:hover {
-   opacity: .8;
-   filter: blur(2px);
+   opacity: .5;
+   filter: blur(1px);
 }
 
 
@@ -169,7 +169,7 @@ select:focus {
 #vibe-select {
    position: absolute;
    left: 353px;
-   top: 278px;
+   top: 265px;
    width:122px;
 }
 
@@ -186,7 +186,7 @@ select:focus {
 #bop-select {
    position: absolute;
    left: 511px;
-   top: 221px;
+   top: 211px;
    width:120px;
 }
 
@@ -195,14 +195,14 @@ select:focus {
 #pitchem-digit-select {
    position: absolute;
    left: 633px;
-   top: 380px;
+   top: 363px;
    width:120px;
 
 }
 #pitchem-key-select {
    position: absolute;
    left: 633px;
-   top: 420px;
+   top: 402px;
    width:120px;
 }
 
