@@ -89,14 +89,15 @@ select:focus {
    flex-direction: column;
    position: absolute;
    left: 10px;
-   top: 46px;
-   gap: 7px;
+   top: 39px;
+   gap: 6px;
 }
 #songs>div {
-   height: 46px;
-   width: 45px;
+   height: 35px;
+   width: 35px;
    cursor: grab;
 }
+
 #slots {
    position: absolute;
    display: flex;
