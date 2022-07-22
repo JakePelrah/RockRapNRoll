@@ -59,6 +59,8 @@
                 <input class="gameControlElement" id="volume" tabindex="-1" type="range" min="0" max="11" value="7" step="1">
             </div>
 
+            <button id="reverb" >Reverb</button>
+
             <div class="gameControlElement" id="vibe-trigger" tabindex="-1"></div>
             <select class="gameControlElement" id="vibe-select" tabindex="-1"></select>
 
@@ -388,6 +390,14 @@
             return src
         }
 
+async function createReverb() {
+    let convolver = audioCtx.createConvolver();
+    // load impulse response from file
+    let response     = await fetch("../irs/chamber.wav");
+    let arraybuffer  = await response.arrayBuffer();
+    convolver.buffer = await audioCtx.decodeAudioData(arraybuffer);
+    return convolver;
+}
 
         window.onload = init()
 
