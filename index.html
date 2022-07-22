@@ -32,50 +32,50 @@
             <div id="slots"></div>
 
             <div id="song-names">
-                <img class="song gameControlElement" id="song_title_1.png" tabindex="1" data-sample-id="">
-                <img class="song gameControlElement" id="song_title_2.png" tabindex="1" data-sample-id="">
-                <img class="song gameControlElement" id="song_title_3.png" tabindex="1"  data-sample-id="">
-                <img class="song gameControlElement" id="song_title_4.png" tabindex="1"  data-sample-id="">
-                <img class="song gameControlElement" id="song_title_5.png" tabindex="1"  data-sample-id="">
-                <img class="song gameControlElement" id="song_title_6.png" tabindex="1"  data-sample-id="">
-                <img class="song gameControlElement" id="song_title_7.png" tabindex="1"  data-sample-id="">
-                <img class="song gameControlElement" id="song_title_8.png" tabindex="1"  data-sample-id="">
-                <img class="song gameControlElement" id="song_title_9.png" tabindex="1"  data-sample-id="">
-                <img class="song gameControlElement" id="song_title_10.png" tabindex="1"  data-sample-id="">
+                <img class="song gameControlElement" id="song_title_1.png" tabindex="-1" data-sample-id="">
+                <img class="song gameControlElement" id="song_title_2.png" tabindex="-1" data-sample-id="">
+                <img class="song gameControlElement" id="song_title_3.png" tabindex="-1"  data-sample-id="">
+                <img class="song gameControlElement" id="song_title_4.png" tabindex="-1"  data-sample-id="">
+                <img class="song gameControlElement" id="song_title_5.png" tabindex="-1"  data-sample-id="">
+                <img class="song gameControlElement" id="song_title_6.png" tabindex="-1"  data-sample-id="">
+                <img class="song gameControlElement" id="song_title_7.png" tabindex="-1"  data-sample-id="">
+                <img class="song gameControlElement" id="song_title_8.png" tabindex="-1"  data-sample-id="">
+                <img class="song gameControlElement" id="song_title_9.png" tabindex="-1"  data-sample-id="">
+                <img class="song gameControlElement" id="song_title_10.png" tabindex="-1"  data-sample-id="">
             </div>
 
             <div id="vocalizer">
-                <button class="gameControlElement" data-sample-id=""></button>
-                <button class="gameControlElement" data-sample-id=""></button>
-                <button class="gameControlElement" data-sample-id=""></button>
-                <button class="gameControlElement" data-sample-id=""></button>
-                <button class="gameControlElement" data-sample-id=""></button>
-                <button class="gameControlElement" data-sample-id=""></button>
-                <button class="gameControlElement" data-sample-id=""></button>
-                <button class="gameControlElement" data-sample-id=""></button>
+                    <div class="gameControlElement" data-sample-id=""></div>
+                    <div class="gameControlElement" data-sample-id=""></div>
+                    <div class="gameControlElement" data-sample-id=""></div>
+                    <div class="gameControlElement" data-sample-id=""></div>
+                    <div class="gameControlElement" data-sample-id=""></div>
+                    <div class="gameControlElement" data-sample-id=""></div>
+                    <div class="gameControlElement" data-sample-id=""></div>
+                    <div class="gameControlElement" data-sample-id=""></div>
             </div>
 
-            <div class="slider-wrapper">
-                <input class="gameControlElement" id="volume" type="range" min="0" max="11" value="7" step="1">
+            <div class="slider-wrapper" >
+                <input class="gameControlElement" id="volume" tabindex="-1" type="range" min="0" max="11" value="7" step="1">
             </div>
 
-            <div class="gameControlElement" id="vibe-trigger"></div>
-            <select class="gameControlElement" id="vibe-select"></select>
+            <div class="gameControlElement" id="vibe-trigger" tabindex="-1"></div>
+            <select class="gameControlElement" id="vibe-select" tabindex="-1"></select>
 
-            <div class="gameControlElement" id="bop-trigger"></div>
-            <select class="gameControlElement" id="bop-select"></select>
+            <div class="gameControlElement" id="bop-trigger" tabindex="-1"></div>
+            <select class="gameControlElement" id="bop-select" tabindex="-1"></select>
 
-            <select class="gameControlElement" id="pitchem-digit-select"></select>
-            <select class="gameControlElement" id="pitchem-key-select"></select>
+            <select class="gameControlElement" id="pitchem-digit-select" tabindex="-1"></select>
+            <select class="gameControlElement" id="pitchem-key-select" tabindex="-1"></select>
 
-            <div class="gameControlElement" id="controls">
+            <div class="gameControlElement" id="controls" tabindex="-1">
                 <button id="start-stop"></button>
                 <button id="clear"></button>
             </div>
 
-            <button id="quit-menu"></button>
+            <button id="quit-menu" tabindex="-1"></button>
 
-            <button id="keymap-trigger"></button>
+            <button id="keymap-trigger" tabindex="-1"></button>
             <img id="keymap-image" src="">
 
             <!-- <support id="support">This game remake is in the development stage, help me test RRR by submitting bugs!<a
@@ -218,9 +218,9 @@
 
 
                         // setup vocalizer
-                        const vocalizerButtons = document.getElementById('vocalizer').querySelectorAll('button')
+                        const vocalizerDivs = document.getElementById('vocalizer').querySelectorAll('div')
                         currentGenre.vocalizer_samples.forEach((sample, i) => {
-                            vocalizerButtons[i].setAttribute('data-sample-id', sample.id)
+                            vocalizerDivs[i].setAttribute('data-sample-id', sample.id)
                         })
                         vocalizer = new Vocalizer()
 
@@ -395,7 +395,7 @@
         class Vocalizer {
             constructor() {
                 this.isPlaying = false
-                this.triggers = document.querySelector('#vocalizer').querySelectorAll('button')
+                this.triggers = document.querySelector('#vocalizer').querySelectorAll('div')
                 this.triggers.forEach(trigger => trigger.addEventListener('click', () => this.onClick(trigger)))
                 this.start = 0
                 this.prevDuration = 0
@@ -404,9 +404,9 @@
 
             onClick(trigger) {
                 trigger.disabled = true
-                trigger.style.opacity = .8
+                trigger.style.opacity = .5
                 trigger.style.backgroundColor = 'white'
-                trigger.style.filter = 'blur(8px)'
+                trigger.style.filter = 'blur(4px)'
                 const id = trigger.getAttribute('data-sample-id')
                 const source = audioCtx.createBufferSource()
                 source.buffer = samplesBuffer.find(x => x.id === id).audioBuffer
