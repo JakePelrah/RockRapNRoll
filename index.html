@@ -1,14 +1,760 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
+
 <html>
 
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
-    <div id="game-wrapper" class="wrapper no-select"></div>
-    <script src="js/main.js"></script>
+    <div id="game-wrapper" class="wrapper no-select">
+
+
+        <div id="main-menu">
+            <!-- generate available genres here -->
+        </div>
+
+
+        <div id="game-board" style="display:none ;">
+
+            <div id="songs">
+                <div class="gameControlElement" id="song_1" data-sample-id=""></div>
+                <div class="gameControlElement" id="song_2" data-sample-id=""></div>
+                <div class="gameControlElement" id="song_3" data-sample-id=""></div>
+                <div class="gameControlElement" id="song_4" data-sample-id=""></div>
+                <div class="gameControlElement" id="song_5" data-sample-id=""></div>
+                <div class="gameControlElement" id="song_6" data-sample-id=""></div>
+                <div class="gameControlElement" id="song_7" data-sample-id=""></div>
+                <div class="gameControlElement" id="song_8" data-sample-id=""></div>
+                <div class="gameControlElement" id="song_9" data-sample-id=""></div>
+                <div class="gameControlElement" id="song_10" data-sample-id=""></div>
+            </div>
+
+            <div id="slots"></div>
+
+            <div id="song-names">
+                <img src="" class="song gameControlElement" id="song_title_1.png" data-sample-id="">
+                <img src="" class="song gameControlElement" id="song_title_2.png" data-sample-id="">
+                <img src="" class="song gameControlElement" id="song_title_3.png" data-sample-id="">
+                <img src="" class="song gameControlElement" id="song_title_4.png" data-sample-id="">
+                <img src="" class="song gameControlElement" id="song_title_5.png" data-sample-id="">
+                <img src="" class="song gameControlElement" id="song_title_6.png" data-sample-id="">
+                <img src="" class="song gameControlElement" id="song_title_7.png" data-sample-id="">
+                <img src="" class="song gameControlElement" id="song_title_8.png" data-sample-id="">
+                <img src="" class="song gameControlElement" id="song_title_9.png" data-sample-id="">
+                <img src="" class="song gameControlElement" id="song_title_10.png" data-sample-id="">
+            </div>
+
+            <div id="vocalizer">
+                <button class="gameControlElement" data-sample-id=""></button>
+                <button class="gameControlElement" data-sample-id=""></button>
+                <button class="gameControlElement" data-sample-id=""></button>
+                <button class="gameControlElement" data-sample-id=""></button>
+                <button class="gameControlElement" data-sample-id=""></button>
+                <button class="gameControlElement" data-sample-id=""></button>
+                <button class="gameControlElement" data-sample-id=""></button>
+                <button class="gameControlElement" data-sample-id=""></button>
+            </div>
+
+            <div class="slider-wrapper">
+                <input class="gameControlElement" id="volume" type="range" min="0" max="11" value="7" step="1">
+            </div>
+
+            <button id="vibe-trigger"></button>
+            <select class="gameControlElement" id="vibe-select"></select>
+
+            <button id="bop-trigger"></button>
+            <select class="gameControlElement" id="bop-select"></select>
+
+            <select class="gameControlElement" id="pitchem-digit-select"></select>
+            <select class="gameControlElement" id="pitchem-key-select"></select>
+
+            <div id="controls">
+                <button id="start-stop"></button>
+                <button id="clear"></button>
+            </div>
+
+            <div id="navigation">
+                <button id="quit"></button>
+                <button id="menu"></button>
+            </div>
+
+            <button id="keymap-trigger"></button>
+            <img id="keymap-image" src="">
+
+            <support id="support">This game remake is in the development stage, help me test RRR by submitting bugs!<a
+                    href="mailto:%20jpelrah@wpi.edu?subject=RRR%20Bug%20Submission&amp;body=Briefly%20describe%20the%20bug.%20Also%20provide%20your%20operating%20system%28Win%2COSX%2CLinux...%29%20and%20the%20browser%28Chrome%2C%20Firefox...%29%20used%20to%20access%20the%20game.%0A%0AThank%20you%20for%20your%20contribution%21%20-%20Jake"
+                    id="bug-link">Report Bug: Jpelrah@wpi.edu</a>
+            </support>
+
+        </div>
+    </div>
+
+    <script>
+
+        let audioCtx = null
+        let genres = null
+        let samplesBuffer = []
+        let currentGenre = null
+
+        async function init() {
+
+            // initialize web audio
+            audioCtx = window.AudioContext || window.webkitAudioContext
+            if (audioCtx) {
+                audioCtx = new audioCtx()
+                audioCtx.onstatechange = (e) => console.log('Audio State: ' + e.target.state)
+            } else {
+                console.log('Web Audio Not Supported')
+            }
+
+            // fetch generes & cache to local storage
+            try {
+                if (!localStorage.getItem('genres')) {
+                    console.log('Fetching available genres.')
+                    const res = await fetch('/data')
+                    const json = await res.json()
+                    localStorage.setItem('genres', JSON.stringify(json))
+                    genres = JSON.parse(localStorage.getItem('genres'))
+                }
+                // use cached genres
+                else {
+                    console.log('Using cached genres.')
+                    genres = JSON.parse(localStorage.getItem('genres'))
+                }
+            }
+            catch (e) {
+                alert('Failed to load available genres, please submit a bug report.')
+                genres = null
+            }
+
+
+            // create and display main menu
+            const mainMenu = document.getElementById('main-menu')
+            const genresDiv = document.createElement('div')
+            genresDiv.setAttribute('id', 'genres')
+            let colDiv
+            const entriesPerCol = 5
+            Object.keys(genres).forEach((genre, i) => {
+                //create new column
+                if (i % entriesPerCol === 0) {
+                    colDiv = document.createElement('div')
+                    colDiv.setAttribute('class', 'genre-column')
+                    genresDiv.appendChild(colDiv)
+                }
+                const genreTitle = document.createElement('button')
+                genreTitle.innerText = genre.match(/[A-Z][a-z]+/g).join(' ')
+
+                // resume audio context if suspened, when we click on a genre.
+                genreTitle.addEventListener('click', () => {
+                    if (audioCtx.state === 'suspended') {
+                        audioCtx.resume().then(function () {
+                            console.log('Resuming audio context.')
+                        });
+                    }
+
+                    currentGenre = genres[genre]
+
+                    // hide main menu
+                    mainMenu.style.display = 'none'
+                    // load samples then display new game
+                    samplesBuffer = []
+                    loadSamples(currentGenre.samples).then(audioBuffers => {
+
+                        currentGenre.samples.forEach((sample, index) => {
+                            const id = sample.split(new RegExp(/\.wav|\//))[4]
+                            samplesBuffer.push({ id, audioBuffer: audioBuffers[index] })
+                        })
+
+                        const style = currentGenre.style
+
+                        const gameBoard = document.getElementById('game-board')
+                        gameBoard.style.display = ''
+                        gameBoard.style.background = `url(../genres/${style}/images/${style}.png)`
+                        gameBoard.style.backgroundSize = '100% 100%'
+
+
+                        // setup songalizer
+                        const songalizerSampleDivs = document.getElementById('songs').querySelectorAll('div')
+                        const songalizerTitleImgs = document.getElementById('song-names').querySelectorAll('img')
+                        currentGenre.songalizer_samples.forEach((sample, i) => {
+                            songalizerSampleDivs[i].setAttribute('data-sample-id', sample.id)
+                            songalizerTitleImgs[i].setAttribute('data-sample-id', sample.id)
+                            songalizerTitleImgs[i].src = `../genres/${currentGenre.style}/images/song_title_${i + 1}.png`
+                        })
+                        new Songalizer()
+
+
+
+                        // setup vocalizer
+                        const vocalizerButtons = document.getElementById('vocalizer').querySelectorAll('button')
+                        currentGenre.vocalizer_samples.forEach((sample, i) => {
+                            vocalizerButtons[i].setAttribute('data-sample-id', sample.id)
+                        })
+                        new Vocalizer()
+
+
+                        // setup vibe & bop
+                        const vibeSelect = document.getElementById('vibe-select')
+                        const bopSelect = document.getElementById('bop-select')
+                        currentGenre.vibeBop.forEach(sample => {
+                            const vOption = document.createElement('option')
+                            const bOption = document.createElement('option')
+                            vOption.value = sample.id
+                            bOption.value = sample.id
+                            vOption.innerText = sample.title
+                            bOption.innerText = sample.title
+                            vibeSelect.appendChild(vOption)
+                            bopSelect.appendChild(bOption)
+                        })
+
+
+                        // setup pitchem
+                        const pitchemDigitSelect = document.getElementById('pitchem-digit-select')
+                        currentGenre.pitchem.digits.forEach(sample => {
+                            const option = document.createElement('option')
+                            option.value = sample.id
+                            option.innerText = sample.title
+                            pitchemDigitSelect.appendChild(option)
+                        })
+
+                        const pitchemKeysSelect = document.getElementById('pitchem-key-select')
+                        currentGenre.pitchem.keys.forEach(sample => {
+                            const option = document.createElement('option')
+                            option.value = sample.id
+                            option.innerText = sample.title
+                            pitchemKeysSelect.appendChild(option)
+                        })
+
+                        // setup key map overlay
+                        const keyImage = document.getElementById('keymap-image')
+                        keyImage.src = `../genrea/${style}/images/keymap.png`
+                        const keyTrigger = document.getElementById('keymap-trigger')
+                        keyTrigger.onclick = () => {
+                            keyImage.style.display = ''
+                        }
+
+                        // gameBoardDiv.appendChild(keyTrigger)
+
+
+                        // const keyMapDiv = document.createElement('div')
+                        // keyMapDiv.setAttribute('id', 'key-map')
+                        // const img = document.createElement('img')
+                        // img.src = `../genres/${this.currentGenre.style}/images/key_map.png`
+                        // img.style.display = 'none'
+                        // img.onclick = () => {
+                        //     img.style.display = 'none'
+                        // }
+                        // keyMapDiv.appendChild(img)
+                        // gameBoardDiv.appendChild(keyMapDiv)
+
+
+
+
+
+                    })
+                })
+                colDiv.appendChild(genreTitle)
+            })
+
+            mainMenu.appendChild(genresDiv)
+
+        }
+
+        async function loadSamples(samples) {
+            console.log(samples)
+            const promises = []
+            for (const path of samples) {
+                const res = await fetch(path)
+                const arrayBuffer = await res.arrayBuffer()
+                const audioBuffer = audioCtx.decodeAudioData(arrayBuffer)
+                promises.push(audioBuffer)
+            }
+            return Promise.all(promises)
+        }
+
+        function playSampleById({ id, start = 0, detuneAmt = 0 }) {
+            console.log(id, start, detuneAmt)
+            const src = audioCtx.createBufferSource()
+            src.buffer = samplesBuffer.find(x => x.id === id).audioBuffer
+            src.detune.value = detuneAmt
+            src.connect(audioCtx.destination)
+            src.connect(recorder.dest)
+            src.start(start)
+            return src
+        }
+
+
+        function pitchEm(id, keyMap) {
+            const div = document.getElementById(id)
+            const select = div.querySelector('select')
+            const play = (e) => {
+                if (!e.repeat) {
+                    Object.entries(keyMap).forEach((entry) => {
+                        const code = e.code
+                        if (entry[0] === code) {
+                            playSampleById({ id: select.value, detuneAmt: keyMap[code] })
+                        }
+                    })
+                }
+            }
+            //Use addEventListener, It allows adding more than one handler for an event.
+            document.addEventListener('keydown', play, false)
+        }
+
+
+        function navigation(id) {
+
+            const navigation = document.getElementById(id)
+            const [quitButton, menuButton] = navigation.querySelectorAll('button')
+
+            const reset = () => {
+
+                console.log('game state reset')
+
+                // reset game state
+                if (this.songalizer) {
+                    this.songalizer.stopSongalizer()
+                }
+                this.songalizer = null
+                this.recorder = null
+                this.samplesBuffer = []
+                this.currentGenre = null
+                this.mainMenu()
+            }
+            quitButton.addEventListener('click', () => {
+                reset()
+            })
+            menuButton.addEventListener('click', () => {
+                reset()
+            })
+        }
+
+        window.onload = init()
+
+
+
+
+
+
+
+
+
+
+
+
+        //         // recording
+        //         // const recordDiv = document.createElement('div')
+        //         // recordDiv.setAttribute('id', 'recording')
+
+        //         // // const audioElem = document.createElement('audio')
+        //         // // audioElem.setAttribute('controls', true)
+        //         // // recordDiv.appendChild(audioElem)
+
+        //         // const record = document.createElement('button')
+        //         // record.innerText = 'RECORD'
+        //         // record.addEventListener('click', () => recorder.start())
+        //         // recordDiv.appendChild(record)
+
+
+        //         // const stop = document.createElement('button')
+        //         // stop.innerText = 'STOP'
+        //         // stop.addEventListener('click', () => recorder.stop())
+        //         // recordDiv.appendChild(stop)
+
+        //         // gameWrapper.appendChild(recordDiv)
+
+
+
+
+
+        //     controls(id) {
+        //         const controlsDiv = document.getElementById(id)
+        //         const [startStop, clear] = controlsDiv.querySelectorAll('button')
+
+        //         startStop.addEventListener('click', () => {
+
+        //             if (!this.songalizer.isPlaying && this.songalizer.tracks.length > 0) {
+        //                 this.songalizer.toggle()
+        //                 startStop.style.background = `url("../genres/${this.currentGenre.style}/images/stop.png") no-repeat`
+        //                 startStop.style.backgroundSize = '100% 100%'
+        //             }
+        //             else if (this.songalizer.isPlaying) {
+        //                 this.songalizer.stopSongalizer()
+        //                 startStop.style.background = ''
+        //             }
+        //         })
+
+        //         clear.addEventListener('click', () => {
+        //             this.songalizer.clearSongalizer()
+        //             startStop.style.background = ''
+        //         })
+        //     }
+
+
+        //     dropDown(selectId, triggerId, img) {
+        //         const select = document.getElementById(selectId)
+        //         const trigger = document.getElementById(triggerId)
+
+        //         const play = () => {
+
+        //             //change the image to reflect the sound playing
+        //             trigger.style.backgroundImage = `url(${img})`
+        //             trigger.style.backgroundRepeat = 'no-repeat';
+        //             trigger.style.backgroundSize = '100% 100%'
+
+        //             //play sound
+        //             const src = this.playSampleById({ id: select.value })
+
+        //             // reset image
+        //             src.onended = () => {
+        //                 trigger.style.backgroundImage = ''
+        //             }
+        //         }
+        //         trigger.addEventListener('click', play, false)
+        //     }
+
+        //     keyMap(keyMap) {
+        //         const play = (e) => {
+        //             if (!e.repeat) {
+        //                 keyMap.forEach((sample) => {
+        //                     if (sample.key === e.code) {
+        //                         this.playSampleById({ id: sample.id })
+        //                     }
+        //                 })
+        //             }
+        //         }
+        //         document.addEventListener('keydown', play)
+        //     }
+
+
+        //     songPreview(id) {
+        //         this.currentSong = null
+        //         const songNamesDiv = document.getElementById(id)
+        //         const songNames = songNamesDiv.querySelectorAll('img')
+
+        //         songNames.forEach((song) => {
+        //             console.log(this.currentGenre.style)
+        //             const id = song.getAttribute('data-sample-id')
+        //             const titleNum = song.src.split(/\.png|_/)[2]
+
+        //             // // if we click anywhere but on another song, stop the song
+        //             // document.addEventListener('mousedown', (e) => {
+
+        //             //     if (e.target.className !== song) {
+        //             //         song.src = `../genres/${this.currentGenre.style}/images/song_title_${titleNum}.png`
+        //             //         this.currentSong?.stop()
+        //             //     }
+        //             // })
+        //             song.addEventListener('click', () => {
+
+        //                 //stop previous song
+        //                 if (this.currentSong) {
+        //                     song.src = `../genres/${this.currentGenre.style}/images/song_title_${titleNum}.png`
+        //                     this.currentSong.stop()
+        //                 }
+
+        //                 if (!this.songalizer.isPlaying) {
+        //                     song.src = `../genres/${this.currentGenre.style}/images/asong_title_${titleNum}.png`
+        //                     this.currentSong = this.playSampleById({ id })
+        //                 }
+        //             })
+
+        //         })
+        //     }
+
+
+        // }
+
+
+
+
+
+
+
+
+        class Vocalizer {
+            constructor(audioCtx, samplesBuffer, recorder) {
+                this.audioCtx = audioCtx
+                this.samplesBuffer = samplesBuffer
+                this.recorder = recorder
+                this.isPlaying = false
+                this.triggers = document.querySelector('#vocalizer').querySelectorAll('button')
+                this.triggers.forEach(trigger => trigger.addEventListener('click', () => this.onClick(trigger)))
+                this.start = 0
+                this.prevDuration = 0
+                this.counter = 0
+            }
+
+            onClick(trigger) {
+                trigger.disabled = true
+                trigger.style.opacity = 1
+                const id = trigger.getAttribute('data-sample-id')
+                const source = this.audioCtx.createBufferSource()
+                source.buffer = this.samplesBuffer.find(x => x.id === id).audioBuffer
+                source.connect(this.audioCtx.destination)
+                source.connect(this.recorder.dest)
+
+
+
+                if (!this.isPlaying) {
+                    this.start = this.audioCtx.currentTime
+                    source.start(this.start)
+                    this.counter++
+                }
+
+                else if (this.isPlaying) {
+                    source.start(this.start + this.prevDuration)
+                    this.counter++
+                }
+
+                source.onended = () => {
+                    trigger.disabled = false
+                    trigger.style.opacity = 0
+
+                    this.counter--
+                    console.log('Audio counter', this.counter)
+                    if (this.counter === 0) {
+                        console.log('DONE')
+                        this.isPlaying = false
+                        this.start = 0
+                        this.prevDuration = 0
+                        this.counter = 0
+                    }
+                }
+                this.isPlaying = true
+                this.prevDuration += source.buffer.duration
+
+            }
+
+        }
+
+        class Songalizer {
+            constructor(gameRef) {
+                this.gameRef = gameRef
+                this.scheduleAheadTime = .1
+                this.nextTrackTime = 0.0;
+                this.lookahead = 25.0;
+                this.timerWorker = null;
+                this.isPlaying = false
+                this.currentTrackIndex = 0
+                this.currentSource = null
+                this.slots = document.getElementById('slots')
+                this.tracks = []
+                this.counter = 0
+                this.selectedSong = null
+                this.songs = document.getElementById('songs').querySelectorAll('div')
+
+
+                this.songs.forEach(song => {
+
+                    song.onmousedown = (ev) => {
+                        this.selectedSong = song
+                        document.body.style.cursor = 'url(../images/outline.png) 20 20, pointer'
+                        //disable pointer events on gameInputElements
+                        document.querySelectorAll('.gameControlElement').forEach(elem => elem.style.pointerEvents = 'none')
+                    }
+
+
+                    document.onmouseup = () => {
+
+                        if (this.isPlaying) {
+
+                            document.querySelectorAll('.gameControlElement').forEach(elem => {
+
+                                if (elem.classList.contains('song')) {
+                                    elem.style.pointerEvents = 'auto'
+                                }
+                            })
+                        }
+                        else {
+                            document.querySelectorAll('.gameControlElement').forEach(elem => elem.style.pointerEvents = 'auto')
+                        }
+
+                        document.body.style.cursor = 'auto'
+                        this.selectedSong = null
+                    }
+                })
+
+                this.slots.onmouseup = () => {
+
+                    const MAX_SONGS = 10
+                    if (this.tracks.length < MAX_SONGS) {
+                        const id = this.selectedSong.getAttribute('data-sample-id')
+                        const imgElem = document.createElement('img')
+                        imgElem.setAttribute('id', this.selectedSong.id)
+                        imgElem.setAttribute('draggable', false)
+                        imgElem.setAttribute('data-sample-id', id)
+                        imgElem.setAttribute('src', `../genres/${this.gameRef.currentGenre.style}/images/${this.selectedSong.id}.png`)
+                        this.slots.appendChild(imgElem)
+                        const { audioBuffer } = this.gameRef.samplesBuffer.find(x => x.id === id)
+                        this.tracks.push({ id, audioBuffer })
+                    }
+
+                    //enable pointer events on gameInputElements
+                    document.querySelectorAll('.gameControlElement').forEach(elem => elem.style.pointerEvents = 'auto')
+                    document.body.style.cursor = 'auto'
+                    this.selectedSong = null
+
+                }
+
+
+
+                // setup web worker
+                this.timerWorker = new Worker('js/songalizerworker.js');
+                this.timerWorker.onmessage = (e) => {
+                    if (e.data === 'tick') {
+                        this.scheduler()
+                    }
+                    else {
+                        console.log('message:' + e.data)
+                    }
+                }
+                this.timerWorker.postMessage({ 'interval': this.lookahead })
+            }
+
+            stopSongalizer() {
+
+                if (this.currentSource) {
+                    this.currentSource.stop()
+                }
+                this.isPlaying = false
+                this.counter = 0
+                this.currentSource = null
+                this.timerWorker.postMessage('stop')
+                // disable dragging of songs
+                document.getElementById('songs')
+                    .querySelectorAll('.gameControlElement')
+                    .forEach(elem => elem.style.pointerEvents = 'auto')
+                //reset slot state images here
+                this.slots.querySelectorAll('img').forEach(img => {
+                    img.src = `../genres/${this.gameRef.currentGenre.style}/images/song_${img.src.split('_')[1]}`
+                })
+            }
+
+            toggle() {
+
+                if (this.tracks.length !== 0) {
+
+                    this.isPlaying = !this.isPlaying
+
+                    if (this.isPlaying) {
+
+                        // disable dragging of songs
+                        document.getElementById('songs')
+                            .querySelectorAll('.gameControlElement')
+                            .forEach(elem => elem.style.pointerEvents = 'none')
+
+                        this.timerWorker.postMessage('start')
+                        this.nextTrackTime = this.gameRef.audioCtx.currentTime
+                    }
+                    else {
+                        this.stopSongalizer()
+                    }
+                }
+                else {
+                    console.log('Songalizer has no tracks to play!')
+                }
+
+            }
+
+            scheduleTrack(id, start) {
+                this.currentSource = this.gameRef.playSampleById({ id, start })
+
+            }
+
+            scheduler() {
+
+                while (this.nextTrackTime < this.gameRef.audioCtx.currentTime + this.scheduleAheadTime) {
+
+                    this.currentTrackIndex = this.counter % this.tracks.length
+                    const { id } = this.tracks[this.currentTrackIndex]
+                    this.scheduleTrack(id, this.nextTrackTime)
+                    this.displayCurrentSong()
+
+                    //add duration of next track to nextTrackTime
+                    const { audioBuffer: { duration } } = this.tracks[this.currentTrackIndex]
+                    this.nextTrackTime += duration
+                    this.counter++
+                }
+            }
+
+
+            clearSongalizer() {
+                if (this.isPlaying) {
+                    this.isPlaying = !this.isPlaying
+                    this.stopSongalizer()
+                }
+                this.tracks = []
+                this.slots.innerHTML = ''
+            }
+
+            displayCurrentSong() {
+
+                const songs = this.slots.querySelectorAll('img')
+                const style = this.gameRef.currentGenre.style
+
+                if (this.tracks.length > 1) {
+                    const currentSong = songs[this.currentTrackIndex]
+                    const id = currentSong.getAttribute('id')
+
+                    currentSong.src = `../genres/${style}/images/a${id}.png`
+
+                    const prevSongIndex = this.currentTrackIndex - 1 < 0 ? this.tracks.length - 1 : this.currentTrackIndex - 1
+                    const prevSong = songs[prevSongIndex]
+                    prevSong.src = `../genres/${style}/images/song_${prevSong.id.split('_')[1]}.png`
+                }
+
+                else if (this.tracks.length === 1) {
+                    const currentSong = songs[this.currentTrackIndex]
+                    const id = currentSong.getAttribute('id')
+                    console.log(style, id)
+                    currentSong.src = `../genres/${style}/images/a${id}.png`
+                }
+            }
+        }
+
+
+
+        // class Recorder {
+
+        //     constructor(audioCtx) {
+        //         this.chunks = []
+        //         this.dest = audioCtx.createMediaStreamDestination()
+        //         this.mediaRecorder = new MediaRecorder(this.dest.stream, { mimeType: 'audio/webm' })
+
+        //         this.mediaRecorder.ondataavailable = (evt) => {
+        //             // push each chunk (blobs) in an array
+        //             console.log(this.chunks)
+        //             this.chunks.push(evt.data);
+        //         };
+
+        //         this.mediaRecorder.onstop = (evt) => {
+        //             // Make blob out of our blobs, and open it.
+        //             const blob = new Blob(this.chunks, { 'type': 'audio/webm; codecs=0' });
+        //             document.querySelector("audio").src = URL.createObjectURL(blob);
+        //         };
+        //     }
+
+        //     start() {
+        //         console.log('starting')
+        //         this.mediaRecorder.start()
+        //     }
+
+        //     stop() {
+        //         console.log('stoping')
+        //         this.mediaRecorder.stop()
+        //     }
+        // }
+
+
+
+
+    </script>
+
+
 </body>
 
 </html>

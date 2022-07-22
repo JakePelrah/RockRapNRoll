@@ -29,7 +29,7 @@
         "../genres/Rap/samples/STRAPPED.wav", "../genres/Rap/samples/THBMB.wav", "../genres/Rap/samples/VIOLATE.wav",
         "../genres/Rap/samples/WHOOSH.wav"
     ],
-    "songalizer": [
+    "songalizer_samples": [
         { "id": "MCBEAT", "title": "MC Beat" },
         { "id": "GMEABT", "title": "Gimme A Beat" },
         { "id": "JB", "title": "JB" },
@@ -41,7 +41,7 @@
         { "id": "OKTN", "title": "Oaktown" },
         { "id": "BTSNHOOD", "title": "Beats In The Hood" }
     ],
-        "vocalizer": [
+        "vocalizer_samples": [
         { "id": "RPNBLEEP", "title": "Rappin Bleep" },
         { "id": "KDYKAT", "title": "Koody Kat" },
         { "id": "BLEEP", "title": "Bleep" },
@@ -62,7 +62,7 @@
         { "id": "ORCHHT", "title": "Orch Hit" }
     ],
     "pitchem": {
-        "numbers": [
+        "digits": [
             { "id": "HTSNR", "title": "Hot Snare" },
             { "id": "HRNHT", "title": "Horn Hit" },
             { "id": "EXPLSN2", "title": "Explosion 2" },

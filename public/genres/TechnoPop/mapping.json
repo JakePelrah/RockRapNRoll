@@ -29,7 +29,7 @@
         "../genres/TechnoPop/samples/WHYCHD.wav", "../genres/TechnoPop/samples/WHYIKNW.wav", "../genres/TechnoPop/samples/WHYSCRM.wav",
         "../genres/TechnoPop/samples/WLDWHY.wav", "../genres/TechnoPop/samples/YACHD.wav"
     ],
-    "songalizer": [
+    "songalizer_samples": [
         { "id": "BREAK", "title": "Break" },
         { "id": "WHIP", "title": "Whip It" },
         { "id": "ORCHSTRAMGC", "title": "Ochestra Magic" },
@@ -41,7 +41,7 @@
         { "id": "ARTOFTCH", "title": "Art of Tech" },
         { "id": "BRNTHHS", "title": "Byrn the House" }
     ],
-    "vocalizer": [
+    "vocalizer_samples": [
         { "id": "WLDWHY", "title": "Wild Why" },
         { "id": "WHYIKNW", "title": "Why I Know" },
         { "id": "DNTCHRS2", "title": "Dont Chorus 2" },
@@ -65,7 +65,7 @@
         { "id": "GTDSTCK", "title": "Gated Stick"}
     ],
     "pitchem": {
-        "numbers": [
+        "digits": [
             { "id": "ISCRM", "title": "I Scream" },
             { "id": "DNTSCRM", "title": "Dont Scream" },
             { "id": "YACHD", "title": "Yea Chord" },

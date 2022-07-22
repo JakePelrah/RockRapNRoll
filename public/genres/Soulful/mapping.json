@@ -29,7 +29,7 @@
         "../genres/Soulful/samples/WHOOSH.wav", "../genres/Soulful/samples/WRDUP.wav", "../genres/Soulful/samples/WRPITUP.wav",
         "../genres/Soulful/samples/YAYAYA.wav", "../genres/Soulful/samples/UMKEME.wav"
     ],
-    "songalizer": [
+    "songalizer_samples": [
         { "id": "HIPHP", "title": "Hip Hop" },
         { "id": "RAP", "title": "Rap" },
         { "id": "NWJCKSWNG", "title": "New Jack Swing" },
@@ -41,7 +41,7 @@
         { "id": "WRDUP", "title": "Word Up" },
         { "id": "JAMON", "title": "Jam On" }
     ],
-    "vocalizer": [
+    "vocalizer_samples": [
         { "id": "TOTHCRCH", "title": "To The Church" },
         { "id": "MMYAYA", "title": "MMM Yea Yea" },
         { "id": "YAYAYA", "title": "Yea Yea Yea" },
@@ -72,7 +72,7 @@
         { "id": "BBSTRY", "title": "BBs Story" }
     ],
     "pitchem": {
-        "numbers": [
+        "digits": [
             { "id": "ORCHT", "title": "Orch Hit" },
             { "id": "SCRNITCH", "title": "Scratch an Itch" },
             { "id": "HIPSNR", "title": "Hip Snare" },

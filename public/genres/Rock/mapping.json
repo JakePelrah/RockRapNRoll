@@ -28,7 +28,7 @@
         "../genres/Rock/samples/TYSF.wav", "../genres/Rock/samples/TRLSOLO.wav", "../genres/Rock/samples/WHOA.wav",
         "../genres/Rock/samples/YEA.wav", "../genres/Rock/samples/YHYHYH.wav"
     ],
-    "songalizer": [
+    "songalizer_samples": [
         { "id": "POPRCK", "title": "Pop Rock" },
         { "id": "RCKTHHS", "title": "Rock The House" },
         { "id": "BMBMBP", "title": "Boom Boom Bap" },
@@ -40,7 +40,7 @@
         { "id": "PARTYON", "title": "Party On" },
         { "id": "NTOTHHRTLND", "title": "Into The Heartland" }
     ],
-    "vocalizer": [
+    "vocalizer_samples": [
         { "id": "YHYHYH", "title": "Yeah Yeah Yeah" },
         { "id": "OHWHOA", "title": "Oh Whoa" },
         { "id": "OOOWWW", "title": "OOOWWW" },
@@ -74,7 +74,7 @@
         { "id": "HOYEA", "title": "Ho Yea" }
     ],
     "pitchem": {
-        "numbers": [
+        "digits": [
             { "id": "FZGUIT", "title": "Fuzz Guitar" },
             { "id": "GUIT5", "title": "Guitar 5" },
             { "id": "GUIT6", "title": "Guitar 6" },

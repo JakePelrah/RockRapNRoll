@@ -29,7 +29,7 @@
         "../genres/Reggae/samples/WHIP.wav", "../genres/Reggae/samples/WHISTLE.wav", "../genres/Reggae/samples/WKDNWILY.wav",
         "../genres/Reggae/samples/YEAMON.wav"
     ],
-    "songalizer": [
+    "songalizer_samples": [
         { "id": "MNTGOBY", "title": "Montego Bay" },
         { "id": "STANNSBY", "title": "St. Ann's Bay" },
         { "id": "JAMAYKA", "title": "Jam-ay-ka" },
@@ -41,7 +41,7 @@
         { "id": "REGGAEDN", "title": "Reggae Down" },
         { "id": "KNGSTN", "title": "Kingston" }
     ],
-    "vocalizer": [
+    "vocalizer_samples": [
         { "id": "RICKAMAN", "title": "Rick Man" },
         { "id": "JAMIN", "title": "Jammin" },
         { "id": "BRMITDWN", "title": "Brum It Down" },
@@ -65,7 +65,7 @@
         { "id": "WHISTLE", "title": "Whistle" }
     ],
     "pitchem": {
-        "numbers": [
+        "digits": [
             { "id": "JAMIN", "title": "Jamin" },
             { "id": "CHA", "title": "Cha!" },
             { "id": "FLUTE1", "title": "Flute 1" },

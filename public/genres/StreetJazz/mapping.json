@@ -27,7 +27,7 @@
         "../genres/StreetJazz/samples/TRMPTLP1.wav", "../genres/StreetJazz/samples/VBRSLP.wav", "../genres/StreetJazz/samples/WHIP.wav",
         "../genres/StreetJazz/samples/WDPCKR.wav"
     ],
-    "songalizer": [
+    "songalizer_samples": [
         { "id": "ONTHST", "title": "On The Street" },
         { "id": "REMIX", "title": "Remix" },
         { "id": "PNOFDKNS", "title": "Prince Of Darkness" },
@@ -39,7 +39,7 @@
         { "id": "MNSKCHS", "title": "Main Sketches" },
         { "id": "CODA", "title": "Coda" }
     ],
-    "vocalizer": [
+    "vocalizer_samples": [
         { "id": "STJAZZ", "title": "Street Jazz" },
         { "id": "BRITDN", "title": "Bring It Down" },
         { "id": "DOBOP", "title": "Do Bop" },
@@ -64,7 +64,7 @@
         { "id": "TRMPT2", "title": "Trumpet 2" }
     ],
     "pitchem": {
-        "numbers": [
+        "digits": [
             { "id": "STJAZZ", "title": "Street Jazz" },
             { "id": "SMOOTH", "title": "Smooth" },
             { "id": "THTSHP", "title": "Thats Hip" },

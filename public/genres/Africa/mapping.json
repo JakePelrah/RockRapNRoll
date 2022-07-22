@@ -27,7 +27,7 @@
         "../genres/Africa/samples/TMBRINE2.wav", "../genres/Africa/samples/TMBRINE.wav", "../genres/Africa/samples/TRIANGLE.wav",
         "../genres/Africa/samples/TRIBAL.wav", "../genres/Africa/samples/TUMBAU.wav", "../genres/Africa/samples/WNKYWNGR.wav"
     ],
-    "songalizer": [
+    "songalizer_samples": [
         { "id": "TRIBAL", "title": "Tribal" },
         { "id": "TUMBAU", "title": "Tumbau" },
         { "id": "CHANT", "title": "Chant" },
@@ -39,7 +39,7 @@
         { "id": "RNFRST", "title": "Rain Forest" },
         { "id": "RNFRSTVX", "title": "Rain Forest Vox" }
     ],
-    "vocalizer": [
+    "vocalizer_samples": [
         { "id": "CMACMALE", "title": "Coma Coma Le" },
         { "id": "CMALE", "title": "Coma Le" },
         { "id": "CMALEAUWA", "title": "Comele A Uwa" },
@@ -66,7 +66,7 @@
         { "id": "WNKYWNGR", "title": "Winky Wanger" }
     ],
     "pitchem": {
-        "numbers": [
+        "digits": [
             { "id": "CMALE", "title": "Coma Le" },
             { "id": "CMEIN", "title": "Come In" },
             { "id": "POSITIVE", "title": "Positive" },
