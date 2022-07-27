@@ -1,7 +1,5 @@
 {
-    "style": "Reggae",
     "background": "../genres/Reggae/images/reggae.png",
-
     "samples": [
         "../genres/Reggae/samples/AMERICA.wav", "../genres/Reggae/samples/BNINAFRC.wav", "../genres/Reggae/samples/BRMITDWN.wav",
         "../genres/Reggae/samples/CHA.wav", "../genres/Reggae/samples/CNGASHK1.wav", "../genres/Reggae/samples/DNCHALL.wav",

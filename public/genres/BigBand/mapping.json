@@ -1,5 +1,4 @@
 {
-    "style": "BigBand",
     "background": "../genres/BigBand/images/bigBand.png",
     "samples": [
         "../genres/BigBand/samples/BARI1.wav", "../genres/BigBand/samples/BARILP1.wav", "../genres/BigBand/samples/BARILP2.wav",

@@ -1,5 +1,4 @@
 {
-    "style": "Blues",
     "background": "../genres/Blues/images/blues.png",
     "samples": [
         "../genres/Blues/samples/12BAR.wav", "../genres/Blues/samples/AAAAY.wav", "../genres/Blues/samples/BLSEVRYDY.wav",

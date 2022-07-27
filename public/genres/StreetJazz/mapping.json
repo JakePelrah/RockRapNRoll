@@ -1,7 +1,5 @@
 {
-    "style": "StreetJazz",
     "background": "../genres/StreetJazz/images/streetJazz.png",
-  
     "samples": [
         "../genres/StreetJazz/samples/BIRD.wav", "../genres/StreetJazz/samples/BPLGY.wav", "../genres/StreetJazz/samples/BRKDN.wav",
         "../genres/StreetJazz/samples/BRKITDN.wav", "../genres/StreetJazz/samples/BRITDN.wav", 

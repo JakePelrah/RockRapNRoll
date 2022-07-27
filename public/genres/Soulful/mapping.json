@@ -1,6 +1,5 @@
 
 {
-    "style": "Soulful",
     "background": "../genres/Soulful/images/soulful.png",
     "samples": [
         "../genres/Soulful/samples/BBSTRY.wav", "../genres/Soulful/samples/Come on.wav",
