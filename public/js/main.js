@@ -1,7 +1,5 @@
-
 const mainMenu = document.getElementById('main-menu')
 const loadingText = document.getElementById('loading-text')
-
 
 let audioCtx = null
 let currentGenre = null
@@ -9,7 +7,6 @@ let db = null
 let samplesBuffer = []
 let songalizer = null
 let vocalizer = null
-// let recorder = null
 
 window.onload = () => {
 

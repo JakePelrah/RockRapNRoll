@@ -285,19 +285,19 @@ select:focus {
 /* SUPPORT */
 #support {
    position: absolute;
-   left: 260px;
-   top: 700px;
+   left: 175px;
+   top: -100px;
    padding: 10px;
    width: 330px;
    height: 100px;
    color: wheat;
+   font-size: 14px;
 }
 
 #bug-link {
    position: absolute;
    left: 8px;
    top: 55px;
-   padding-top: 30px;
-   font-size: 18px;
+   font-size: 14px;
    color: #DD0806;
 }
