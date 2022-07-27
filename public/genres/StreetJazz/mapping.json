@@ -1,16 +1,7 @@
 {
     "style": "StreetJazz",
     "background": "../genres/StreetJazz/images/streetJazz.png",
-    "song_images": ["../genres/StreetJazz/images/song_1.png", "../genres/StreetJazz/images/song_2.png", "../genres/StreetJazz/images/song_3.png",
-        "../genres/StreetJazz/images/song_4.png", "../genres/StreetJazz/images/song_5.png", "../genres/StreetJazz/images/song_6.png",
-        "../genres/StreetJazz/images/song_7.png", "../genres/StreetJazz/images/song_8.png", "../genres/StreetJazz/images/song_9.png",
-        "../genres/StreetJazz/images/song_10.png"],
-    "asong_images": ["../genres/StreetJazz/images/asong_1.png", "../genres/StreetJazz/images/asong_2.png", "../genres/StreetJazz/images/asong_3.png",
-        "../genres/StreetJazz/images/asong_4.png", "../genres/StreetJazz/images/asong_5.png", "../genres/StreetJazz/images/asong_6.png",
-        "../genres/StreetJazz/images/asong_7.png", "../genres/StreetJazz/images/asong_8.png", "../genres/StreetJazz/images/asong_9.png",
-        "../genres/StreetJazz/images/asong_10.png"],
-    "vibe_image": "../genres/StreetJazz/images/vibe.png",
-    "bop_image": "../genres/StreetJazz/images/bop.png",
+  
     "samples": [
         "../genres/StreetJazz/samples/BIRD.wav", "../genres/StreetJazz/samples/BPLGY.wav", "../genres/StreetJazz/samples/BRKDN.wav",
         "../genres/StreetJazz/samples/BRKITDN.wav", "../genres/StreetJazz/samples/BRITDN.wav", 
@@ -64,7 +55,7 @@
         { "id": "TRMPT2", "title": "Trumpet 2" }
     ],
     "pitchem": {
-        "digits": [
+        "digitMap": [
             { "id": "STJAZZ", "title": "Street Jazz" },
             { "id": "SMOOTH", "title": "Smooth" },
             { "id": "THTSHP", "title": "Thats Hip" },
@@ -79,13 +70,13 @@
             { "id": "TRMPT2", "title": "Trumpet 2" },
             { "id": "TRMPT3", "title": "Trumpet 3" }
         ],
-       "numMap": {
+       "digitDetuneMap": {
             "Backquote": -1200, "Digit1": -1000, "Digit2": -800,
             "Digit3": -700, "Digit4": -500, "Digit5": -300,
             "Digit6": -100, "Digit7": 0, "Digit8": 200,
             "Digit9": 400, "Digit0": 700, "Minus": 900, "Equal": 1200
         },
-        "keys": [
+        "qwertyKeyMap": [
             { "id": "COOL", "title": "Cool" },
             { "id": "DOBOP", "title": "Do Bop" },
             { "id": "JAZZIT", "title": "Jazz It" },
@@ -95,7 +86,7 @@
             { "id": "SAX6", "title": "Sax 6" },
             { "id": "TRMPT6", "title": "Trumpet 6" }
         ],
-        "keyMap": {
+        "qwertykeyDetuneMap": {
             "KeyQ": -800, "KeyW": -700, "KeyE": -500,
             "KeyR": -300, "KeyT": -100, "KeyY": 0,
             "KeyU": 200, "KeyI": 400, "KeyO": 500,
@@ -103,7 +94,7 @@
             "Backslash": 1200
         }
     },
-    "keyMap": [
+    "restKeyMap": [
         { "id": "TRMPT3", "title": "Trumpet 3", "key": "KeyA" },
         { "id": "TRMPT2", "title": "Trumpet 2", "key": "KeyS" },
         { "id": "TRMPT9", "title": "Trumpet 9", "key": "KeyD" },

@@ -1,4 +1,0 @@
-
-try to incorpoarete song name graphics
-
-cache sounds

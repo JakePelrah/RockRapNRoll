@@ -1,16 +1,7 @@
 {
     "style": "Rap",
     "background": "../genres/Rap/images/rap.png",
-    "song_images": ["../genres/Rap/images/song_1.png", "../genres/Rap/images/song_2.png", "../genres/Rap/images/song_3.png",
-        "../genres/Rap/images/song_4.png", "../genres/Rap/images/song_5.png", "../genres/Rap/images/song_6.png",
-        "../genres/Rap/images/song_7.png", "../genres/Rap/images/song_8.png", "../genres/Rap/images/song_9.png",
-        "../genres/Rap/images/song_10.png"],
-    "asong_images": ["../genres/Rap/images/asong_1.png", "../genres/Rap/images/asong_2.png", "../genres/Rap/images/asong_3.png",
-        "../genres/Rap/images/asong_4.png", "../genres/Rap/images/asong_5.png", "../genres/Rap/images/asong_6.png",
-        "../genres/Rap/images/asong_7.png", "../genres/Rap/images/asong_8.png", "../genres/Rap/images/asong_9.png",
-        "../genres/Rap/images/asong_10.png"],
-    "vibe_image": "../genres/Rap/images/vibe.png",
-    "bop_image": "../genres/Rap/images/bop.png",
+
     "samples": [
         "../genres/Rap/samples/ADMNEVE.wav", "../genres/Rap/samples/ATMTIC.wav", "../genres/Rap/samples/BLEEP.wav",
         "../genres/Rap/samples/BTSNHOOD.wav", "../genres/Rap/samples/BTYCRCK.wav", "../genres/Rap/samples/CMEON.wav",
@@ -62,7 +53,7 @@
         { "id": "ORCHHT", "title": "Orch Hit" }
     ],
     "pitchem": {
-        "digits": [
+        "digitMap": [
             { "id": "HTSNR", "title": "Hot Snare" },
             { "id": "HRNHT", "title": "Horn Hit" },
             { "id": "EXPLSN2", "title": "Explosion 2" },
@@ -71,13 +62,13 @@
             { "id": "OKTNSLNGN", "title": "Oaktown Slangin" },
             { "id": "JSTHNGN", "title": "Just Hangin" }
         ],
-       "numMap": {
+       "digitDetuneMap": {
             "Backquote": -1200, "Digit1": -1000, "Digit2": -800,
             "Digit3": -700, "Digit4": -500, "Digit5": -300,
             "Digit6": -100, "Digit7": 0, "Digit8": 200,
             "Digit9": 400, "Digit0": 700, "Minus": 900, "Equal": 1200
         },
-        "keys": [
+        "qwertyKeyMap": [
             { "id": "GUITHT", "title": "Guitar Hit" },
             { "id": "ORCHHT", "title": "Orch Hit" },
             { "id": "HPSNR", "title": "Hip Snare" },
@@ -87,7 +78,7 @@
             { "id": "GTWDDT", "title": "Get Widdit" },
             { "id": "LKYLOOP", "title": "Looky Loop" }
         ],
-        "keyMap": {
+        "qwertyKeyDetuneMap": {
             "KeyQ": -800, "KeyW": -700, "KeyE": -500,
             "KeyR": -300, "KeyT": -100, "KeyY": 0,
             "KeyU": 200, "KeyI": 400, "KeyO": 500,
@@ -95,7 +86,7 @@
             "Backslash": 1200
         }
     },
-    "keyMap": [
+    "restKeyMap": [
         { "id": "JSTHNGN", "title": "Just Hangin", "key": "KeyA" },
         { "id": "MSWTHME", "title": "Mess With Me", "key": "KeyS" },
         { "id": "OKTNSLNGN", "title": "Oaktown Slangin", "key": "KeyD" },

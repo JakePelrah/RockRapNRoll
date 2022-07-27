@@ -48,6 +48,21 @@ select:focus {
    -o-user-select: none;
 }
 
+#loading-text{ 
+  
+   position: absolute;
+   left: 285px;
+   top: 185px;
+   color: white;
+   font-size: 20px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+   50%{
+      opacity: .1;
+   }
+ }
 
 #main-menu {
    height: 100%;
@@ -127,7 +142,7 @@ select:focus {
    left: 551px;
    top: 96px;
    grid-template-columns: 34px 34px;
-   gap: 2px 2px;
+   gap: 5px 2px;
 }
 #vocalizer>div {
    height: 29px;

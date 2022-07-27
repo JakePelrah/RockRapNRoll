@@ -1,16 +1,6 @@
 {
     "style": "BigBand",
     "background": "../genres/BigBand/images/bigBand.png",
-    "song_images": ["../genres/BigBand/images/song_1.png", "../genres/BigBand/images/song_2.png", "../genres/BigBand/images/song_3.png",
-        "../genres/BigBand/images/song_4.png", "../genres/BigBand/images/song_5.png", "../genres/BigBand/images/song_6.png",
-        "../genres/BigBand/images/song_7.png", "../genres/BigBand/images/song_8.png", "../genres/BigBand/images/song_9.png",
-        "../genres/BigBand/images/song_10.png"],
-    "asong_images": ["../genres/BigBand/images/asong_1.png", "../genres/BigBand/images/asong_2.png", "../genres/BigBand/images/asong_3.png",
-        "../genres/BigBand/images/asong_4.png", "../genres/BigBand/images/asong_5.png", "../genres/BigBand/images/asong_6.png",
-        "../genres/BigBand/images/asong_7.png", "../genres/BigBand/images/asong_8.png", "../genres/BigBand/images/asong_9.png",
-        "../genres/BigBand/images/asong_10.png"],
-    "vibe_image": "../genres/BigBand/images/vibe.png",
-    "bop_image": "../genres/BigBand/images/bop.png",
     "samples": [
         "../genres/BigBand/samples/BARI1.wav", "../genres/BigBand/samples/BARILP1.wav", "../genres/BigBand/samples/BARILP2.wav",
         "../genres/BigBand/samples/BARILP3.wav", "../genres/BigBand/samples/BARINT2.wav",
@@ -66,27 +56,27 @@
         { "id": "MTNT6", "title": "Mute Note 6" }
     ],
     "pitchem": {
-        "digits": [
+        "digitMap": [
             { "id": "BARINT2", "title": "Bari Note 2" },
             { "id": "BARINT5", "title": "Bari Note 5" },
             { "id": "BARILP1", "title": "Bari Loop 1" },
             { "id": "BARILP2", "title": "Bari Loop 2" },
             { "id": "BARILP3", "title": "Bari Loop 3" }
         ],
-       "numMap": {
+       "digitDetuneMap": {
             "Backquote": -1200, "Digit1": -1000, "Digit2": -800,
             "Digit3": -700, "Digit4": -500, "Digit5": -300,
             "Digit6": -100, "Digit7": 0, "Digit8": 200,
             "Digit9": 400, "Digit0": 700, "Minus": 900, "Equal": 1200
         },
-        "keys": [
+        "qwertyKeyMap": [
             { "id": "BONELP1", "title": "Bone Loop 1" },
             { "id": "MTLP", "title": "Mute Loop" },
             { "id": "MTNT4", "title": "Mute Note 4" },
             { "id": "MTNT5", "title": "Mute Note 5" },
             { "id": "MTNT6", "title": "Mute Note 6" }
         ],
-        "keyMap": {
+        "qwertyKeyDetuneMap": {
             "KeyQ": -800, "KeyW": -700, "KeyE": -500,
             "KeyR": -300, "KeyT": -100, "KeyY": 0,
             "KeyU": 200, "KeyI": 400, "KeyO": 500,
@@ -94,7 +84,7 @@
             "Backslash": 1200
         }
     },
-    "keyMap": [
+    "restKeyMap": [
         { "id": "BARI1", "title": "Bari", "key": "KeyA" },
         { "id": "BARILP1", "title": "Bari Loop 1", "key": "KeyS" },
         { "id": "BARILP2", "title": "Bari Loop 2", "key": "KeyD" },

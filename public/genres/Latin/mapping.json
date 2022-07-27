@@ -1,16 +1,6 @@
 {
-    "style": "Latin",
     "background": "../genres/Latin/images/latin.png",
-    "song_images": ["../genres/Latin/images/song_1.png", "../genres/Latin/images/song_2.png", "../genres/Latin/images/song_3.png",
-        "../genres/Latin/images/song_4.png", "../genres/Latin/images/song_5.png", "../genres/Latin/images/song_6.png",
-        "../genres/Latin/images/song_7.png", "../genres/Latin/images/song_8.png", "../genres/Latin/images/song_9.png",
-        "../genres/Latin/images/song_10.png"],
-    "asong_images": ["../genres/Latin/images/asong_1.png", "../genres/Latin/images/asong_2.png", "../genres/Latin/images/asong_3.png",
-        "../genres/Latin/images/asong_4.png", "../genres/Latin/images/asong_5.png", "../genres/Latin/images/asong_6.png",
-        "../genres/Latin/images/asong_7.png", "../genres/Latin/images/asong_8.png", "../genres/Latin/images/asong_9.png",
-        "../genres/Latin/images/asong_10.png"],
-    "vibe_image": "../genres/Latin/images/vibe.png",
-    "bop_image": "../genres/Latin/images/bop.png",
+
     "samples": [
         "../genres/Latin/samples/BASS.wav", "../genres/Latin/samples/CRLS1.wav", "../genres/Latin/samples/CRLS2.wav",
         "../genres/Latin/samples/CRLS3.wav", "../genres/Latin/samples/CRLS4.wav", "../genres/Latin/samples/CRLS5.wav",
@@ -71,7 +61,7 @@
         { "id": "CNGASHKR", "title": "Conga Shaker" }
     ],
     "pitchem": {
-        "digits": [
+        "digitMap": [
             { "id": "CRLS1", "title": "Carlos 1" },
             { "id": "SHAKER", "title": "Shaker" },
             { "id": "FLUTE4", "title": "Flute 4" },
@@ -82,13 +72,13 @@
             { "id": "CRLS8", "title": "Carlos 8" },
             { "id": "CRLS9", "title": "Carlos 9" }
         ],
-       "numMap": {
+       "digitDetuneMap": {
             "Backquote": -1200, "Digit1": -1000, "Digit2": -800,
             "Digit3": -700, "Digit4": -500, "Digit5": -300,
             "Digit6": -100, "Digit7": 0, "Digit8": 200,
             "Digit9": 400, "Digit0": 700, "Minus": 900, "Equal": 1200
         },
-        "keys": [
+        "qwertyKeyMap": [
             { "id": "VBRSLP", "title": "Vibra Slap" },
             { "id": "CNGASHKR", "title": "Conga Shaker" },
             { "id": "FLUTE6", "title": "Flute 6" },
@@ -99,7 +89,7 @@
             { "id": "CRLS4", "title": "Carlos 4" },
             { "id": "CRLS5", "title": "Carlos 5" }
         ],
-        "keyMap": {
+        "qwertyKeyDetuneMap": {
             "KeyQ": -800, "KeyW": -700, "KeyE": -500,
             "KeyR": -300, "KeyT": -100, "KeyY": 0,
             "KeyU": 200, "KeyI": 400, "KeyO": 500,
@@ -107,7 +97,7 @@
             "Backslash": 1200
         }
     },
-    "keyMap": [
+    "restKeyMap": [
         { "id": "FLUTE6", "title": "Flute 6", "key": "KeyA" },
         { "id": "FLUTE5", "title": "Flute 5", "key": "KeyS" },
         { "id": "FLUTE4", "title": "Flute 4", "key": "KeyD" },

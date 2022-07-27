@@ -2,16 +2,7 @@
 {
     "style": "Rock",
     "background": "../genres/Rock/images/rock.png",
-    "song_images": ["../genres/Rock/images/song_1.png", "../genres/Rock/images/song_2.png", "../genres/Rock/images/song_3.png",
-        "../genres/Rock/images/song_4.png", "../genres/Rock/images/song_5.png", "../genres/Rock/images/song_6.png",
-        "../genres/Rock/images/song_7.png", "../genres/Rock/images/song_8.png", "../genres/Rock/images/song_9.png",
-        "../genres/Rock/images/song_10.png"],
-    "asong_images": ["../genres/Rock/images/asong_1.png", "../genres/Rock/images/asong_2.png", "../genres/Rock/images/asong_3.png",
-        "../genres/Rock/images/asong_4.png", "../genres/Rock/images/asong_5.png", "../genres/Rock/images/asong_6.png",
-        "../genres/Rock/images/asong_7.png", "../genres/Rock/images/asong_8.png", "../genres/Rock/images/asong_9.png",
-        "../genres/Rock/images/asong_10.png"],
-    "vibe_image": "../genres/Rock/images/vibe.png",
-    "bop_image": "../genres/Rock/images/bop.png",
+
     "samples": [
         "../genres/Rock/samples/ALRTNOW.wav", "../genres/Rock/samples/ALRTPHLY.wav", "../genres/Rock/samples/BMBMBP.wav",
         "../genres/Rock/samples/CLGRDIO.wav", "../genres/Rock/samples/CMONBBY.wav", "../genres/Rock/samples/CMONCLVLND.wav",
@@ -74,7 +65,7 @@
         { "id": "HOYEA", "title": "Ho Yea" }
     ],
     "pitchem": {
-        "digits": [
+        "digitMap": [
             { "id": "FZGUIT", "title": "Fuzz Guitar" },
             { "id": "GUIT5", "title": "Guitar 5" },
             { "id": "GUIT6", "title": "Guitar 6" },
@@ -88,13 +79,13 @@
             { "id": "WHOA", "title": "Whoa" },
             { "id": "YEA", "title": "Yea" }
         ],
-       "numMap": {
+       "digitDetuneMap": {
             "Backquote": -1200, "Digit1": -1000, "Digit2": -800,
             "Digit3": -700, "Digit4": -500, "Digit5": -300,
             "Digit6": -100, "Digit7": 0, "Digit8": 200,
             "Digit9": 400, "Digit0": 700, "Minus": 900, "Equal": 1200
         },
-        "keys": [
+        "qwertyKeyMap": [
             { "id": "FDBKGUIT", "title": "Feedback Guitar" },
             { "id": "HITRL", "title": "Hi Trill" },
             { "id": "CWBL", "title": "Cow Bell" },
@@ -108,7 +99,7 @@
             { "id": "ALRTPHLY", "title": "Alright Philly" },
             { "id": "GTDNNY", "title": "Get Down New York" }
         ],
-        "keyMap": {
+        "qwertyKeyDetuneMap": {
             "KeyQ": -800, "KeyW": -700, "KeyE": -500,
             "KeyR": -300, "KeyT": -100, "KeyY": 0,
             "KeyU": 200, "KeyI": 400, "KeyO": 500,
@@ -116,7 +107,7 @@
             "Backslash": 1200
         }
     },
-    "keyMap": [
+    "restKeyMap": [
         { "id": "GUIT1", "title": "Guitar 1", "key": "KeyA" },
         { "id": "GUIT2", "title": "Guitar 2", "key": "KeyS" },
         { "id": "GUIT3", "title": "Guitar 3", "key": "KeyD" },

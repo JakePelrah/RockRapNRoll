@@ -1,17 +1,7 @@
 {
     "style": "Reggae",
     "background": "../genres/Reggae/images/reggae.png",
-    "song_images": ["../genres/Reggae/images/song_1.png", "../genres/Reggae/images/song_2.png", "../genres/Reggae/images/song_3.png",
-        "../genres/Reggae/images/song_4.png", "../genres/Reggae/images/song_5.png", "../genres/Reggae/images/song_6.png",
-        "../genres/Reggae/images/song_7.png", "../genres/Reggae/images/song_8.png", "../genres/Reggae/images/song_9.png",
-        "../genres/Reggae/images/song_10.png"],
-    "asong_images": ["../genres/Reggae/images/asong_1.png", "../genres/Reggae/images/asong_2.png", "../genres/Reggae/images/asong_3.png",
-        "../genres/Reggae/images/asong_4.png", "../genres/Reggae/images/asong_5.png", "../genres/Reggae/images/asong_6.png",
-        "../genres/Reggae/images/asong_7.png", "../genres/Reggae/images/asong_8.png", "../genres/Reggae/images/asong_9.png",
-        "../genres/Reggae/images/asong_10.png"],
-    "vibe_image": "../genres/Reggae/images/vibe.png",
-    "bop_image": "../genres/Reggae/images/bop.png",
-    "drag_image": "../genres/Reggae/images/outline.png",
+
     "samples": [
         "../genres/Reggae/samples/AMERICA.wav", "../genres/Reggae/samples/BNINAFRC.wav", "../genres/Reggae/samples/BRMITDWN.wav",
         "../genres/Reggae/samples/CHA.wav", "../genres/Reggae/samples/CNGASHK1.wav", "../genres/Reggae/samples/DNCHALL.wav",
@@ -65,7 +55,7 @@
         { "id": "WHISTLE", "title": "Whistle" }
     ],
     "pitchem": {
-        "digits": [
+        "digitMap": [
             { "id": "JAMIN", "title": "Jamin" },
             { "id": "CHA", "title": "Cha!" },
             { "id": "FLUTE1", "title": "Flute 1" },
@@ -78,13 +68,13 @@
             { "id": "GUITPCKN", "title": "Guitar Picking" },
             { "id": "WHISTLE", "title": "Whistle" }
         ],
-       "numMap": {
+       "digitDetuneMap": {
             "Backquote": -1200, "Digit1": -1000, "Digit2": -800,
             "Digit3": -700, "Digit4": -500, "Digit5": -300,
             "Digit6": -100, "Digit7": 0, "Digit8": 200,
             "Digit9": 400, "Digit0": 700, "Minus": 900, "Equal": 1200
         },
-        "keys": [
+        "qwertyKeyMap": [
             { "id": "RUDEBOY", "title": "Rude Boy!" },
             { "id": "RRRIGHT", "title": "RRRIGHT!" },
             { "id": "YEAMON", "title": "YEA MON!" },
@@ -97,7 +87,7 @@
             { "id": "GUITCD2", "title": "Guitar Chord 2" },
             { "id": "GUITCD4", "title": "Guitar Chord 4" }
         ],
-        "keyMap": {
+        "qwertyKeyDetuneMap": {
             "KeyQ": -800, "KeyW": -700, "KeyE": -500,
             "KeyR": -300, "KeyT": -100, "KeyY": 0,
             "KeyU": 200, "KeyI": 400, "KeyO": 500,
@@ -105,7 +95,7 @@
             "Backslash": 1200
         }
     },
-    "keyMap": [
+    "restKeyMap": [
         { "id": "WHIP", "title": "Whip", "key": "KeyA" },
         { "id": "CNGASHK1", "title": "Conga Shake 1", "key": "KeyS" },
         { "id": "STLDRUM", "title": "Steel Drum", "key": "KeyD" },
