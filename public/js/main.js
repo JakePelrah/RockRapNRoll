@@ -11,7 +11,7 @@ let vocalizer = null
 window.onload = () => {
 
       // display loading screen
-      mainMenu.style.background = `url(../images/mainMenu.png) no-repeat`
+    //   mainMenu.style.background = `url(../images/mainMenu.png) no-repeat`
       mainMenu.style.backgroundSize = '100% 100%'
       loadingText.style.display = ''
 
