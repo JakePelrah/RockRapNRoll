@@ -86,7 +86,7 @@
             { "id": "SAX6", "title": "Sax 6" },
             { "id": "TRMPT6", "title": "Trumpet 6" }
         ],
-        "qwertykeyDetuneMap": {
+        "qwertyKeyDetuneMap": {
             "KeyQ": -800, "KeyW": -700, "KeyE": -500,
             "KeyR": -300, "KeyT": -100, "KeyY": 0,
             "KeyU": 200, "KeyI": 400, "KeyO": 500,
