@@ -130,14 +130,15 @@ function buildGame(){
 
             // setup songalizer
             const songalizerSampleDivs = document.getElementById('songs').querySelectorAll('div')
-            const songalizerTitleButtons = document.getElementById('song-names').querySelectorAll('img')
+            const songalizerTitleImages = document.getElementById('song-names').querySelectorAll('img')
             genreMapping.songalizer_samples.forEach((sample, i) => {
                 songalizerSampleDivs[i].setAttribute('data-sample-id', sample.id)
-                songalizerTitleButtons[i].setAttribute('data-sample-id', sample.id)
-                songalizerTitleButtons[i].src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
+                songalizerTitleImages[i].setAttribute('data-sample-id', sample.id)
+                songalizerTitleImages[i].draggable = false
+                songalizerTitleImages[i].src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
             })
 
-            songalizerTitleButtons.forEach((songImg, i) => {
+            songalizerTitleImages.forEach((songImg, i) => {
                 this.isPlaying = false
                 this.previewSample = null
                 songImg.onclick = () => {
