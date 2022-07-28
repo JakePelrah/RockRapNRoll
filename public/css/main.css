@@ -127,7 +127,7 @@ select:focus {
    display: flex;
    flex-direction: column;
    position: absolute;
-   left: 49px;
+   left: 48px;
    top: 40px;
    gap: 11px;
 }
