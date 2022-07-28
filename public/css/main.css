@@ -337,8 +337,13 @@ input[type=range]::-webkit-slider-thumb {
 
 #bug-link {
    position: absolute;
-   left: 8px;
-   top: 55px;
-   font-size: 14px;
+   left: 60px;
+   top: 42px;
+   font-size: 18px;
+   font-weight: bold;
    color: #DD0806;
+   text-decoration: none;
+}
+#bug-link:hover {
+   color: yellow;
 }
