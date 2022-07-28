@@ -318,7 +318,9 @@ input[type=range]::-webkit-slider-thumb {
    left: 424px;
    width: 110px;
    background-color:  black;
-   border: 2px black solid;
+}
+#reverb-select > option{
+   background-color: #ffffff;
 }
 
 
