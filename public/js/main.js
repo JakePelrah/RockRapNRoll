@@ -182,9 +182,9 @@ function buildGame() {
     songalizer = new Songalizer()
 
     // setup vocalizer
-    const vocalizerDivs = document.getElementById('vocalizer').querySelectorAll('div')
+    const vocalizerButtons = document.getElementById('vocalizer').querySelectorAll('button')
     genreMapping.vocalizer_samples.forEach((sample, i) => {
-        vocalizerDivs[i].setAttribute('data-sample-id', sample.id)
+        vocalizerButtons[i].setAttribute('data-sample-id', sample.id)
     })
     vocalizer = new Vocalizer()
 
@@ -415,7 +415,7 @@ async function createReverb(path) {
 class Vocalizer {
     constructor() {
         this.isPlaying = false
-        this.triggers = document.querySelector('#vocalizer').querySelectorAll('div')
+        this.triggers = document.querySelector('#vocalizer').querySelectorAll('button')
         this.triggers.forEach(trigger => trigger.addEventListener('click', () => this.onClick(trigger)))
         this.start = 0
         this.prevDuration = 0
@@ -433,7 +433,7 @@ class Vocalizer {
         trigger.style.backgroundColor = 'white'
         trigger.style.filter = 'blur(4px)'
         const id = trigger.getAttribute('data-sample-id')
-
+        console.log(trigger)
 
         if (!this.isPlaying) {
             this.start = audioCtx.currentTime
