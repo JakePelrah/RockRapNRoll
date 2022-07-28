@@ -1,2 +1,1 @@
-Impulse responses authored by Fokke van Saane
-https://fokkie.home.xs4all.nl/IR.htm
+<!-- Impulse response author: -> Fokke van Saane (fokkie@xs4all.nl) ->  https://fokkie.home.xs4all.nl/IR.htm -->
