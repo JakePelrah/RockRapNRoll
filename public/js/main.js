@@ -188,7 +188,6 @@ function buildGame() {
         bopSelect.appendChild(bOption)
     })
     vibeTrigger.onclick = () => {
-        console.log(33)
         vibeTrigger.style.background = `url(../genres/${currentGenre}/images/vibe.png) no-repeat`
         vibeTrigger.style.backgroundSize = '100% 100%'
         const src = this.playSampleById({ id: vibeSelect.value })
@@ -285,7 +284,6 @@ function buildGame() {
     //setup controls
     const [startStop, clear] = document.getElementById('controls').querySelectorAll('button')
     startStop.onclick = () => {
-        console.log(songalizer)
         if (!songalizer.isPlaying && songalizer.tracks.length > 0) {
             songalizer.toggle()
             startStop.style.background = `url("../genres/${currentGenre}/images/stop.png") no-repeat`
@@ -359,18 +357,15 @@ async function fetchGenres() {
 
 
 function playSampleById({ id, start = 0, detuneAmt = 0 }) {
-    console.log(id, start, detuneAmt)
     const src = audioCtx.createBufferSource()
     src.buffer = samplesBuffer.find(x => x.id === id).audioBuffer
     src.detune.value = detuneAmt
 
     if (reverbON) {
-        console.log('on')
         src.connect(currentIR)
         currentIR.connect(audioCtx.destination)
     }
     else {
-        console.log('off')
         src.connect(audioCtx.destination)
         // src.connect(recorder.dest)
     }
@@ -462,7 +457,6 @@ class Songalizer {
         this.songs.forEach(song => {
 
             song.onmousedown = (ev) => {
-                console.log('jhere')
                 this.selectedSong = song
                 document.body.style.cursor = 'url(../images/outline.png) 20 20, pointer'
                 //disable pointer events on gameInputElements
