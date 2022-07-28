@@ -10,9 +10,8 @@ let vocalizer = null
 let reverbON = false
 let currentIR = null
 
+
 window.onload = () => {
-
-
 
     loadingText.style.display = ''
 
@@ -34,7 +33,6 @@ window.onload = () => {
                 db = event.target.result
                 initWebAudio()
                 createMenu()
-                currentIR = await createReverb()
             }
             // fires when new database is created or upgraded 
             request.onupgradeneeded = (event) => {
@@ -162,13 +160,10 @@ function buildGame() {
                     this.previewSample.stop()
                     songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
                 }
-
             }
-
         }
     })
     songalizer = new Songalizer()
-
 
     // setup vocalizer
     const vocalizerDivs = document.getElementById('vocalizer').querySelectorAll('div')
@@ -210,7 +205,6 @@ function buildGame() {
             bopTrigger.style.background = ''
         }
     }
-
 
     // setup pitchem
     const pitchemDigitSelect = document.getElementById('pitchem-digit-select')
@@ -308,9 +302,16 @@ function buildGame() {
     }
 
     const reverbButton = document.getElementById('reverb')
-    reverbButton.onclick = () => {
+    const reverbSelect = document.getElementById('reverb-select')
+
+    reverbSelect.onchange= async()=>{
+        currentIR = await createReverb(reverbSelect.value)
+    }
+    
+    reverbButton.onclick = async () => {
         reverbON = !reverbON
         if (reverbON) {
+            currentIR = await createReverb(reverbSelect.value)
             reverbButton.style.backgroundColor = 'green'
         }
         else {
@@ -357,46 +358,30 @@ async function fetchGenres() {
 }
 
 
-
-
-// function getGenre(genre) {
-//     const req = db.transaction('genres').objectStore('genres').get(genre)
-//     req.onerror = (event) => {
-//         console.log(event.errorCode)
-//     }
-//     req.onsuccess = (event) => {
-//         console.log(event.target.result)
-//     }
-// }
-
-
-
 function playSampleById({ id, start = 0, detuneAmt = 0 }) {
     console.log(id, start, detuneAmt)
     const src = audioCtx.createBufferSource()
     src.buffer = samplesBuffer.find(x => x.id === id).audioBuffer
     src.detune.value = detuneAmt
 
-    if(reverbON){
+    if (reverbON) {
         console.log('on')
         src.connect(currentIR)
-        console.log(currentIR)
         currentIR.connect(audioCtx.destination)
     }
-    else{
+    else {
         console.log('off')
         src.connect(audioCtx.destination)
         // src.connect(recorder.dest)
     }
-
     src.start(start)
     return src
 }
 
-async function createReverb() {
+async function createReverb(path) {
     let convolver = audioCtx.createConvolver();
     // load impulse response from file
-    let response = await fetch("../irs/chamber.wav");
+    let response = await fetch(path);
     let arraybuffer = await response.arrayBuffer();
     convolver.buffer = await audioCtx.decodeAudioData(arraybuffer);
     return convolver;
@@ -412,6 +397,11 @@ class Vocalizer {
         this.start = 0
         this.prevDuration = 0
         this.counter = 0
+        this.src = null
+    }
+
+    stopVocalizer() {
+        this.src.stop()
     }
 
     onClick(trigger) {
@@ -420,21 +410,18 @@ class Vocalizer {
         trigger.style.backgroundColor = 'white'
         trigger.style.filter = 'blur(4px)'
         const id = trigger.getAttribute('data-sample-id')
-        const source = audioCtx.createBufferSource()
-        source.buffer = samplesBuffer.find(x => x.id === id).audioBuffer
-        source.connect(audioCtx.destination)
-        // source.connect(this.recorder.dest)
+
 
         if (!this.isPlaying) {
             this.start = audioCtx.currentTime
-            source.start(this.start)
+            this.src = playSampleById({ id, start: this.start, })
             this.counter++
         }
         else if (this.isPlaying) {
-            source.start(this.start + this.prevDuration)
+            this.src = playSampleById({ id, start: this.start + this.prevDuration })
             this.counter++
         }
-        source.onended = () => {
+        this.src.onended = () => {
             trigger.disabled = false
             trigger.style.opacity = 0
             this.counter--
@@ -448,8 +435,7 @@ class Vocalizer {
             }
         }
         this.isPlaying = true
-        this.prevDuration += source.buffer.duration
-
+        this.prevDuration += this.src.buffer.duration
     }
 }
 

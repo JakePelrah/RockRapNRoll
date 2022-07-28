@@ -274,12 +274,18 @@ select:focus {
 
 #reverb{
    position: absolute;
-   top: 235px;
-   left: 445px;
+   top: 220px;
+   left: 209px;
    background-color: #DD0806;
 }
 
-
+#reverb-select{
+   position: absolute;
+   top: 240px;
+   left: 200px;
+   width: 75px;
+   background-color: aliceblue;
+}
 
 
 /*//////////////////////// DEBUGGING ////////////////////////*/
