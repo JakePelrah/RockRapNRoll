@@ -7,12 +7,14 @@ let db = null
 let samplesBuffer = []
 let songalizer = null
 let vocalizer = null
+let reverbON = false
+let currentIR = null
 
 window.onload = () => {
 
 
-      mainMenu.style.backgroundSize = '100% 100%'
-      loadingText.style.display = ''
+
+    loadingText.style.display = ''
 
     // fetch and cache the data
     fetchGenres().then(genres => {
@@ -27,29 +29,30 @@ window.onload = () => {
                 console.error(`Database error: ${event.target.errorCode}`)
             }
             // on success
-            request.onsuccess = (event) => {
+            request.onsuccess = async (event) => {
                 console.log('using database')
                 db = event.target.result
                 initWebAudio()
                 createMenu()
+                currentIR = await createReverb()
             }
             // fires when new database is created or upgraded 
             request.onupgradeneeded = (event) => {
                 console.log('creating database')
                 db = event.target.result
                 const objectStore = db.createObjectStore("genres", { keyPath: "genre" })
-                
+
                 objectStore.transaction.oncomplete = async (event) => {
-                const genresObjectStore = db.transaction("genres", "readwrite").objectStore("genres")
-                genres.forEach(genre => genresObjectStore.add(genre))
-                
-            }
+                    const genresObjectStore = db.transaction("genres", "readwrite").objectStore("genres")
+                    genres.forEach(genre => genresObjectStore.add(genre))
+
+                }
             }
         }
     })
 }
 
-function initWebAudio(){
+function initWebAudio() {
     // initialize web audio
     audioCtx = window.AudioContext || window.webkitAudioContext
     if (audioCtx) {
@@ -59,7 +62,7 @@ function initWebAudio(){
     } else {
         console.log('Web Audio Not Supported')
     }
-    }
+}
 
 function createMenu() {
 
@@ -81,7 +84,7 @@ function createMenu() {
         }
         const genreTitle = document.createElement('button')
         genreTitle.innerText = genre.match(/[A-Z][a-z]+/g).join(' ')
-        
+
         genreTitle.addEventListener('click', () => {
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume().then(function () {
@@ -98,14 +101,14 @@ function createMenu() {
             // grab selected genre from indexeddb
             currentGenre = genreTitle.innerText.replace(' ', '')
             const getGenreTrans = db.transaction("genres", "readonly")
-            .objectStore("genres").get(currentGenre.replace(' ', '').toLowerCase())
-          
+                .objectStore("genres").get(currentGenre.replace(' ', '').toLowerCase())
+
             // decode arrayBuffers->audioBuffers and fill samples buffer
-            getGenreTrans.transaction.oncomplete = ()=>{
-                const {result:{arrayBuffers}} = getGenreTrans
-                arrayBuffers.forEach( async arrayBuffer=>{
+            getGenreTrans.transaction.oncomplete = () => {
+                const { result: { arrayBuffers } } = getGenreTrans
+                arrayBuffers.forEach(async arrayBuffer => {
                     const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer.arrayBuffer)
-                    samplesBuffer.push({id:arrayBuffer.id, audioBuffer })
+                    samplesBuffer.push({ id: arrayBuffer.id, audioBuffer })
                 })
             }
 
@@ -117,212 +120,204 @@ function createMenu() {
     mainMenu.appendChild(genresDiv)
 }
 
-function buildGame(){
+function buildGame() {
 
-            const genreMappings =  JSON.parse(localStorage.getItem('genres'))
-            const genreMapping = genreMappings[currentGenre]
-            
-            const gameInterface = document.getElementById('game-board')                        
-            gameInterface.style.background = `url(../genres/${currentGenre}/images/${currentGenre}.png) no-repeat`
-            gameInterface.style.backgroundSize = '100% 100%'
-            gameInterface.style.display = ''
+    const genreMappings = JSON.parse(localStorage.getItem('genres'))
+    const genreMapping = genreMappings[currentGenre]
 
-            // setup songalizer
-            const songalizerSampleDivs = document.getElementById('songs').querySelectorAll('div')
-            const songalizerTitleImages = document.getElementById('song-names').querySelectorAll('img')
-            genreMapping.songalizer_samples.forEach((sample, i) => {
-                songalizerSampleDivs[i].setAttribute('data-sample-id', sample.id)
-                songalizerTitleImages[i].setAttribute('data-sample-id', sample.id)
-                songalizerTitleImages[i].draggable = false
-                songalizerTitleImages[i].src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
-            })
+    const gameInterface = document.getElementById('game-board')
+    gameInterface.style.background = `url(../genres/${currentGenre}/images/${currentGenre}.png) no-repeat`
+    gameInterface.style.backgroundSize = '100% 100%'
+    gameInterface.style.display = ''
 
-            songalizerTitleImages.forEach((songImg, i) => {
-                this.isPlaying = false
-                this.previewSample = null
-                songImg.onclick = () => {
+    // setup songalizer
+    const songalizerSampleDivs = document.getElementById('songs').querySelectorAll('div')
+    const songalizerTitleImages = document.getElementById('song-names').querySelectorAll('img')
+    genreMapping.songalizer_samples.forEach((sample, i) => {
+        songalizerSampleDivs[i].setAttribute('data-sample-id', sample.id)
+        songalizerTitleImages[i].setAttribute('data-sample-id', sample.id)
+        songalizerTitleImages[i].draggable = false
+        songalizerTitleImages[i].src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
+    })
 
-                    if (!songalizer.isPlaying) {
-                        this.isPlaying = !this.isPlaying
-                        if (this.isPlaying) {
-                            const id = songImg.getAttribute('data-sample-id')
-                            this.previewSample = playSampleById({ id })
-                            songImg.src = `../genres/${currentGenre}/images/asong_title_${i + 1}.png`
-                        }
-                        else {
-                            this.previewSample.stop()
-                            songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
-                        }
+    songalizerTitleImages.forEach((songImg, i) => {
+        this.isPlaying = false
+        this.previewSample = null
+        songImg.onclick = () => {
 
-                        songImg.onblur = () => {
-                            this.isPlaying = false
-                            this.previewSample.stop()
-                            songImg.src= `../genres/${currentGenre}/images/song_title_${i + 1}.png`
-                        }
-
-                    }
-
+            if (!songalizer.isPlaying) {
+                this.isPlaying = !this.isPlaying
+                if (this.isPlaying) {
+                    const id = songImg.getAttribute('data-sample-id')
+                    this.previewSample = playSampleById({ id })
+                    songImg.src = `../genres/${currentGenre}/images/asong_title_${i + 1}.png`
                 }
-            })
-            songalizer = new Songalizer()
+                else {
+                    this.previewSample.stop()
+                    songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
+                }
 
-
-            // setup vocalizer
-            const vocalizerDivs = document.getElementById('vocalizer').querySelectorAll('div')
-            genreMapping.vocalizer_samples.forEach((sample, i) => {
-                vocalizerDivs[i].setAttribute('data-sample-id', sample.id)
-            })
-            vocalizer = new Vocalizer()
-
-                        // setup vibe & bop
-            const vibeSelect = document.getElementById('vibe-select')
-            const vibeTrigger = document.getElementById('vibe-trigger')
-            const bopSelect = document.getElementById('bop-select')
-            const bopTrigger = document.getElementById('bop-trigger')
-            genreMapping.vibeBop.forEach(sample => {
-                const vOption = document.createElement('option')
-                const bOption = document.createElement('option')
-                vOption.value = sample.id
-                bOption.value = sample.id
-                vOption.innerText = sample.title
-                bOption.innerText = sample.title
-                vibeSelect.appendChild(vOption)
-                bopSelect.appendChild(bOption)
-            })
-            vibeTrigger.onclick = () => {
-                console.log(33)
-                vibeTrigger.style.background = `url(../genres/${currentGenre}/images/vibe.png) no-repeat`
-                vibeTrigger.style.backgroundSize = '100% 100%'
-                const src = this.playSampleById({ id: vibeSelect.value })
-                src.onended = () => {
-                    vibeTrigger.style.background = ''
+                songImg.onblur = () => {
+                    this.isPlaying = false
+                    this.previewSample.stop()
+                    songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
                 }
 
             }
-            bopTrigger.onclick = () => {
-                bopTrigger.style.background = `url(../genres/${currentGenre}/images/bop.png) no-repeat`
-                bopTrigger.style.backgroundSize = '100% 100%'
-                const src = this.playSampleById({ id: bopSelect.value })
-                src.onended = () => {
-                    bopTrigger.style.background = ''
+
+        }
+    })
+    songalizer = new Songalizer()
+
+
+    // setup vocalizer
+    const vocalizerDivs = document.getElementById('vocalizer').querySelectorAll('div')
+    genreMapping.vocalizer_samples.forEach((sample, i) => {
+        vocalizerDivs[i].setAttribute('data-sample-id', sample.id)
+    })
+    vocalizer = new Vocalizer()
+
+    // setup vibe & bop
+    const vibeSelect = document.getElementById('vibe-select')
+    const vibeTrigger = document.getElementById('vibe-trigger')
+    const bopSelect = document.getElementById('bop-select')
+    const bopTrigger = document.getElementById('bop-trigger')
+    genreMapping.vibeBop.forEach(sample => {
+        const vOption = document.createElement('option')
+        const bOption = document.createElement('option')
+        vOption.value = sample.id
+        bOption.value = sample.id
+        vOption.innerText = sample.title
+        bOption.innerText = sample.title
+        vibeSelect.appendChild(vOption)
+        bopSelect.appendChild(bOption)
+    })
+    vibeTrigger.onclick = () => {
+        console.log(33)
+        vibeTrigger.style.background = `url(../genres/${currentGenre}/images/vibe.png) no-repeat`
+        vibeTrigger.style.backgroundSize = '100% 100%'
+        const src = this.playSampleById({ id: vibeSelect.value })
+        src.onended = () => {
+            vibeTrigger.style.background = ''
+        }
+
+    }
+    bopTrigger.onclick = () => {
+        bopTrigger.style.background = `url(../genres/${currentGenre}/images/bop.png) no-repeat`
+        bopTrigger.style.backgroundSize = '100% 100%'
+        const src = this.playSampleById({ id: bopSelect.value })
+        src.onended = () => {
+            bopTrigger.style.background = ''
+        }
+    }
+
+
+    // setup pitchem
+    const pitchemDigitSelect = document.getElementById('pitchem-digit-select')
+    genreMapping.pitchem.digitMap.forEach(sample => {
+        const option = document.createElement('option')
+        option.value = sample.id
+        option.innerText = sample.title
+        pitchemDigitSelect.appendChild(option)
+    })
+    const pitchemKeySelect = document.getElementById('pitchem-key-select')
+    genreMapping.pitchem.qwertyKeyMap.forEach(sample => {
+        const option = document.createElement('option')
+        option.value = sample.id
+        option.innerText = sample.title
+        pitchemKeySelect.appendChild(option)
+    })
+
+    // setup key map overlay
+    const keyImage = document.getElementById('keymap-image')
+    keyImage.src = `../genres/${currentGenre}/images/keymap.png`
+    keyImage.style.display = 'none'
+    keyImage.onclick = () => {
+        keyImage.style.display = 'none'
+    }
+    const keyTrigger = document.getElementById('keymap-trigger')
+    keyTrigger.onclick = () => {
+        keyImage.style.display = ''
+    }
+    document.onkeydown = (e) => {
+        if (!e.repeat) {
+
+            // is it a digit
+            const { pitchem: { digitDetuneMap } } = genreMapping
+            Object.entries(digitDetuneMap).forEach((entry) => {
+                const code = e.code
+                if (entry[0] === code) {
+                    playSampleById({ id: pitchemDigitSelect.value, detuneAmt: digitDetuneMap[code] })
                 }
-            }
-
-
-            // setup pitchem
-            const pitchemDigitSelect = document.getElementById('pitchem-digit-select')
-            genreMapping.pitchem.digitMap.forEach(sample => {
-                const option = document.createElement('option')
-                option.value = sample.id
-                option.innerText = sample.title
-                pitchemDigitSelect.appendChild(option)
             })
-            const pitchemKeySelect = document.getElementById('pitchem-key-select')
-            genreMapping.pitchem.qwertyKeyMap.forEach(sample => {
-                const option = document.createElement('option')
-                option.value = sample.id
-                option.innerText = sample.title
-                pitchemKeySelect.appendChild(option)
+
+            // or is it in the top row?
+            const { pitchem: { qwertyKeyDetuneMap } } = genreMapping
+            Object.entries(qwertyKeyDetuneMap).forEach((entry) => {
+                const code = e.code
+                if (entry[0] === code) {
+                    playSampleById({ id: pitchemKeySelect.value, detuneAmt: qwertyKeyDetuneMap[code] })
+                }
             })
 
-            // setup key map overlay
-            const keyImage = document.getElementById('keymap-image')
-            keyImage.src = `../genres/${currentGenre}/images/keymap.png`
-            keyImage.style.display = 'none'
-            keyImage.onclick = () => {
-                keyImage.style.display = 'none'
-            }
-            const keyTrigger = document.getElementById('keymap-trigger')
-            keyTrigger.onclick = () => {
-                keyImage.style.display = ''
-            }
-            document.onkeydown = (e) => {
-                if (!e.repeat) {
-
-                    // is it a digit
-                    const {pitchem:{digitDetuneMap}} = genreMapping
-                    Object.entries(digitDetuneMap).forEach((entry) => {
-                        const code = e.code
-                        if (entry[0] === code) {
-                            playSampleById({ id: pitchemDigitSelect.value, detuneAmt: digitDetuneMap[code] })
-                        }
-                    })
-
-                    // or is it in the top row?
-                    const {pitchem:{qwertyKeyDetuneMap}} = genreMapping
-                    Object.entries(qwertyKeyDetuneMap).forEach((entry) => {
-                        const code = e.code
-                        if (entry[0] === code) {
-                            playSampleById({ id: pitchemKeySelect.value, detuneAmt: qwertyKeyDetuneMap[code] })
-                        }
-                    })
-
-                    const {restKeyMap} = genreMapping
-                    restKeyMap.forEach((sample) => {
-                        if (sample.key === e.code) {
-                            this.playSampleById({ id: sample.id })
-                        }
-                    })
-
+            const { restKeyMap } = genreMapping
+            restKeyMap.forEach((sample) => {
+                if (sample.key === e.code) {
+                    this.playSampleById({ id: sample.id })
                 }
-            }
+            })
 
-            // setup navigation
-            const quitMeuButton = document.getElementById('quit-menu')
-            quitMeuButton.onclick = () => {
+        }
+    }
 
-                if (songalizer.isPlaying) {
-                    songalizer.stopSongalizer()
-                }
-                // reset board
-                vibeSelect.innerHTML = ''
-                bopSelect.innerHTML = ''
-                startStop.style.background = ''
-                pitchemDigitSelect.innerHTML = ''
-                pitchemKeySelect.innerHTML = ''
-                document.getElementById('slots').innerHTML = ''
-                gameInterface.style.display ='none'
-                mainMenu.style.display = ''
-            }
+    // setup navigation
+    const quitMeuButton = document.getElementById('quit-menu')
+    quitMeuButton.onclick = () => {
 
-                  //setup controls
-                  const [startStop, clear] = document.getElementById('controls').querySelectorAll('button')
-                  startStop.onclick = () => {
-                      console.log(songalizer)
-                      if (!songalizer.isPlaying && songalizer.tracks.length > 0) {
-                          songalizer.toggle()
-                          startStop.style.background = `url("../genres/${currentGenre}/images/stop.png") no-repeat`
-                          startStop.style.backgroundSize = '100% 100%'
-                      }
-                      else if (songalizer.isPlaying) {
-                          songalizer.stopSongalizer()
-                          startStop.style.background = ''
-                      }
-                  }
-                  clear.onclick = () => {
-                      songalizer.clearSongalizer()
-                      startStop.style.background = ''
-                  }
+        if (songalizer.isPlaying) {
+            songalizer.stopSongalizer()
+        }
+        // reset board
+        vibeSelect.innerHTML = ''
+        bopSelect.innerHTML = ''
+        startStop.style.background = ''
+        pitchemDigitSelect.innerHTML = ''
+        pitchemKeySelect.innerHTML = ''
+        document.getElementById('slots').innerHTML = ''
+        gameInterface.style.display = 'none'
+        mainMenu.style.display = ''
+    }
 
+    //setup controls
+    const [startStop, clear] = document.getElementById('controls').querySelectorAll('button')
+    startStop.onclick = () => {
+        console.log(songalizer)
+        if (!songalizer.isPlaying && songalizer.tracks.length > 0) {
+            songalizer.toggle()
+            startStop.style.background = `url("../genres/${currentGenre}/images/stop.png") no-repeat`
+            startStop.style.backgroundSize = '100% 100%'
+        }
+        else if (songalizer.isPlaying) {
+            songalizer.stopSongalizer()
+            startStop.style.background = ''
+        }
+    }
+    clear.onclick = () => {
+        songalizer.clearSongalizer()
+        startStop.style.background = ''
+    }
 
+    const reverbButton = document.getElementById('reverb')
+    reverbButton.onclick = () => {
+        reverbON = !reverbON
+        if (reverbON) {
+            reverbButton.style.backgroundColor = 'green'
+        }
+        else {
+            reverbButton.style.backgroundColor = ''
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // returns genres array which contains the arrayBuffers for each genre
@@ -376,25 +371,36 @@ async function fetchGenres() {
 
 
 
-function playSampleById({id, start = 0, detuneAmt = 0}) {
+function playSampleById({ id, start = 0, detuneAmt = 0 }) {
     console.log(id, start, detuneAmt)
     const src = audioCtx.createBufferSource()
     src.buffer = samplesBuffer.find(x => x.id === id).audioBuffer
     src.detune.value = detuneAmt
-    src.connect(audioCtx.destination)
-    // src.connect(recorder.dest)
+
+    if(reverbON){
+        console.log('on')
+        src.connect(currentIR)
+        console.log(currentIR)
+        currentIR.connect(audioCtx.destination)
+    }
+    else{
+        console.log('off')
+        src.connect(audioCtx.destination)
+        // src.connect(recorder.dest)
+    }
+
     src.start(start)
     return src
 }
 
-// // async function createReverb() {
-// //     let convolver = audioCtx.createConvolver();
-// //     // load impulse response from file
-// //     let response = await fetch("../irs/chamber.wav");
-// //     let arraybuffer = await response.arrayBuffer();
-// //     convolver.buffer = await audioCtx.decodeAudioData(arraybuffer);
-// //     return convolver;
-// // }
+async function createReverb() {
+    let convolver = audioCtx.createConvolver();
+    // load impulse response from file
+    let response = await fetch("../irs/chamber.wav");
+    let arraybuffer = await response.arrayBuffer();
+    convolver.buffer = await audioCtx.decodeAudioData(arraybuffer);
+    return convolver;
+}
 
 
 
@@ -505,8 +511,8 @@ class Songalizer {
                 imgElem.setAttribute('data-sample-id', id)
                 imgElem.setAttribute('src', `../genres/${currentGenre}/images/${this.selectedSong.id}.png`)
                 this.slots.appendChild(imgElem)
-                const {audioBuffer} = samplesBuffer.find(x => x.id === id)
-                this.tracks.push({id, audioBuffer})
+                const { audioBuffer } = samplesBuffer.find(x => x.id === id)
+                this.tracks.push({ id, audioBuffer })
 
                 //enable pointer events on gameInputElements
                 document.querySelectorAll('.gameControlElement').forEach(elem => elem.style.pointerEvents = 'auto')
@@ -525,7 +531,7 @@ class Songalizer {
                 console.log('message:' + e.data)
             }
         }
-        this.timerWorker.postMessage({'interval': this.lookahead })
+        this.timerWorker.postMessage({ 'interval': this.lookahead })
     }
 
     stopSongalizer() {
@@ -574,7 +580,7 @@ class Songalizer {
     }
 
     scheduleTrack(id, start) {
-        this.currentSource = playSampleById({id, start})
+        this.currentSource = playSampleById({ id, start })
 
     }
 
@@ -583,12 +589,12 @@ class Songalizer {
         while (this.nextTrackTime < audioCtx.currentTime + this.scheduleAheadTime) {
 
             this.currentTrackIndex = this.counter % this.tracks.length
-            const {id} = this.tracks[this.currentTrackIndex]
+            const { id } = this.tracks[this.currentTrackIndex]
             this.scheduleTrack(id, this.nextTrackTime)
             this.displayCurrentSong()
 
             //add duration of next track to nextTrackTime
-            const {audioBuffer: {duration} } = this.tracks[this.currentTrackIndex]
+            const { audioBuffer: { duration } } = this.tracks[this.currentTrackIndex]
             this.nextTrackTime += duration
             this.counter++
         }
@@ -607,7 +613,7 @@ class Songalizer {
     displayCurrentSong() {
 
         const songs = this.slots.querySelectorAll('img')
-     
+
         if (this.tracks.length > 1) {
             const currentSong = songs[this.currentTrackIndex]
             const id = currentSong.getAttribute('id')
@@ -632,7 +638,7 @@ class Recorder {
     constructor() {
         this.chunks = []
         this.dest = audioCtx.createMediaStreamDestination()
-        this.mediaRecorder = new MediaRecorder(this.dest.stream, {mimeType: 'audio/webm' })
+        this.mediaRecorder = new MediaRecorder(this.dest.stream, { mimeType: 'audio/webm' })
 
         this.mediaRecorder.ondataavailable = (evt) => {
             // push each chunk (blobs) in an array
@@ -641,7 +647,7 @@ class Recorder {
 
         this.mediaRecorder.onstop = (evt) => {
             // Make blob out of our blobs, and open it.
-            const blob = new Blob(this.chunks, {'type': 'audio/webm; codecs=0' });
+            const blob = new Blob(this.chunks, { 'type': 'audio/webm; codecs=0' });
             document.querySelector("audio").src = URL.createObjectURL(blob);
         };
     }
