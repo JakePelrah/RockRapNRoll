@@ -60,7 +60,6 @@ function initWebAudio() {
     } else {
         console.log('Web Audio Not Supported')
     }
-    gainNode = audioCtx.createGain()
 }
 
 function createMenu() {
@@ -97,8 +96,14 @@ function createMenu() {
             //init samples buffer
             samplesBuffer = []
 
+            // new gain node, fix  
+            gainNode = audioCtx.createGain()
+
+            //reset volume 
+            document.getElementById('volume').value = 1
+
             // turn off reverb
-            currentIR = null
+            currentIR = null            
             if (reverbON) {
                 document.getElementById('reverb').click()
             }
@@ -157,6 +162,10 @@ function buildGame() {
                     const id = songImg.getAttribute('data-sample-id')
                     this.previewSample = playSampleById({ id })
                     songImg.src = `../genres/${currentGenre}/images/asong_title_${i + 1}.png`
+                    this.previewSample.onended=()=>{
+                    this.isPlaying = false
+                    songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
+                    }
                 }
                 else {
                     this.previewSample.stop()
@@ -277,10 +286,7 @@ function buildGame() {
         if (songalizer.isPlaying) {
             songalizer.stopSongalizer()
         }
-        if (vocalizer.isPlaying) {
-            vocalizer.stopVocalizer()
-        }
-
+      
         // reset board
         vibeSelect.innerHTML = ''
         bopSelect.innerHTML = ''
@@ -316,15 +322,12 @@ function buildGame() {
     reverbSelect.onchange = async () => {
         if (reverbON) {
             currentIR = await createReverb(reverbSelect.value)
-            console.log(currentIR)
         }
     }
     reverbButton.onclick = async () => {
         reverbON = !reverbON
         if (reverbON) {
             currentIR = await createReverb(reverbSelect.value)
-            console.log(currentIR)
-
             reverbButton.style.backgroundColor = 'green'
         }
         else {
@@ -335,7 +338,6 @@ function buildGame() {
     // setup volume
     const volumeSlider = document.getElementById('volume')
     volumeSlider.oninput = (event) => {
-
         gainNode.gain.value = event.target.value
     }
 }
@@ -385,11 +387,8 @@ function playSampleById({ id, start = 0, detuneAmt = 0 }) {
     src.connect(gainNode)
 
 
-    if (currentIR) {
-        currentIR.disconnect()
-    }
-
     gainNode.disconnect()
+    
     if (reverbON) {
         gainNode.connect(currentIR)
         currentIR.connect(audioCtx.destination)
