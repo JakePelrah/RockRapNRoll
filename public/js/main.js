@@ -8,7 +8,7 @@ let samplesBuffer = []
 let songalizer = null
 let vocalizer = null
 let reverbON = false
-let gainNode =  null
+let gainNode = null
 let currentIR = null
 
 
@@ -96,11 +96,11 @@ function createMenu() {
 
             //init samples buffer
             samplesBuffer = []
-            currentIR = null
 
-            if(reverbON){
-             const reverbButton = document.getElementById('reverb').click()
-                
+            // turn off reverb
+            currentIR = null
+            if (reverbON) {
+                document.getElementById('reverb').click()
             }
 
             // grab selected genre from indexeddb
@@ -130,6 +130,7 @@ function buildGame() {
     const genreMappings = JSON.parse(localStorage.getItem('genres'))
     const genreMapping = genreMappings[currentGenre]
 
+    // set game board image
     const gameInterface = document.getElementById('game-board')
     gameInterface.style.background = `url(../genres/${currentGenre}/images/${currentGenre}.png) no-repeat`
     gameInterface.style.backgroundSize = '100% 100%'
@@ -161,7 +162,6 @@ function buildGame() {
                     this.previewSample.stop()
                     songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
                 }
-
                 songImg.onblur = () => {
                     this.isPlaying = false
                     this.previewSample.stop()
@@ -266,9 +266,9 @@ function buildGame() {
                     this.playSampleById({ id: sample.id })
                 }
             })
-
         }
     }
+
 
     // setup navigation
     const quitMeuButton = document.getElementById('quit-menu')
@@ -277,6 +277,10 @@ function buildGame() {
         if (songalizer.isPlaying) {
             songalizer.stopSongalizer()
         }
+        if (vocalizer.isPlaying) {
+            vocalizer.stopVocalizer()
+        }
+
         // reset board
         vibeSelect.innerHTML = ''
         bopSelect.innerHTML = ''
@@ -309,8 +313,8 @@ function buildGame() {
     // setup reverb
     const reverbButton = document.getElementById('reverb')
     const reverbSelect = document.getElementById('reverb-select')
-    reverbSelect.onchange= async()=>{
-        if(reverbON){
+    reverbSelect.onchange = async () => {
+        if (reverbON) {
             currentIR = await createReverb(reverbSelect.value)
             console.log(currentIR)
         }
@@ -330,8 +334,8 @@ function buildGame() {
 
     // setup volume
     const volumeSlider = document.getElementById('volume')
-    volumeSlider.oninput = (event)=>{
-    
+    volumeSlider.oninput = (event) => {
+
         gainNode.gain.value = event.target.value
     }
 }
@@ -380,8 +384,8 @@ function playSampleById({ id, start = 0, detuneAmt = 0 }) {
     src.detune.value = detuneAmt
     src.connect(gainNode)
 
-    
-    if(currentIR){
+
+    if (currentIR) {
         currentIR.disconnect()
     }
 
@@ -391,7 +395,7 @@ function playSampleById({ id, start = 0, detuneAmt = 0 }) {
         currentIR.connect(audioCtx.destination)
     }
     else {
-        
+
         gainNode.connect(audioCtx.destination)
     }
     src.start(start)
