@@ -98,6 +98,11 @@ function createMenu() {
             samplesBuffer = []
             currentIR = null
 
+            if(reverbON){
+             const reverbButton = document.getElementById('reverb').click()
+                
+            }
+
             // grab selected genre from indexeddb
             currentGenre = genreTitle.innerText.replace(' ', '')
             const getGenreTrans = db.transaction("genres", "readonly")
