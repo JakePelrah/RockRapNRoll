@@ -1,7 +1,3 @@
-
-html{
-   zoom: 110%;
-}
 body {
    background-color: black;
    font-family: 'Courier New', Courier, monospace
@@ -154,18 +150,54 @@ select:focus {
 
 
 /* VOLUME SLIDER */
+/* https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/ */
+input[type=range] {
+   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+   width: 100%; /* Specific width is required for Firefox. */
+   background: transparent; /* Otherwise white in Chrome */
+ }
+ input[type=range]::-webkit-slider-thumb {
+   -webkit-appearance: none;
+ }
+ input[type=range]:focus {
+   outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+ }
+
+
+ /* Special styling for WebKit/Blink */
+input[type=range]::-webkit-slider-thumb {
+   -webkit-appearance: none;
+   height: 18px;
+   width: 10px;
+   border-radius: 1px;
+   background: #ffffff;
+   cursor: pointer;
+
+ }
+ /* All the same stuff for Firefox */
+ input[type=range]::-moz-range-thumb {
+   height: 18px;
+   width: 10px;
+   border-radius: 1px;
+   background: #ffffff;
+   cursor: pointer;
+ }
+
 .slider-wrapper {
    display: inline-block;
    position: absolute;
-   left: 231px;
-   top: 112px;
+   left: 232px;
+   top: 123px;
    width: 10px;
-   height: 90px;
+   height: 92px;
 }
 .slider-wrapper input {
-   width: 92px;
+   position: absolute;
+   left: 6px;
+   top: -2px;
+   width: 105px;
    margin: 0;
-   transform-origin: 50px 52px;
+   transform-origin: 45px 55px;
    transform: rotate(-90deg);
 }
 

@@ -8,11 +8,11 @@ let samplesBuffer = []
 let songalizer = null
 let vocalizer = null
 let reverbON = false
+let gainNode =  null
 let currentIR = null
 
 
 window.onload = () => {
-
     loadingText.style.display = ''
 
     // fetch and cache the data
@@ -60,6 +60,7 @@ function initWebAudio() {
     } else {
         console.log('Web Audio Not Supported')
     }
+    gainNode = audioCtx.createGain()
 }
 
 function createMenu() {
@@ -95,6 +96,7 @@ function createMenu() {
 
             //init samples buffer
             samplesBuffer = []
+            currentIR = null
 
             // grab selected genre from indexeddb
             currentGenre = genreTitle.innerText.replace(' ', '')
@@ -299,22 +301,33 @@ function buildGame() {
         startStop.style.background = ''
     }
 
+    // setup reverb
     const reverbButton = document.getElementById('reverb')
     const reverbSelect = document.getElementById('reverb-select')
-
     reverbSelect.onchange= async()=>{
-        currentIR = await createReverb(reverbSelect.value)
+        if(reverbON){
+            currentIR = await createReverb(reverbSelect.value)
+            console.log(currentIR)
+        }
     }
-    
     reverbButton.onclick = async () => {
         reverbON = !reverbON
         if (reverbON) {
             currentIR = await createReverb(reverbSelect.value)
+            console.log(currentIR)
+
             reverbButton.style.backgroundColor = 'green'
         }
         else {
             reverbButton.style.backgroundColor = ''
         }
+    }
+
+    // setup volume
+    const volumeSlider = document.getElementById('volume')
+    volumeSlider.oninput = (event)=>{
+    
+        gainNode.gain.value = event.target.value
     }
 }
 
@@ -360,14 +373,21 @@ function playSampleById({ id, start = 0, detuneAmt = 0 }) {
     const src = audioCtx.createBufferSource()
     src.buffer = samplesBuffer.find(x => x.id === id).audioBuffer
     src.detune.value = detuneAmt
+    src.connect(gainNode)
 
+    
+    if(currentIR){
+        currentIR.disconnect()
+    }
+
+    gainNode.disconnect()
     if (reverbON) {
-        src.connect(currentIR)
+        gainNode.connect(currentIR)
         currentIR.connect(audioCtx.destination)
     }
     else {
-        src.connect(audioCtx.destination)
-        // src.connect(recorder.dest)
+        
+        gainNode.connect(audioCtx.destination)
     }
     src.start(start)
     return src
