@@ -307,16 +307,16 @@ input[type=range]::-webkit-slider-thumb {
 
 #reverb{
    position: absolute;
-   top: 220px;
-   left: 445px;
+   top: 215px;
+   left: 450px;
    background-color: #DD0806;
 }
 
 #reverb-select{
    position: absolute;
    top: 241px;
-   left: 436px;
-   width: 80px;
+   left: 424px;
+   width: 110px;
    background-color: aliceblue;
    border: 2px black solid;
 }
