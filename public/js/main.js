@@ -422,6 +422,7 @@ class Vocalizer {
         this.counter = 0
         this.src = null
     }
+    
 
     stopVocalizer() {
         this.src.stop()
