@@ -59,7 +59,7 @@ function initWebAudio() {
         console.log('Initializing web audio')
         audioCtx = new audioCtx()
         audioCtx.onstatechange = (e) => console.log('Audio State: ' + e.target.state)
-        
+
     } else {
         console.log('Web Audio Not Supported')
     }
@@ -278,23 +278,22 @@ function buildGame() {
         if (vocalizer.isPlaying) {
             vocalizer.stopVocalizer()
         }
+        //init samples buffer
+        samplesBuffer = []
+        vocalizer = null
+        songalizer = null
+        currentGenre = null
+        gainNode = null
+        //reset volume 
+        document.getElementById('volume').value = 1
 
+        // reset reverb
+        if (reverbON) {
+            currentIR.disconnect()
+            currentIR = null
+            document.getElementById('reverb').click()
+        }
 
-        // reset board
-              //init samples buffer
-              samplesBuffer = []
-              vocalizer = null
-              songalizer = null
-              //reset volume 
-              document.getElementById('volume').value = 1
-  
-              // reset reverb
-              if (reverbON) {
-                  currentIR.disconnect()
-                  currentIR = null
-                  document.getElementById('reverb').click()
-              }
-  
         vibeSelect.innerHTML = ''
         bopSelect.innerHTML = ''
         startStop.style.background = ''
@@ -681,9 +680,10 @@ class Vocalizer {
         if (this.currentSource) {
             this.currentSource.stop()
         }
-        this.triggers.forEach(trigger=>{
+        this.triggers.forEach(trigger => {
             trigger.disabled = false
-            trigger.style.opacity = 0})
+            trigger.style.opacity = 0
+        })
         this.isPlaying = false
         this.currentSource = null
         this.timerWorker.postMessage('stop')
