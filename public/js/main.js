@@ -103,9 +103,10 @@ function createMenu() {
             //reset volume 
             document.getElementById('volume').value = 1
 
-            // turn off reverb
-            currentIR = null
+            // reset reverb
             if (reverbON) {
+                currentIR.disconnect()
+                currentIR = null
                 document.getElementById('reverb').click()
             }
 
@@ -336,6 +337,7 @@ function buildGame() {
             reverbButton.style.backgroundColor = 'green'
         }
         else {
+            currentIR = null
             reverbButton.style.backgroundColor = ''
         }
     }
