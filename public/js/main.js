@@ -59,7 +59,7 @@ function initWebAudio() {
         console.log('Initializing web audio')
         audioCtx = new audioCtx()
         audioCtx.onstatechange = (e) => console.log('Audio State: ' + e.target.state)
-        gainNode = audioCtx.createGain()
+        
     } else {
         console.log('Web Audio Not Supported')
     }
@@ -96,21 +96,6 @@ function createMenu() {
 
             // hide main menu
             mainMenu.style.display = 'none'
-
-            //init samples buffer
-            samplesBuffer = []
-
-            //reset volume 
-            document.getElementById('volume').value = 1
-
-            // reset reverb
-            if (reverbON) {
-                currentIR.disconnect()
-                currentIR = null
-                document.getElementById('reverb').click()
-            }
-
-            
 
             // grab selected genre from indexeddb
             currentGenre = genreTitle.innerText.replace(' ', '')
@@ -296,6 +281,20 @@ function buildGame() {
 
 
         // reset board
+              //init samples buffer
+              samplesBuffer = []
+              vocalizer = null
+              songalizer = null
+              //reset volume 
+              document.getElementById('volume').value = 1
+  
+              // reset reverb
+              if (reverbON) {
+                  currentIR.disconnect()
+                  currentIR = null
+                  document.getElementById('reverb').click()
+              }
+  
         vibeSelect.innerHTML = ''
         bopSelect.innerHTML = ''
         startStop.style.background = ''
@@ -345,6 +344,7 @@ function buildGame() {
     }
 
     // setup volume
+    gainNode = audioCtx.createGain()
     const volumeSlider = document.getElementById('volume')
     volumeSlider.oninput = (event) => {
         gainNode.gain.value = event.target.value
