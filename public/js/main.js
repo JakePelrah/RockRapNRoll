@@ -1,19 +1,22 @@
-
-
 const mainMenu = document.getElementById('main-menu')
 const loadingText = document.getElementById('loading-text')
 
 
+let db = null
 
 let audioCtx = null
+let gainNode = null
+
+let reverbON = false
+let currentIR = null
+
+let bop = null
+let magicFingers = null
 let currentGenre = null
-let db = null
 let samplesBuffer = []
 let songalizer = null
+let vibe = null
 let vocalizer = null
-let reverbON = false
-let gainNode = null
-let currentIR = null
 
 
 window.onload = () => {
@@ -33,23 +36,50 @@ window.onload = () => {
             }
             // on success
             request.onsuccess = async (event) => {
-                console.log('using database')
                 db = event.target.result
                 initWebAudio()
                 createMenu()
             }
             // fires when new database is created or upgraded 
             request.onupgradeneeded = (event) => {
-                console.log('creating database')
                 db = event.target.result
                 const objectStore = db.createObjectStore("genres", { keyPath: "genre" })
 
                 objectStore.transaction.oncomplete = async (event) => {
                     const genresObjectStore = db.transaction("genres", "readwrite").objectStore("genres")
                     genres.forEach(genre => genresObjectStore.add(genre))
-
                 }
             }
+        }
+    })
+}
+
+// returns genres array which contains the arrayBuffers for each genre
+async function fetchGenres() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // fetch genre mappings from server
+            const res = await fetch('/data')
+            const genreMappings = await res.json()
+
+            // cache mappings
+            localStorage.setItem('genres', JSON.stringify(genreMappings))
+
+            // fetch array buffers for each style
+            let genres = []
+            for (const genre in genreMappings) {
+                const { samples } = genreMappings[genre]
+                const arrayBuffers = await Promise.all(samples.map(async path => {
+                    const res = await fetch(path)
+                    const arrayBuffer = await res.arrayBuffer()
+                    const id = path.split(new RegExp(/\.wav|\//))[4]
+                    return { id, arrayBuffer }
+                }))
+                genres.push({ genre: genre.toLowerCase(), arrayBuffers })
+            }
+            resolve(genres)
+        } catch (e) {
+            reject(e)
         }
     })
 }
@@ -61,14 +91,13 @@ function initWebAudio() {
         console.log('Initializing web audio')
         audioCtx = new audioCtx()
         audioCtx.onstatechange = (e) => console.log('Audio State: ' + e.target.state)
-
     } else {
         console.log('Web Audio Not Supported')
     }
 }
 
-function createMenu() {
 
+function createMenu() {
     //hide loading text
     loadingText.style.display = 'none'
 
@@ -113,13 +142,13 @@ function createMenu() {
                 })
             }
 
-            // build the game
             buildGame()
         })
         colDiv.appendChild(genreTitle)
     })
     mainMenu.appendChild(genresDiv)
 }
+
 
 function buildGame() {
 
@@ -179,54 +208,15 @@ function buildGame() {
     })
     vocalizer = new Vocalizer()
 
-    // setup vibe & bop
-    const vibeSelect = document.getElementById('vibe-select')
-    const vibeTrigger = document.getElementById('vibe-trigger')
-    const bopSelect = document.getElementById('bop-select')
-    const bopTrigger = document.getElementById('bop-trigger')
-    genreMapping.vibeBop.forEach(sample => {
-        const vOption = document.createElement('option')
-        const bOption = document.createElement('option')
-        vOption.value = sample.id
-        bOption.value = sample.id
-        vOption.innerText = sample.title
-        bOption.innerText = sample.title
-        vibeSelect.appendChild(vOption)
-        bopSelect.appendChild(bOption)
-    })
-    vibeTrigger.onclick = () => {
-        vibeTrigger.style.background = `url(../genres/${currentGenre}/images/vibe.png) no-repeat`
-        vibeTrigger.style.backgroundSize = '100% 100%'
-        const src = this.playSampleById({ id: vibeSelect.value })
-        src.onended = () => {
-            vibeTrigger.style.background = ''
-        }
 
-    }
-    bopTrigger.onclick = () => {
-        bopTrigger.style.background = `url(../genres/${currentGenre}/images/bop.png) no-repeat`
-        bopTrigger.style.backgroundSize = '100% 100%'
-        const src = this.playSampleById({ id: bopSelect.value })
-        src.onended = () => {
-            bopTrigger.style.background = ''
-        }
-    }
+    // setup controls
+    const { vibeBop, restKeyMap, pitchem: { digitMap, qwertyKeyMap, digitDetuneMap, qwertyKeyDetuneMap } } = genreMapping
+    vibe = new DropDown('vibe-trigger', 'vibe-select', vibeBop, 'vibe')
+    bop = new DropDown('bop-trigger', 'bop-select', vibeBop, 'bop')
+    pitchemDigits = new Pitchem('pitchem-digit-select', digitMap, digitDetuneMap)
+    pitchemKeys = new Pitchem('pitchem-key-select', qwertyKeyMap, qwertyKeyDetuneMap)
+    magicFingers = new MagicFingers(restKeyMap)
 
-    // setup pitchem
-    const pitchemDigitSelect = document.getElementById('pitchem-digit-select')
-    genreMapping.pitchem.digitMap.forEach(sample => {
-        const option = document.createElement('option')
-        option.value = sample.id
-        option.innerText = sample.title
-        pitchemDigitSelect.appendChild(option)
-    })
-    const pitchemKeySelect = document.getElementById('pitchem-key-select')
-    genreMapping.pitchem.qwertyKeyMap.forEach(sample => {
-        const option = document.createElement('option')
-        option.value = sample.id
-        option.innerText = sample.title
-        pitchemKeySelect.appendChild(option)
-    })
 
     // setup key map overlay
     const keyImage = document.getElementById('keymap-image')
@@ -239,72 +229,41 @@ function buildGame() {
     keyTrigger.onclick = () => {
         keyImage.style.display = ''
     }
-    document.onkeydown = (e) => {
-        if (!e.repeat) {
-
-            // is it a digit
-            const { pitchem: { digitDetuneMap } } = genreMapping
-            Object.entries(digitDetuneMap).forEach((entry) => {
-                const code = e.code
-                if (entry[0] === code) {
-                    playSampleById({ id: pitchemDigitSelect.value, detuneAmt: digitDetuneMap[code] })
-                }
-            })
-
-            // or is it in the top row?
-            const { pitchem: { qwertyKeyDetuneMap } } = genreMapping
-            Object.entries(qwertyKeyDetuneMap).forEach((entry) => {
-                const code = e.code
-                if (entry[0] === code) {
-                    playSampleById({ id: pitchemKeySelect.value, detuneAmt: qwertyKeyDetuneMap[code] })
-                }
-            })
-
-            const { restKeyMap } = genreMapping
-            restKeyMap.forEach((sample) => {
-                if (sample.key === e.code) {
-                    this.playSampleById({ id: sample.id })
-                }
-            })
-        }
-    }
-
 
     // setup navigation
     const quitMeuButton = document.getElementById('quit-menu')
     quitMeuButton.onclick = () => {
-
+        // stop all samples from playing/scheduling
         if (songalizer.isPlaying) {
             songalizer.stopSongalizer()
         }
         if (vocalizer.isPlaying) {
             vocalizer.stopVocalizer()
         }
-        //init samples buffer
-        samplesBuffer = []
-        vocalizer = null
-        songalizer = null
-        currentGenre = null
-        gainNode = null
-        //reset volume 
-        document.getElementById('volume').value = 1
+
+        vibe.reset()
+        bop.reset()
+        pitchemDigits.reset()
+        pitchemKeys.reset()
+        magicFingers.reset()
+        gainNode.disconnect()
 
         // reset reverb
         if (reverbON) {
             currentIR.disconnect()
-            currentIR = null
             document.getElementById('reverb').click()
         }
 
-        vibeSelect.innerHTML = ''
-        bopSelect.innerHTML = ''
+        //reset volume 
+        document.getElementById('volume').value = 1
+
+        // // reset game interface
         startStop.style.background = ''
-        pitchemDigitSelect.innerHTML = ''
-        pitchemKeySelect.innerHTML = ''
         document.getElementById('slots').innerHTML = ''
         gameInterface.style.display = 'none'
         mainMenu.style.display = ''
     }
+
 
     //setup controls
     const [startStop, clear] = document.getElementById('controls').querySelectorAll('button')
@@ -353,41 +312,7 @@ function buildGame() {
 }
 
 
-// returns genres array which contains the arrayBuffers for each genre
-// arrayBuffers need to be decoded within a web audio context
-async function fetchGenres() {
 
-    return new Promise(async (resolve, reject) => {
-
-        try {
-
-            // fetch genre mappings from server
-            const res = await fetch('/data')
-            const genreMappings = await res.json()
-
-            // cache mappings
-            localStorage.setItem('genres', JSON.stringify(genreMappings))
-
-            // fetch array buffers for each style
-            let genres = []
-            for (const genre in genreMappings) {
-                const { samples } = genreMappings[genre]
-                const arrayBuffers = await Promise.all(samples.map(async path => {
-                    const res = await fetch(path)
-                    const arrayBuffer = await res.arrayBuffer()
-                    const id = path.split(new RegExp(/\.wav|\//))[4]
-                    return { id, arrayBuffer }
-                }))
-                genres.push({ genre: genre.toLowerCase(), arrayBuffers })
-            }
-
-            resolve(genres)
-        } catch (e) {
-
-            reject(e)
-        }
-    })
-}
 
 
 function playSampleById({ id, start = 0, detuneAmt = 0 }) {
@@ -416,6 +341,113 @@ async function createReverb(path) {
     let arraybuffer = await response.arrayBuffer();
     convolver.buffer = await audioCtx.decodeAudioData(arraybuffer);
     return convolver;
+}
+
+
+class MagicFingers {
+    constructor(samples) {
+        this.isPlaying = false
+        this.currentSource = null
+        this.samples = samples
+        document.addEventListener('keydown', this.play)
+    }
+
+    play = (e) => {
+        if (!e.repeat) {
+            this.samples.forEach((sample) => {
+                if (sample.key === e.code) {
+                    this.currentSource = playSampleById({ id: sample.id })
+                    this.isPlaying = true
+                    this.currentSource.onended = () => {
+                        this.isPlaying = !this.isPlaying
+                    }
+                }
+            })
+        }
+    }
+    reset() {
+        if (this.isPlaying) {
+            this.currentSource.stop()
+        }
+        document.removeEventListener('keydown', this.play)
+    }
+}
+
+class Pitchem {
+    constructor(selectId, samples, detuneMap) {
+
+        this.isPlaying = false
+        this.currentSource = null
+        this.detuneMap = detuneMap
+
+        this.select = document.getElementById(selectId)
+        samples.forEach(sample => {
+            const option = document.createElement('option')
+            option.value = sample.id
+            option.innerText = sample.title
+            this.select.appendChild(option)
+        })
+
+        document.addEventListener('keydown', this.play)
+    }
+
+    play = (e) => {
+        if (!e.repeat) {
+            Object.entries(this.detuneMap).forEach((entry) => {
+                const code = e.code
+                if (entry[0] === code) {
+                    this.currentSource = playSampleById({ id: this.select.value, detuneAmt: this.detuneMap[code] })
+                    this.isPlaying = true
+                    this.currentSource.onended = () => {
+                        this.isPlaying = !this.isPlaying
+                    }
+                }
+            })
+        }
+    }
+
+    reset() {
+        if (this.isPlaying) {
+            this.currentSource.stop()
+        }
+        this.select.innerHTML = ''
+        document.removeEventListener('keydown', this.play)
+    }
+}
+
+class DropDown {
+
+    constructor(triggerId, selectId, samples, type) {
+
+        this.isPlaying = false
+        this.currentSource = null
+        this.trigger = document.getElementById(triggerId)
+        this.select = document.getElementById(selectId)
+
+        samples.forEach(sample => {
+            const option = document.createElement('option')
+            option.value = sample.id
+            option.innerText = sample.title
+            this.select.appendChild(option)
+        })
+        this.trigger.onclick = () => {
+            this.trigger.style.background = `url(../genres/${currentGenre}/images/${type}.png) no-repeat`
+            this.trigger.style.backgroundSize = '100% 100%'
+            this.currentSource = playSampleById({ id: this.select.value })
+            this.isPlaying = true
+            this.currentSource.onended = () => {
+                this.trigger.style.background = ''
+                this.isPlaying = !this.isPlaying
+            }
+        }
+    }
+
+    reset() {
+        if (this.isPlaying) {
+            this.currentSource.stop()
+        }
+        this.select.innerHTML = ''
+    }
 }
 
 class Songalizer {
@@ -485,7 +517,8 @@ class Songalizer {
         }
 
         // setup web worker
-        this.timerWorker = new Worker('js/songalizerworker.js');
+        // https://web.dev/audio-scheduling/
+        this.timerWorker = new Worker('js/timerworker.js');
         this.timerWorker.onmessage = (e) => {
             if (e.data === 'tick') {
                 this.scheduler()
@@ -638,12 +671,14 @@ class Vocalizer {
         this.tracks = []
 
         this.triggers = document.querySelector('#vocalizer').querySelectorAll('button')
-        this.triggers.forEach(trigger =>{
-        
-            trigger.onclick = () => this.onClick(trigger)})
+        this.triggers.forEach(trigger => {
+
+            trigger.onclick = () => this.onClick(trigger)
+        })
 
         // setup web worker
-        this.timerWorker = new Worker('js/vocalizerworker.js');
+        // https://web.dev/audio-scheduling/
+        this.timerWorker = new Worker('js/timerworker.js');
         this.timerWorker.onmessage = (e) => {
             if (e.data === 'tick') {
                 this.scheduler()
@@ -672,7 +707,7 @@ class Vocalizer {
     }
 
     stopVocalizer() {
-    
+
         if (this.currentSource) {
             this.currentSource.stop()
         }

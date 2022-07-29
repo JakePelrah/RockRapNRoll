@@ -71,7 +71,7 @@
        "digitDetuneMap": {
             "Backquote": -1200, "Digit1": -1000, "Digit2": -800,
             "Digit3": -700, "Digit4": -500, "Digit5": -300,
-            "Digit6": -100, "Digit7": 0, "Digit8": 200,
+            "Digit6": -100, "Digit7": 80, "Digit8": 200,
             "Digit9": 400, "Digit0": 700, "Minus": 900, "Equal": 1200
         },
         "qwertyKeyMap": [
