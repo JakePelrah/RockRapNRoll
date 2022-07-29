@@ -1,3 +1,5 @@
+
+
 const mainMenu = document.getElementById('main-menu')
 const loadingText = document.getElementById('loading-text')
 
@@ -57,6 +59,7 @@ function initWebAudio() {
         console.log('Initializing web audio')
         audioCtx = new audioCtx()
         audioCtx.onstatechange = (e) => console.log('Audio State: ' + e.target.state)
+        gainNode = audioCtx.createGain()
     } else {
         console.log('Web Audio Not Supported')
     }
@@ -84,6 +87,7 @@ function createMenu() {
         genreTitle.innerText = genre.match(/[A-Z][a-z]+/g).join(' ')
 
         genreTitle.addEventListener('click', () => {
+
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume().then(function () {
                     console.log('Resuming audio context.')
@@ -96,14 +100,11 @@ function createMenu() {
             //init samples buffer
             samplesBuffer = []
 
-            // new gain node, fix  
-            gainNode = audioCtx.createGain()
-
             //reset volume 
             document.getElementById('volume').value = 1
 
             // turn off reverb
-            currentIR = null            
+            currentIR = null
             if (reverbON) {
                 document.getElementById('reverb').click()
             }
@@ -162,9 +163,9 @@ function buildGame() {
                     const id = songImg.getAttribute('data-sample-id')
                     this.previewSample = playSampleById({ id })
                     songImg.src = `../genres/${currentGenre}/images/asong_title_${i + 1}.png`
-                    this.previewSample.onended=()=>{
-                    this.isPlaying = false
-                    songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
+                    this.previewSample.onended = () => {
+                        this.isPlaying = false
+                        songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
                     }
                 }
                 else {
@@ -286,7 +287,11 @@ function buildGame() {
         if (songalizer.isPlaying) {
             songalizer.stopSongalizer()
         }
-      
+        if (vocalizer.isPlaying) {
+            vocalizer.stopVocalizer()
+        }
+
+
         // reset board
         vibeSelect.innerHTML = ''
         bopSelect.innerHTML = ''
@@ -388,13 +393,12 @@ function playSampleById({ id, start = 0, detuneAmt = 0 }) {
 
 
     gainNode.disconnect()
-    
+
     if (reverbON) {
         gainNode.connect(currentIR)
         currentIR.connect(audioCtx.destination)
     }
     else {
-
         gainNode.connect(audioCtx.destination)
     }
     src.start(start)
@@ -403,7 +407,6 @@ function playSampleById({ id, start = 0, detuneAmt = 0 }) {
 
 async function createReverb(path) {
     let convolver = audioCtx.createConvolver();
-    // load impulse response from file
     let response = await fetch(path);
     let arraybuffer = await response.arrayBuffer();
     convolver.buffer = await audioCtx.decodeAudioData(arraybuffer);
@@ -412,56 +415,7 @@ async function createReverb(path) {
 
 
 
-class Vocalizer {
-    constructor() {
-        this.isPlaying = false
-        this.triggers = document.querySelector('#vocalizer').querySelectorAll('button')
-        this.triggers.forEach(trigger => trigger.addEventListener('click', () => this.onClick(trigger)))
-        this.start = 0
-        this.prevDuration = 0
-        this.counter = 0
-        this.src = null
-    }
-    
 
-    stopVocalizer() {
-        this.src.stop()
-    }
-
-    onClick(trigger) {
-        trigger.disabled = true
-        trigger.style.opacity = .5
-        trigger.style.backgroundColor = 'white'
-        trigger.style.filter = 'blur(4px)'
-        const id = trigger.getAttribute('data-sample-id')
-        console.log(trigger)
-
-        if (!this.isPlaying) {
-            this.start = audioCtx.currentTime
-            this.src = playSampleById({ id, start: this.start, })
-            this.counter++
-        }
-        else if (this.isPlaying) {
-            this.src = playSampleById({ id, start: this.start + this.prevDuration })
-            this.counter++
-        }
-        this.src.onended = () => {
-            trigger.disabled = false
-            trigger.style.opacity = 0
-            this.counter--
-            console.log('Audio counter', this.counter)
-            if (this.counter === 0) {
-                console.log('DONE')
-                this.isPlaying = false
-                this.start = 0
-                this.prevDuration = 0
-                this.counter = 0
-            }
-        }
-        this.isPlaying = true
-        this.prevDuration += this.src.buffer.duration
-    }
-}
 
 
 class Songalizer {
@@ -672,6 +626,94 @@ class Recorder {
     }
 }
 
+
+
+
+
+class Vocalizer {
+    constructor() {
+        this.scheduleAheadTime = .1
+        this.nextTrackTime = 0.0;
+        this.lookahead = 25.0;
+        this.timerWorker = null;
+        this.isPlaying = false
+        this.currentSource = null
+        this.tracks = []
+
+        this.triggers = document.querySelector('#vocalizer').querySelectorAll('button')
+        this.triggers.forEach(trigger => trigger.addEventListener('click', () => this.onClick(trigger)))
+
+        // setup web worker
+        this.timerWorker = new Worker('js/songalizerworker.js');
+        this.timerWorker.onmessage = (e) => {
+            if (e.data === 'tick') {
+                this.scheduler()
+            }
+            else {
+                console.log('message:' + e.data)
+            }
+        }
+        this.timerWorker.postMessage({ 'interval': this.lookahead })
+    }
+
+    onClick(trigger) {
+        trigger.disabled = true
+        trigger.style.opacity = .5
+        trigger.style.backgroundColor = 'white'
+        trigger.style.filter = 'blur(4px)'
+        const id = trigger.getAttribute('data-sample-id')
+        const { audioBuffer } = samplesBuffer.find(x => x.id === id)
+        this.tracks.push({ id, audioBuffer })
+
+        if (!this.isPlaying) {
+            this.isPlaying = !this.isPlaying
+            this.timerWorker.postMessage('start')
+            this.nextTrackTime = audioCtx.currentTime
+        }
+    }
+
+    stopVocalizer() {
+
+        if (this.currentSource) {
+            this.currentSource.stop()
+        }
+        this.isPlaying = false
+        this.currentSource = null
+        this.timerWorker.postMessage('stop')
+    }
+
+
+
+    scheduleTrack(id, start) {
+        this.currentSource = playSampleById({ id, start })
+        this.currentSource.onended = () => {
+            this.triggers.forEach(trigger => {
+                const triggerId = trigger.getAttribute('data-sample-id')
+                if (triggerId === id) {
+                    trigger.disabled = false
+                    trigger.style.opacity = 0
+                }
+            })
+        }
+    }
+
+    scheduler() {
+
+        while ((this.nextTrackTime < audioCtx.currentTime + this.scheduleAheadTime) && this.isPlaying) {
+
+            if (this.tracks.length >= 1) {
+                const { id, audioBuffer: { duration } } = this.tracks.shift()
+                this.scheduleTrack(id, this.nextTrackTime)
+                //add duration of next track to nextTrackTime
+                this.nextTrackTime += duration
+            }
+            else {
+                this.stopVocalizer()
+            }
+
+        }
+    }
+}
 
 // // //         // recording
 // // //         // const recordDiv = document.createElement('div')
