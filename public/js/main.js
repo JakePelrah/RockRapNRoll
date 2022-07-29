@@ -110,6 +110,8 @@ function createMenu() {
                 document.getElementById('reverb').click()
             }
 
+            
+
             // grab selected genre from indexeddb
             currentGenre = genreTitle.innerText.replace(' ', '')
             const getGenreTrans = db.transaction("genres", "readonly")
@@ -679,6 +681,9 @@ class Vocalizer {
         if (this.currentSource) {
             this.currentSource.stop()
         }
+        this.triggers.forEach(trigger=>{
+            trigger.disabled = false
+            trigger.style.opacity = 0})
         this.isPlaying = false
         this.currentSource = null
         this.timerWorker.postMessage('stop')
