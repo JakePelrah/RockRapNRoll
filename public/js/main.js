@@ -3,6 +3,8 @@
 const mainMenu = document.getElementById('main-menu')
 const loadingText = document.getElementById('loading-text')
 
+
+
 let audioCtx = null
 let currentGenre = null
 let db = null
@@ -416,11 +418,6 @@ async function createReverb(path) {
     return convolver;
 }
 
-
-
-
-
-
 class Songalizer {
     constructor() {
         this.scheduleAheadTime = .1
@@ -630,9 +627,6 @@ class Recorder {
 }
 
 
-
-
-
 class Vocalizer {
     constructor() {
         this.scheduleAheadTime = .1
@@ -644,10 +638,12 @@ class Vocalizer {
         this.tracks = []
 
         this.triggers = document.querySelector('#vocalizer').querySelectorAll('button')
-        this.triggers.forEach(trigger => trigger.addEventListener('click', () => this.onClick(trigger)))
+        this.triggers.forEach(trigger =>{
+        
+            trigger.onclick = () => this.onClick(trigger)})
 
         // setup web worker
-        this.timerWorker = new Worker('js/songalizerworker.js');
+        this.timerWorker = new Worker('js/vocalizerworker.js');
         this.timerWorker.onmessage = (e) => {
             if (e.data === 'tick') {
                 this.scheduler()
@@ -676,7 +672,7 @@ class Vocalizer {
     }
 
     stopVocalizer() {
-
+    
         if (this.currentSource) {
             this.currentSource.stop()
         }
