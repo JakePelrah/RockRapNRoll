@@ -340,8 +340,8 @@ input[type=range]::-webkit-slider-thumb {
 
 #bug-link {
    position: absolute;
-   left: 60px;
-   top: 42px;
+   left: 95px;
+   top: 25px;
    font-size: 18px;
    font-weight: bold;
    color: #DD0806;
