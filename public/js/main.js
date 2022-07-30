@@ -18,6 +18,8 @@ let songalizer = null
 let vibe = null
 let vocalizer = null
 
+let recorder = null
+
 
 window.onload = () => {
     loadingText.style.display = ''
@@ -175,6 +177,7 @@ function buildGame() {
     // setup key map overlay
     const keyImage = document.getElementById('keymap-image')
     keyImage.src = `../genres/${currentGenre}/images/keymap.png`
+    keyImage.setAttribute('draggable', false)
     keyImage.style.display = 'none'
     keyImage.onclick = () => {
         keyImage.style.display = 'none'
@@ -262,6 +265,11 @@ function buildGame() {
         gameInterface.style.display = 'none'
         mainMenu.style.display = ''
     }
+
+
+
+    // setup recording
+    recorder = new Recorder()
 }
 
 
@@ -271,15 +279,19 @@ function playSampleById({ id, start = 0, detuneAmt = 0 }) {
     src.detune.value = detuneAmt
     src.connect(gainNode)
 
+    // disconnect previous ir 
     gainNode.disconnect()
 
     if (reverbON) {
         gainNode.connect(currentIR)
         currentIR.connect(audioCtx.destination)
+        currentIR.connect(recorder.dest)
     }
     else {
         gainNode.connect(audioCtx.destination)
+        gainNode.connect(recorder.dest)
     }
+  
     src.start(start)
     return src
 }
@@ -715,6 +727,12 @@ class Vocalizer {
 
 class Recorder {
     constructor() {
+        this.recordButton = document.getElementById('record')
+        this.stopButton = document.getElementById('stop')
+
+        this.recordButton.onclick = ()=> this.start()
+        this.stopButton.onclick = ()=> this.stop()
+
         this.chunks = []
         this.dest = audioCtx.createMediaStreamDestination()
         this.mediaRecorder = new MediaRecorder(this.dest.stream, { mimeType: 'audio/webm' })
@@ -733,6 +751,7 @@ class Recorder {
 
     start() {
         console.log('starting')
+        this.chunks = []
         this.mediaRecorder.start()
     }
 
@@ -744,25 +763,5 @@ class Recorder {
 
 
 
-// // //         // recording
-// // //         // const recordDiv = document.createElement('div')
-// // //         // recordDiv.setAttribute('id', 'recording')
-
-// // //         // // const audioElem = document.createElement('audio')
-// // //         // // audioElem.setAttribute('controls', true)
-// // //         // // recordDiv.appendChild(audioElem)
-
-// // //         // const record = document.createElement('button')
-// // //         // record.innerText = 'RECORD'
-// // //         // record.addEventListener('click', () => recorder.start())
-// // //         // recordDiv.appendChild(record)
-
-
-// // //         // const stop = document.createElement('button')
-// // //         // stop.innerText = 'STOP'
-// // //         // stop.addEventListener('click', () => recorder.stop())
-// // //         // recordDiv.appendChild(stop)
-
-// // //         // gameWrapper.appendChild(recordDiv)
 
 
