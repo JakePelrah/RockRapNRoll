@@ -20,7 +20,7 @@
         "../genres/Blues/samples/TRMPT4CHD.wav", "../genres/Blues/samples/TRMPT5CHD.wav", "../genres/Blues/samples/TRNARND.wav",
         "../genres/Blues/samples/WHOA.wav"
     ],
-    "songalizer_samples": [
+    "songalizerMap": [
         { "id": "SHFFLEON", "title": "Shuffle On" },
         { "id": "BRKDN", "title": "Breakdown" },
         { "id": "STPTME", "title": "Stop Time" },
@@ -32,7 +32,7 @@
         { "id": "ESCHRBLES", "title": "Escher Blues" },
         { "id": "12BAR", "title": "12-Bar Blues" }
     ],
-    "vocalizer_samples": [
+    "vocalizerMap": [
         { "id": "SOLNLY", "title": "So Lonely" },
         { "id": "BLSEVRYDY", "title": "Everyday I gave The Blues" },
         { "id": "OHAHYA", "title": "Oh-Ah-Ya-Ya" },
@@ -42,7 +42,7 @@
         { "id": "WHOA", "title": "Whoa" },
         { "id": "SCREAM", "title": "Scream" }
     ],
-    "vibeBop": [
+    "vibeBopMap": [
         { "id": "TRMPT2", "title": "Trumpet 2" },
         { "id": "HARP6", "title": "Harp 6" },
         { "id": "HARP8", "title": "Harp 8" },

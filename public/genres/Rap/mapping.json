@@ -19,7 +19,7 @@
         "../genres/Rap/samples/STRAPPED.wav", "../genres/Rap/samples/THBMB.wav", "../genres/Rap/samples/VIOLATE.wav",
         "../genres/Rap/samples/WHOOSH.wav"
     ],
-    "songalizer_samples": [
+    "songalizerMap": [
         { "id": "MCBEAT", "title": "MC Beat" },
         { "id": "GMEABT", "title": "Gimme A Beat" },
         { "id": "JB", "title": "JB" },
@@ -31,7 +31,7 @@
         { "id": "OKTN", "title": "Oaktown" },
         { "id": "BTSNHOOD", "title": "Beats In The Hood" }
     ],
-        "vocalizer_samples": [
+        "vocalizerMap": [
         { "id": "RPNBLEEP", "title": "Rappin Bleep" },
         { "id": "KDYKAT", "title": "Koody Kat" },
         { "id": "BLEEP", "title": "Bleep" },
@@ -41,7 +41,7 @@
         { "id": "COLLEGE", "title": "College" },
         { "id": "FRMTHRIB", "title": "From The Rib" }
     ],
-    "vibeBop": [
+    "vibeBopMap": [
         { "id": "SCRUP", "title": "Scratch Up" },
         { "id": "SCRNITCH", "title": "Scratch An Itch" },
         { "id": "HPSNR", "title": "Hip Snare" },

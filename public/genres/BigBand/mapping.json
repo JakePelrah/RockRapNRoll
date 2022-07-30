@@ -18,7 +18,7 @@
         "../genres/BigBand/samples/TRMPT5.wav", "../genres/BigBand/samples/VMPHRE.wav",
         "../genres/BigBand/samples/WLKNSOLO.wav"
     ],
-    "songalizer_samples": [
+    "songalizerMap": [
         { "id": "STRAHD", "title": "Straight Ahead" },
         { "id": "BPLICUS", "title": "Boplicitous" },
         { "id": "SWNGON", "title": "Swing On" },
@@ -30,7 +30,7 @@
         { "id": "CRNCPIA", "title": "Cornucopia" },
         { "id": "SHTCRS", "title": "Shout Chorus" }
     ],
-    "vocalizer_samples": [
+    "vocalizerMap": [
         { "id": "SKAT10", "title": "Skat 10" },
         { "id": "SKAT11", "title": "Skat 11" },
         { "id": "SKAT3", "title": "Skat 3" },
@@ -40,7 +40,7 @@
         { "id": "SKAT6", "title": "Skat 6" },
         { "id": "SKAT1", "title": "Skat 1" }
     ],
-    "vibeBop": [
+    "vibeBopMap": [
         { "id": "BARILP1", "title": "Bari Loop 1" },
         { "id": "BARILP2", "title": "Bari Loop 2" },
         { "id": "BARILP3", "title": "Bari Loop 3" },

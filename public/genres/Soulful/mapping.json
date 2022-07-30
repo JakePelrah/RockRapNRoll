@@ -18,7 +18,7 @@
         "../genres/Soulful/samples/WHOOSH.wav", "../genres/Soulful/samples/WRDUP.wav", "../genres/Soulful/samples/WRPITUP.wav",
         "../genres/Soulful/samples/YAYAYA.wav", "../genres/Soulful/samples/UMKEME.wav"
     ],
-    "songalizer_samples": [
+    "songalizerMap": [
         { "id": "HIPHP", "title": "Hip Hop" },
         { "id": "RAP", "title": "Rap" },
         { "id": "NWJCKSWNG", "title": "New Jack Swing" },
@@ -30,7 +30,7 @@
         { "id": "WRDUP", "title": "Word Up" },
         { "id": "JAMON", "title": "Jam On" }
     ],
-    "vocalizer_samples": [
+    "vocalizerMap": [
         { "id": "TOTHCRCH", "title": "To The Church" },
         { "id": "MMYAYA", "title": "MMM Yea Yea" },
         { "id": "YAYAYA", "title": "Yea Yea Yea" },
@@ -40,7 +40,7 @@
         { "id": "FNKYVCL", "title": "Funky Vocal" },
         { "id": "WRDTOTHMTHR", "title": "Word To The Mother" }
     ],
-    "vibeBop": [
+    "vibeBopMap": [
         { "id": "ORCHT", "title": "Orch Hit" },
         { "id": "SCRNITCH", "title": "Scratch An Itch" },
         { "id": "SCRCUP", "title": "Scratch Up" },

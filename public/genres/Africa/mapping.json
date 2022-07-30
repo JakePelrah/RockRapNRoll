@@ -15,7 +15,7 @@
         "../genres/Africa/samples/TMBRINE2.wav", "../genres/Africa/samples/TMBRINE.wav", "../genres/Africa/samples/TRIANGLE.wav",
         "../genres/Africa/samples/TRIBAL.wav", "../genres/Africa/samples/TUMBAU.wav", "../genres/Africa/samples/WNKYWNGR.wav"
     ],
-    "songalizer_samples": [
+    "songalizerMap": [
         { "id": "TRIBAL", "title": "Tribal" },
         { "id": "TUMBAU", "title": "Tumbau" },
         { "id": "CHANT", "title": "Chant" },
@@ -27,7 +27,7 @@
         { "id": "RNFRST", "title": "Rain Forest" },
         { "id": "RNFRSTVX", "title": "Rain Forest Vox" }
     ],
-    "vocalizer_samples": [
+    "vocalizerMap": [
         { "id": "CMACMALE", "title": "Coma Coma Le" },
         { "id": "CMALE", "title": "Coma Le" },
         { "id": "CMALEAUWA", "title": "Comele A Uwa" },
@@ -37,7 +37,7 @@
         { "id": "KPTHVIBE", "title": "Keep The Vibe" },
         { "id": "HRWEGO", "title": "Here We Go" }
     ],
-    "vibeBop": [
+    "vibeBopMap": [
         { "id": "FLGL2", "title": "Flugal 2" },
         { "id": "FLUTE1", "title": "Flute 1" },
         { "id": "FLUTE2", "title": "Flute 2" },

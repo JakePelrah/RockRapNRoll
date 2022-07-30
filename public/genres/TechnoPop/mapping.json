@@ -19,7 +19,7 @@
         "../genres/TechnoPop/samples/WHYCHD.wav", "../genres/TechnoPop/samples/WHYIKNW.wav", "../genres/TechnoPop/samples/WHYSCRM.wav",
         "../genres/TechnoPop/samples/WLDWHY.wav", "../genres/TechnoPop/samples/YACHD.wav"
     ],
-    "songalizer_samples": [
+    "songalizerMap": [
         { "id": "BREAK", "title": "Break" },
         { "id": "WHIP", "title": "Whip It" },
         { "id": "ORCHSTRAMGC", "title": "Ochestra Magic" },
@@ -31,7 +31,7 @@
         { "id": "ARTOFTCH", "title": "Art of Tech" },
         { "id": "BRNTHHS", "title": "Byrn the House" }
     ],
-    "vocalizer_samples": [
+    "vocalizerMap": [
         { "id": "WLDWHY", "title": "Wild Why" },
         { "id": "WHYIKNW", "title": "Why I Know" },
         { "id": "DNTCHRS2", "title": "Dont Chorus 2" },
@@ -42,7 +42,7 @@
         { "id": "DNTIKNW", "title": "Dont I Know" }
 
     ],
-    "vibeBop": [
+    "vibeBopMap": [
         { "id": "WHYSCRM", "title": "Why Scream" },
         { "id": "DNTSCRM", "title": "Dont Scream" },
         { "id": "KNWSCRM", "title": "Know Scream" },

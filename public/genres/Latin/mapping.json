@@ -17,7 +17,7 @@
         "../genres/Latin/samples/TRMPT1.wav", "../genres/Latin/samples/TRMPT2.wav", "../genres/Latin/samples/TRMPT3.wav",
         "../genres/Latin/samples/TRMPTNT3.wav", "../genres/Latin/samples/VBRSLP.wav"
     ],
-    "songalizer_samples": [
+    "songalizerMap": [
         { "id": "OYMIRMTO", "title": "Oye Mi Ritmo" },
         { "id": "MNTNO", "title": "Montuno" },
         { "id": "CRRE1", "title": "Cierre 1" },
@@ -29,7 +29,7 @@
         { "id": "MBORYLE", "title": "Mambo Royale" },
         { "id": "MNTNO2", "title": "Montuno 2" }
     ],
-    "vocalizer_samples": [
+    "vocalizerMap": [
         { "id": "CRLS1", "title": "Carlos 1" },
         { "id": "CRLS5", "title": "Carlos 5" },
         { "id": "CRLS2", "title": "Carlos 2" },
@@ -39,7 +39,7 @@
         { "id": "CRLS4", "title": "Carlos 4" },
         { "id": "CRLS9", "title": "Carlos 9" }
     ],
-    "vibeBop": [
+    "vibeBopMap": [
         { "id": "FLUTE4", "title": "Flute 4" },
         { "id": "FLUTE5", "title": "Flute 5" },
         { "id": "TRMBNT3", "title": "Trombone 3" },

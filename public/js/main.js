@@ -161,62 +161,16 @@ function buildGame() {
     gameInterface.style.backgroundSize = '100% 100%'
     gameInterface.style.display = ''
 
-    // setup songalizer
-    const songalizerSampleDivs = document.getElementById('songs').querySelectorAll('div')
-    const songalizerTitleImages = document.getElementById('song-names').querySelectorAll('img')
-    genreMapping.songalizer_samples.forEach((sample, i) => {
-        songalizerSampleDivs[i].setAttribute('data-sample-id', sample.id)
-        songalizerTitleImages[i].setAttribute('data-sample-id', sample.id)
-        songalizerTitleImages[i].draggable = false
-        songalizerTitleImages[i].src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
-    })
 
-    songalizerTitleImages.forEach((songImg, i) => {
-        this.isPlaying = false
-        this.previewSample = null
-        songImg.onclick = () => {
-
-            if (!songalizer.isPlaying) {
-                this.isPlaying = !this.isPlaying
-                if (this.isPlaying) {
-                    const id = songImg.getAttribute('data-sample-id')
-                    this.previewSample = playSampleById({ id })
-                    songImg.src = `../genres/${currentGenre}/images/asong_title_${i + 1}.png`
-                    this.previewSample.onended = () => {
-                        this.isPlaying = false
-                        songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
-                    }
-                }
-                else {
-                    this.previewSample.stop()
-                    songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
-                }
-                songImg.onblur = () => {
-                    this.isPlaying = false
-                    this.previewSample.stop()
-                    songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
-                }
-            }
-        }
-    })
-    songalizer = new Songalizer()
-
-    // setup vocalizer
-    const vocalizerButtons = document.getElementById('vocalizer').querySelectorAll('button')
-    genreMapping.vocalizer_samples.forEach((sample, i) => {
-        vocalizerButtons[i].setAttribute('data-sample-id', sample.id)
-    })
-    vocalizer = new Vocalizer()
-
-
-    // setup controls
-    const { vibeBop, restKeyMap, pitchem: { digitMap, qwertyKeyMap, digitDetuneMap, qwertyKeyDetuneMap } } = genreMapping
-    vibe = new DropDown('vibe-trigger', 'vibe-select', vibeBop, 'vibe')
-    bop = new DropDown('bop-trigger', 'bop-select', vibeBop, 'bop')
+    // setup game input
+    const { vibeBopMap, restKeyMap, songalizerMap, vocalizerMap, pitchem: { digitMap, qwertyKeyMap, digitDetuneMap, qwertyKeyDetuneMap } } = genreMapping
+    songalizer = new Songalizer('songs', 'song-names', 'slots', songalizerMap)
+    vocalizer = new Vocalizer('vocalizer', vocalizerMap)
+    vibe = new DropDown('vibe-trigger', 'vibe-select', vibeBopMap, 'vibe')
+    bop = new DropDown('bop-trigger', 'bop-select', vibeBopMap, 'bop')
     pitchemDigits = new Pitchem('pitchem-digit-select', digitMap, digitDetuneMap)
     pitchemKeys = new Pitchem('pitchem-key-select', qwertyKeyMap, qwertyKeyDetuneMap)
     magicFingers = new MagicFingers(restKeyMap)
-
 
     // setup key map overlay
     const keyImage = document.getElementById('keymap-image')
@@ -230,42 +184,7 @@ function buildGame() {
         keyImage.style.display = ''
     }
 
-    // setup navigation
-    const quitMeuButton = document.getElementById('quit-menu')
-    quitMeuButton.onclick = () => {
-        // stop all samples from playing/scheduling
-        if (songalizer.isPlaying) {
-            songalizer.stopSongalizer()
-        }
-        if (vocalizer.isPlaying) {
-            vocalizer.stopVocalizer()
-        }
-
-        vibe.reset()
-        bop.reset()
-        pitchemDigits.reset()
-        pitchemKeys.reset()
-        magicFingers.reset()
-        gainNode.disconnect()
-
-        // reset reverb
-        if (reverbON) {
-            currentIR.disconnect()
-            document.getElementById('reverb').click()
-        }
-
-        //reset volume 
-        document.getElementById('volume').value = 1
-
-        // // reset game interface
-        startStop.style.background = ''
-        document.getElementById('slots').innerHTML = ''
-        gameInterface.style.display = 'none'
-        mainMenu.style.display = ''
-    }
-
-
-    //setup controls
+    // setup controls
     const [startStop, clear] = document.getElementById('controls').querySelectorAll('button')
     startStop.onclick = () => {
         if (!songalizer.isPlaying && songalizer.tracks.length > 0) {
@@ -309,10 +228,41 @@ function buildGame() {
     volumeSlider.oninput = (event) => {
         gainNode.gain.value = event.target.value
     }
+
+    // setup navigation
+    const quitMeuButton = document.getElementById('quit-menu')
+    quitMeuButton.onclick = () => {
+
+        // stop all samples from playing/scheduling
+        if (songalizer.isPlaying) {
+            songalizer.stopSongalizer()
+        }
+        if (vocalizer.isPlaying) {
+            vocalizer.stopVocalizer()
+        }
+        vibe.reset()
+        bop.reset()
+        pitchemDigits.reset()
+        pitchemKeys.reset()
+        magicFingers.reset()
+        gainNode.disconnect()
+
+        // reset reverb
+        if (reverbON) {
+            currentIR.disconnect()
+            document.getElementById('reverb').click()
+        }
+
+        // reset volume 
+        document.getElementById('volume').value = 1
+
+        // reset game interface
+        startStop.style.background = ''
+        document.getElementById('slots').innerHTML = ''
+        gameInterface.style.display = 'none'
+        mainMenu.style.display = ''
+    }
 }
-
-
-
 
 
 function playSampleById({ id, start = 0, detuneAmt = 0 }) {
@@ -320,7 +270,6 @@ function playSampleById({ id, start = 0, detuneAmt = 0 }) {
     src.buffer = samplesBuffer.find(x => x.id === id).audioBuffer
     src.detune.value = detuneAmt
     src.connect(gainNode)
-
 
     gainNode.disconnect()
 
@@ -451,7 +400,7 @@ class DropDown {
 }
 
 class Songalizer {
-    constructor() {
+    constructor(songsId, songNamesId, slotsId, samples) {
         this.scheduleAheadTime = .1
         this.nextTrackTime = 0.0;
         this.lookahead = 25.0;
@@ -465,8 +414,8 @@ class Songalizer {
         this.tracks = []
         this.counter = 0
 
-        this.songs = document.getElementById('songs').querySelectorAll('div')
-        this.slots = document.getElementById('slots')
+        this.songs = document.getElementById(songsId).querySelectorAll('div')
+        this.slots = document.getElementById(slotsId)
 
 
         this.songs.forEach(song => {
@@ -528,6 +477,44 @@ class Songalizer {
             }
         }
         this.timerWorker.postMessage({ 'interval': this.lookahead })
+
+        // setup songalizer
+        const songalizerTitleImages = document.getElementById(songNamesId).querySelectorAll('img')
+        samples.forEach((sample, i) => {
+            this.songs[i].setAttribute('data-sample-id', sample.id)
+            songalizerTitleImages[i].setAttribute('data-sample-id', sample.id)
+            songalizerTitleImages[i].draggable = false
+            songalizerTitleImages[i].src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
+        })
+
+        songalizerTitleImages.forEach((songImg, i) => {
+            this.isPlaying = false
+            this.previewSample = null
+            songImg.onclick = () => {
+
+                if (!songalizer.isPlaying) {
+                    this.isPlaying = !this.isPlaying
+                    if (this.isPlaying) {
+                        const id = songImg.getAttribute('data-sample-id')
+                        this.previewSample = playSampleById({ id })
+                        songImg.src = `../genres/${currentGenre}/images/asong_title_${i + 1}.png`
+                        this.previewSample.onended = () => {
+                            this.isPlaying = false
+                            songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
+                        }
+                    }
+                    else {
+                        this.previewSample.stop()
+                        songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
+                    }
+                    songImg.onblur = () => {
+                        this.isPlaying = false
+                        this.previewSample.stop()
+                        songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
+                    }
+                }
+            }
+        })
     }
 
     stopSongalizer() {
@@ -630,38 +617,8 @@ class Songalizer {
 }
 
 
-class Recorder {
-    constructor() {
-        this.chunks = []
-        this.dest = audioCtx.createMediaStreamDestination()
-        this.mediaRecorder = new MediaRecorder(this.dest.stream, { mimeType: 'audio/webm' })
-
-        this.mediaRecorder.ondataavailable = (evt) => {
-            // push each chunk (blobs) in an array
-            this.chunks.push(evt.data);
-        };
-
-        this.mediaRecorder.onstop = (evt) => {
-            // Make blob out of our blobs, and open it.
-            const blob = new Blob(this.chunks, { 'type': 'audio/webm; codecs=0' });
-            document.querySelector("audio").src = URL.createObjectURL(blob);
-        };
-    }
-
-    start() {
-        console.log('starting')
-        this.mediaRecorder.start()
-    }
-
-    stop() {
-        console.log('stoping')
-        this.mediaRecorder.stop()
-    }
-}
-
-
 class Vocalizer {
-    constructor() {
+    constructor(vocalizerTriggersId, samples) {
         this.scheduleAheadTime = .1
         this.nextTrackTime = 0.0;
         this.lookahead = 25.0;
@@ -670,10 +627,12 @@ class Vocalizer {
         this.currentSource = null
         this.tracks = []
 
-        this.triggers = document.querySelector('#vocalizer').querySelectorAll('button')
-        this.triggers.forEach(trigger => {
+        this.triggers = document.getElementById(vocalizerTriggersId).querySelectorAll('button')
 
-            trigger.onclick = () => this.onClick(trigger)
+        samples.forEach((sample, i) => {
+            console.log(sample)
+            this.triggers[i].setAttribute('data-sample-id', sample.id)
+            this.triggers[i].onclick = () => this.onClick(this.triggers[i])
         })
 
         // setup web worker
@@ -752,6 +711,38 @@ class Vocalizer {
         }
     }
 }
+
+
+class Recorder {
+    constructor() {
+        this.chunks = []
+        this.dest = audioCtx.createMediaStreamDestination()
+        this.mediaRecorder = new MediaRecorder(this.dest.stream, { mimeType: 'audio/webm' })
+
+        this.mediaRecorder.ondataavailable = (evt) => {
+            // push each chunk (blobs) in an array
+            this.chunks.push(evt.data);
+        };
+
+        this.mediaRecorder.onstop = (evt) => {
+            // Make blob out of our blobs, and open it.
+            const blob = new Blob(this.chunks, { 'type': 'audio/webm; codecs=0' });
+            document.querySelector("audio").src = URL.createObjectURL(blob);
+        };
+    }
+
+    start() {
+        console.log('starting')
+        this.mediaRecorder.start()
+    }
+
+    stop() {
+        console.log('stoping')
+        this.mediaRecorder.stop()
+    }
+}
+
+
 
 // // //         // recording
 // // //         // const recordDiv = document.createElement('div')

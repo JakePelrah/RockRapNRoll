@@ -16,7 +16,7 @@
         "../genres/StreetJazz/samples/TRMPTLP1.wav", "../genres/StreetJazz/samples/VBRSLP.wav", "../genres/StreetJazz/samples/WHIP.wav",
         "../genres/StreetJazz/samples/WDPCKR.wav"
     ],
-    "songalizer_samples": [
+    "songalizerMap": [
         { "id": "ONTHST", "title": "On The Street" },
         { "id": "REMIX", "title": "Remix" },
         { "id": "PNOFDKNS", "title": "Prince Of Darkness" },
@@ -28,7 +28,7 @@
         { "id": "MNSKCHS", "title": "Main Sketches" },
         { "id": "CODA", "title": "Coda" }
     ],
-    "vocalizer_samples": [
+    "vocalizerMap": [
         { "id": "STJAZZ", "title": "Street Jazz" },
         { "id": "BRITDN", "title": "Bring It Down" },
         { "id": "DOBOP", "title": "Do Bop" },
@@ -38,7 +38,7 @@
         { "id": "BRKITDN", "title": "Break It On Down" },
         { "id": "THTSHP", "title": "Thats Hip" }
     ],
-    "vibeBop": [
+    "vibeBopMap": [
         { "id": "RCDSTP", "title": "Record Stop" },
         { "id": "SCRSNR", "title": "Scratch Snare" },
         { "id": "WDPCKR", "title": "Woodpecker" },

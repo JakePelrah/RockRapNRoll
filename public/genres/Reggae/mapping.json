@@ -17,7 +17,7 @@
         "../genres/Reggae/samples/WHIP.wav", "../genres/Reggae/samples/WHISTLE.wav", "../genres/Reggae/samples/WKDNWILY.wav",
         "../genres/Reggae/samples/YEAMON.wav"
     ],
-    "songalizer_samples": [
+    "songalizerMap": [
         { "id": "MNTGOBY", "title": "Montego Bay" },
         { "id": "STANNSBY", "title": "St. Ann's Bay" },
         { "id": "JAMAYKA", "title": "Jam-ay-ka" },
@@ -29,7 +29,7 @@
         { "id": "REGGAEDN", "title": "Reggae Down" },
         { "id": "KNGSTN", "title": "Kingston" }
     ],
-    "vocalizer_samples": [
+    "vocalizerMap": [
         { "id": "RICKAMAN", "title": "Rick Man" },
         { "id": "JAMIN", "title": "Jammin" },
         { "id": "BRMITDWN", "title": "Brum It Down" },
@@ -39,7 +39,7 @@
         { "id": "JAMUP", "title": "Jam Up" },
         { "id": "LRDHVMRCY", "title": "Lord Have Mercy" }
     ],
-    "vibeBop": [
+    "vibeBopMap": [
         { "id": "GUITCD1", "title": "Guitar Chord 1" },
         { "id": "GUITCD2", "title": "Guitar Chord 2" },
         { "id": "GUITCD3", "title": "Guitar Chord 3" },
