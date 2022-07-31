@@ -19,13 +19,12 @@ let vibe = null
 let vocalizer = null
 
 let recorder = null
-
+let mediaDevicesRecorder = null
 
 window.onload = () => {
     loadingText.style.display = ''
 
     // fetch and cache the data
-    fetchGenres().then(genres => {
 
         //setup indexeddb
         const request = window.indexedDB.open("rrrDatabase", 3)
@@ -48,12 +47,13 @@ window.onload = () => {
                 const objectStore = db.createObjectStore("genres", { keyPath: "genre" })
 
                 objectStore.transaction.oncomplete = async (event) => {
+                fetchGenres().then(genres => { 
                     const genresObjectStore = db.transaction("genres", "readwrite").objectStore("genres")
                     genres.forEach(genre => genresObjectStore.add(genre))
-                }
+                })}
             }
         }
-    })
+    
 }
 
 // returns genres array which contains the arrayBuffers for each genre
@@ -269,7 +269,8 @@ function buildGame() {
 
 
     // setup recording
-    recorder = new Recorder()
+    recorder = new SessionRecorder()
+    mediaDevicesRecorder = new MediaDeviceRecorder()
 }
 
 
@@ -730,14 +731,45 @@ class Vocalizer {
 }
 
 
-class Recorder {
+class MediaDeviceRecorder{
+    constructor(){
+        this.isRecording = false
+
+
+        this.recordBtn = document.getElementById('record-user')
+        this.stopBtn = document.getElementById('stop-user')
+        this.playBtn = document.getElementById('play-user')
+        this.progress = document.getElementById('progress-user-stream')
+        this.stream = null
+
+
+        this.recordBtn.onclick = ()=> this.record()
+        this.stopBtn.onclick = ()=> this.stop()
+    }
+
+
+    record(){
+        console.log('recording')
+        navigator.mediaDevices.getUserMedia({audio:true})
+        .then(stream =>{ this.stream = stream})
+        .catch()
+    }
+
+    stop(){
+        console.log('stopping')
+        this.stream.getTracks().forEach(track=>track.stop())
+    }
+
+}
+
+class SessionRecorder {
     constructor() {
         this.isRecording = false
         this.isPlaying = false
         this.currentSrc = null
 
-        this.recordInterface = document.getElementById('record-interface')
-        this.recordTrigger = document.getElementById('open')
+        this.recordInterface = document.getElementById('record-session')
+        this.recordTrigger = document.getElementById('open-record-session')
         const recordImg = this.recordInterface.querySelector('img')
         recordImg.src = `../genres/${currentGenre}/images/record.png`
         this.recordInterface.style.display = 'none'
@@ -823,7 +855,7 @@ class Recorder {
             this.isRecording = false
             this.mediaRecorder.stop()
             this.recordBtn.style.background = ''
-            // cancelAnimationFrame(this.animID)
+            cancelAnimationFrame(this.animID)
         }
 
         if (this.isPlaying) {
@@ -833,14 +865,14 @@ class Recorder {
         }
     }
 
-    // animate(){
-    //     console.log(this.src.mediaElement.currentTime)
-    //     console.log(this.src.mediaElement.duration)
+    animate(){
+        console.log(this.src.mediaElement.currentTime)
+        console.log(this.src.mediaElement.duration)
 
-    //     this.progress.max = this.src.mediaElement.duration
-    //     this.progress.value = this.src.mediaElement.currentTime
-    //     this.animID  = requestAnimationFrame(()=> this.animate())
-    //     }
+        this.progress.max = this.src.mediaElement.duration
+        this.progress.value = this.src.mediaElement.currentTime
+        this.animID  = requestAnimationFrame(()=> this.animate())
+        }
 
 
     play() {
@@ -854,7 +886,7 @@ class Recorder {
     
                 // this.animate()        
                 this.src.mediaElement.onended = () => {
-                    // cancelAnimationFrame(this.animID)
+                    cancelAnimationFrame(this.animID)
                     this.isPlaying = false
                     this.playBtn.style.background = ''
                     this.progress.value = 0

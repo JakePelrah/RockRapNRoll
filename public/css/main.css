@@ -298,7 +298,7 @@ input[id="volume"]::-webkit-slider-thumb {
 
 
 /* RECORDING */
-#record-interface {
+#record-session {
    position: absolute;
    left: 176px;
    top: 0px;
@@ -342,7 +342,7 @@ border: none;
    border: none;   
 }   
 
-   #open{
+   #open-record-session{
    position: absolute;
    left: 498px;
    top: 2px;
@@ -390,6 +390,48 @@ progress::-moz-progress-bar {
    position: absolute;
    left: 25px;
    top: 31px;    
+}
+
+
+
+#record-user-mic{
+   background-color: white;
+   position: absolute;
+   left: 330px;
+   top: 180px;
+   width: 200px;
+   height: 100px;
+}
+
+#open-record-user{
+   position: absolute;
+   left: 575px;
+   top: 2px;
+   width: 63px;
+   height: 50px;
+   background-color: transparent;
+   border:1px solid gray;
+}
+
+#record-user-controls{
+   display: flex;
+   position: absolute;
+   left: 22px;
+   top: 60px;
+   gap: 1px;
+} 
+
+#record-user-controls > button{
+width: 50px;
+height: 20px;
+background-color: green;
+border: none;
+}
+
+#progress-user-stream{
+   position: absolute;
+   left: 24px;
+   top: 40px;
 }
 /*//////////////////////// EFFECTS ////////////////////////*/
 

@@ -102,7 +102,7 @@
 
 
 
-            <div id="record-interface">
+            <div id="record-session">
                 <img id="record-image">
                 <input type="text" id="session-name" name="name" required minlength="4"  size="10" autofocus >
                 <audio></audio>
@@ -121,10 +121,20 @@
 
             </div>
 
-            <button id="open"></button>
-
-
+            <button id="open-record-session"></button>
         </div>
+
+
+        <div id="record-user-mic">
+            <progress id="progress-user-stream"></progress>
+            <div id="record-user-controls">
+                <button  id="record-user" style="background: url(../images/recording.png) ;"></button>
+                <button id="stop-user"></button>
+                <button id="play-user" style="background: url(../images/play.png) ;"></button>
+            </div>
+            <button id="open-record-user"></button>
+        </div>
+
     </div>
 
     <script src="js/main.js"></script>
