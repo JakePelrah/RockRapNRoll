@@ -13,5 +13,5 @@ The objective of this project is to recreate this interactive application so tha
 Starting the game:
 
 1. npm install
-2. node app.js
+2. node server.js
 3. From Chrome navigate to http://localhost:3000
