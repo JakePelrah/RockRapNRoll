@@ -291,7 +291,7 @@ function playSampleById({ id, start = 0, detuneAmt = 0 }) {
         gainNode.connect(audioCtx.destination)
         gainNode.connect(recorder.dest)
     }
-  
+
     src.start(start)
     return src
 }
@@ -421,7 +421,7 @@ class Songalizer {
         this.isPlaying = false
         this.prevIsPlaying = false
         this.previewSource = null
-            
+
         this.currentTrackIndex = 0
         this.currentSource = null
         this.selectedSong = null
@@ -503,11 +503,11 @@ class Songalizer {
         })
 
         songalizerTitleImages.forEach((songImg, i) => {
-            
+
             songImg.onclick = () => {
 
                 if (!songalizer.isPlaying) {
-                
+
                     this.prevIsPlaying = !this.prevIsPlaying
 
                     if (this.prevIsPlaying) {
@@ -519,7 +519,7 @@ class Songalizer {
                             songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
                         }
                     }
-                    else{
+                    else {
                         this.prevIsPlaying = false
                         this.previewSample.stop()
                         songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
@@ -732,6 +732,10 @@ class Vocalizer {
 
 class Recorder {
     constructor() {
+        this.isRecording = false
+        this.isPlaying = false
+        this.currentSrc = null
+
         this.recordInterface = document.getElementById('record-interface')
         this.recordTrigger = document.getElementById('open')
         const recordImg = this.recordInterface.querySelector('img')
@@ -741,36 +745,38 @@ class Recorder {
         this.recordBtn = document.getElementById('record')
         this.stopBtn = document.getElementById('stop')
         this.playBtn = document.getElementById('play')
+        this.progress = document.getElementById('progress')
 
         this.audioTag = document.querySelector('audio')
         this.src = audioCtx.createMediaElementSource(this.audioTag)
-        
 
-        this.recordTrigger.onclick = ()=>{
-            if(this.recordInterface.style.display === 'none'){
+        this.animID = null
+
+        this.recordTrigger.onclick = () => {
+            if (this.recordInterface.style.display === 'none') {
                 this.recordInterface.style.display = ''
             }
-            else{
-               this.recordInterface.style.display = 'none' 
+            else {
+                this.recordInterface.style.display = 'none'
             }
         }
 
-        this.recordBtn.onclick = ()=> this.record()
-        this.stopBtn.onclick = ()=> this.stop()
-        this.playBtn.onclick = ()=> this.play()
+        this.recordBtn.onclick = () => this.record()
+        this.stopBtn.onclick = () => this.stop()
+        this.playBtn.onclick = () => this.play()
         const loadBtn = document.getElementById('load'),
-        fileElem = document.getElementById('fileElem')
-        fileElem.addEventListener('change', handleFiles,false)
+            fileElem = document.getElementById('fileElem')
+        fileElem.addEventListener('change', handleFiles, false)
         loadBtn.addEventListener("click", function (e) {
             if (fileElem) {
-              fileElem.click();
+                fileElem.click();
             }
-          }, false);
+        }, false);
 
-          function handleFiles(){
+        function handleFiles() {
             const audio = document.querySelector('audio')
             audio.src = URL.createObjectURL(this.files[0])
-          }
+        }
 
 
         this.chunks = []
@@ -784,37 +790,66 @@ class Recorder {
 
         this.mediaRecorder.onstop = (evt) => {
             // Make blob out of our blobs, and open it.
-            const blob = new Blob(this.chunks, { 'type': 'audio/ogg' });
+            const blob = new Blob(this.chunks, { 'type': 'audio/wav' });
+
+            const url = URL.createObjectURL(blob);
             const saveBtn = document.getElementById('save')
-            saveBtn.href = URL.createObjectURL(blob);
             saveBtn.download = `rrr-session-${Date.now()}`
-            this.audioTag.src = URL.createObjectURL(blob);
+            saveBtn.href = url
+            this.audioTag.src = url
         };
     }
 
     record() {
-        console.log('recording')
+        this.isRecording = true
         this.chunks = []
         this.mediaRecorder.start()
         this.recordBtn.style.background = 'url(../images/recording.png)'
     }
 
     stop() {
-        console.log('stoping')
-        this.mediaRecorder.stop()
-        this.recordBtn.style.background = ''    
-    }
 
-    play(){
-        this.src.connect(audioCtx.destination)
-        this.src.mediaElement.play()
-        this.playBtn.style.background = 'url(../images/play.png)'
-        // this.playBtn.style.backgroundSize = '100% 100%';
-        this.src.mediaElement.onended=()=>{
+        if (this.isRecording) {
+            this.isRecording = false
+            this.mediaRecorder.stop()
+            this.recordBtn.style.background = ''
+            // cancelAnimationFrame(this.animID)
+        }
+
+        if (this.isPlaying) {
+            this.isPlaying = false
             this.playBtn.style.background = ''
+            this.src.mediaElement.pause()
         }
     }
 
+    // animate(){
+    //     console.log(this.src.mediaElement.currentTime)
+    //     console.log(this.src.mediaElement.duration)
+
+    //     this.progress.max = this.src.mediaElement.duration
+    //     this.progress.value = this.src.mediaElement.currentTime
+    //     this.animID  = requestAnimationFrame(()=> this.animate())
+    //     }
+
+
+    play() {
+
+        if (this.audioTag.src) {
+            this.isPlaying = true
+            this.src.connect(audioCtx.destination)
+            this.src.mediaElement.play()
+            this.playBtn.style.background = 'url(../images/play.png)'
+
+            // this.animate()        
+            this.src.mediaElement.onended = () => {
+                // cancelAnimationFrame(this.animID)
+                this.isPlaying = false
+                this.playBtn.style.background = ''
+                this.progress.value = 0
+            }
+        }
+    }
 }
 
 

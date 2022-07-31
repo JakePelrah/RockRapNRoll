@@ -317,8 +317,6 @@ width: 50px;
 height: 20px;
 background-color: transparent;
 border: none;
-/* border: 1px solid rebeccapurple; */
-
 }
 
 #load-save{
@@ -388,7 +386,7 @@ progress::-moz-progress-bar {
    color: #DD0806;
 
  }
-#recording-progress{
+#progress{
    position: absolute;
    left: 25px;
    top: 31px;    
