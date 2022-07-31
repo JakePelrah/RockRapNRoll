@@ -1,4 +1,4 @@
-const mainMenu = document.getElementById('main-menu')
+const mainMenuDiv = document.getElementById('main-menu')
 const loadingText = document.getElementById('loading-text')
 
 
@@ -17,44 +17,58 @@ let samplesBuffer = []
 let songalizer = null
 let vibe = null
 let vocalizer = null
+let mainMenu = null
 
 let recorder = null
 
 
 window.onload = () => {
+
+    //display loading text
     loadingText.style.display = ''
 
-    // fetch and cache the data
-    fetchGenres().then(genres => {
+    let upgradeCalled = false
 
-        //setup indexeddb
-        const request = window.indexedDB.open("rrrDatabase", 3)
-        if (!window.indexedDB) {
-            console.log("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.")
-        } else {
-            // handle errors
-            request.onerror = (event) => {
-                console.error(`Database error: ${event.target.errorCode}`)
-            }
-            // on success
-            request.onsuccess = async (event) => {
-                db = event.target.result
-                initWebAudio()
-                createMenu()
-            }
-            // fires when new database is created or upgraded 
-            request.onupgradeneeded = (event) => {
-                db = event.target.result
-                const objectStore = db.createObjectStore("genres", { keyPath: "genre" })
+    //setup indexeddb
+    if (!window.indexedDB) {
+        console.log("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.")
+    } else {
 
-                objectStore.transaction.oncomplete = async (event) => {
-                    const genresObjectStore = db.transaction("genres", "readwrite").objectStore("genres")
-                    genres.forEach(genre => genresObjectStore.add(genre))
-                }
+        const request = window.indexedDB.open("rrrDatabase", 1)
+
+        // handle errors
+        request.onerror = (event) => {
+            console.error(`Database error: ${event.target.errorCode}`)
+        }
+        // on success
+        request.onsuccess = (event) => {
+            db = event.target.result
+            initWebAudio()
+            if(!upgradeCalled){
+                mainMenu = new MainMenu()
             }
         }
-    })
+        // fires when new database is created or upgraded 
+        request.onupgradeneeded = (event) => {
+            upgradeCalled = true
+            db = event.target.result
+            
+            //create object store
+            db.createObjectStore("genres", { keyPath: "genre" })
+            
+            // fetch and cache the data
+            fetchGenres().then(genres => {
+                const trans = db.transaction("genres", "readwrite")
+                const store = trans.objectStore("genres")
+                genres.forEach(genre => store.add(genre))
+                trans.oncomplete = (event) => {
+                    mainMenu = new MainMenu()
+                }
+            })
+        }
+    }
 }
+
 
 // returns genres array which contains the arrayBuffers for each genre
 async function fetchGenres() {
@@ -86,6 +100,7 @@ async function fetchGenres() {
     })
 }
 
+
 function initWebAudio() {
     // initialize web audio
     audioCtx = window.AudioContext || window.webkitAudioContext
@@ -99,56 +114,61 @@ function initWebAudio() {
 }
 
 
-function createMenu() {
-    //hide loading text
-    loadingText.style.display = 'none'
+class MainMenu {
+    constructor() {
+        
+        //hide loading text
+        loadingText.style.display = 'none'
 
-    // populate menu with genre titles
-    const genresDiv = document.createElement('div')
-    genresDiv.setAttribute('id', 'genres')
-    let colDiv
-    const entriesPerCol = 5
-    const genres = JSON.parse(localStorage.getItem('genres'))
-    Object.keys(genres).forEach((genre, i) => {
-        //create new column
-        if (i % entriesPerCol === 0) {
-            colDiv = document.createElement('div')
-            colDiv.setAttribute('class', 'genre-column')
-            genresDiv.appendChild(colDiv)
-        }
-        const genreTitle = document.createElement('button')
-        genreTitle.innerText = genre.match(/[A-Z][a-z]+/g).join(' ')
+        // populate menu with genre titles
+        const genresDiv = document.createElement('div')
+        genresDiv.setAttribute('id', 'genres')
+        let colDiv
+        const entriesPerCol = 5
+        const genres = JSON.parse(localStorage.getItem('genres'))
+        console.log(genres)
 
-        genreTitle.addEventListener('click', () => {
-
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume().then(function () {
-                    console.log('Resuming audio context.')
-                });
+        Object.keys(genres).forEach((genre, i) => {
+            //create new column
+            if (i % entriesPerCol === 0) {
+                colDiv = document.createElement('div')
+                colDiv.setAttribute('class', 'genre-column')
+                genresDiv.appendChild(colDiv)
             }
+            const genreTitle = document.createElement('button')
+            genreTitle.innerText = genre.match(/[A-Z][a-z]+/g).join(' ')
 
-            // hide main menu
-            mainMenu.style.display = 'none'
 
-            // grab selected genre from indexeddb
-            currentGenre = genreTitle.innerText.replace(' ', '')
-            const getGenreTrans = db.transaction("genres", "readonly")
-                .objectStore("genres").get(currentGenre.replace(' ', '').toLowerCase())
+            genreTitle.addEventListener('click', () => {
 
-            // decode arrayBuffers->audioBuffers and fill samples buffer
-            getGenreTrans.transaction.oncomplete = () => {
-                const { result: { arrayBuffers } } = getGenreTrans
-                arrayBuffers.forEach(async arrayBuffer => {
-                    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer.arrayBuffer)
-                    samplesBuffer.push({ id: arrayBuffer.id, audioBuffer })
-                })
-            }
+                console.log(audioCtx)
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume().then(function () {
+                        console.log('Resuming audio context.')
+                    });
+                }
 
-            buildGame()
+                // hide main menu
+                mainMenuDiv.style.display = 'none'
+
+                // grab selected genre from indexeddb
+                currentGenre = genreTitle.innerText.replace(' ', '')
+                const trans = db.transaction("genres", "readonly")
+                const store = trans.objectStore("genres")
+                store.get(currentGenre.replace(' ', '').toLowerCase()).onsuccess = (event) => {
+                    const { result: { arrayBuffers } } = event.target
+                    arrayBuffers.forEach(async arrayBuffer => {
+                        const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer.arrayBuffer)
+                        samplesBuffer.push({ id: arrayBuffer.id, audioBuffer })
+                    })
+                }
+
+                buildGame()
+            })
+            colDiv.appendChild(genreTitle)
         })
-        colDiv.appendChild(genreTitle)
-    })
-    mainMenu.appendChild(genresDiv)
+        mainMenuDiv.appendChild(genresDiv)
+    }
 }
 
 
@@ -263,10 +283,8 @@ function buildGame() {
         startStop.style.background = ''
         document.getElementById('slots').innerHTML = ''
         gameInterface.style.display = 'none'
-        mainMenu.style.display = ''
+        mainMenuDiv.style.display = ''
     }
-
-
 
     // setup recording
     recorder = new Recorder()
@@ -802,18 +820,18 @@ class Recorder {
 
     record() {
 
-        if(!this.isRecording){
+        if (!this.isRecording) {
             this.isRecording = true
             this.chunks = []
             this.mediaRecorder.start()
             this.recordBtn.style.background = 'url(../images/recording.png)'
-    
+
         }
 
-        if(this.isPlaying){
+        if (this.isPlaying) {
             this.isPlaying = false
             this.playBtn.style.background = ''
-            this.src.mediaElement.pause()    
+            this.src.mediaElement.pause()
         }
     }
 
@@ -845,13 +863,13 @@ class Recorder {
 
     play() {
 
-        if(!this.isRecording){
+        if (!this.isRecording) {
             if (this.audioTag.src) {
                 this.isPlaying = true
                 this.src.connect(audioCtx.destination)
                 this.src.mediaElement.play()
                 this.playBtn.style.background = 'url(../images/play.png)'
-    
+
                 // this.animate()        
                 this.src.mediaElement.onended = () => {
                     // cancelAnimationFrame(this.animID)
