@@ -187,12 +187,10 @@ function buildGame() {
     gameInterface.style.display = ''
 
     //set recorder image 
-    
-    const recordInterface = document.getElementById('record-interface')
     const recordInterfaceImage = document.getElementById('record-interface-image')
     recordInterfaceImage.src = `../genres/${currentGenre}/images/record.png`
-    recordInterface.style.display = 'none'
     
+
     // setup game input
     const { vibeBopMap, restKeyMap, songalizerMap, vocalizerMap, pitchem: { digitMap, qwertyKeyMap, digitDetuneMap, qwertyKeyDetuneMap } } = genreMapping
     songalizer = new Songalizer('songs', 'song-names', 'slots', songalizerMap)
@@ -762,6 +760,8 @@ class Recorder {
         this.isPlaying = false
         this.currentSrc = null
 
+        this.recordInterface = document.getElementById('record-interface')
+        this.recordInterface.style.display = 'none'
         this.recordTrigger = document.getElementById('open')
        
 
@@ -858,6 +858,7 @@ class Recorder {
 
     reset(){
         this.src.disconnect()
+        this.recordInterface.style.display = 'none'
     }
 
     // animate(){
