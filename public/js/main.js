@@ -738,7 +738,14 @@ class Recorder {
         recordImg.src = `../genres/${currentGenre}/images/record.png`
         this.recordInterface.style.display = 'none'
 
-        const [recordBtn, stopBtn ,playBtn, loadBtn, saveBtn ] = this.recordInterface.querySelectorAll('button')
+        this.recordBtn = document.getElementById('record')
+        this.stopBtn = document.getElementById('stop')
+        this.playBtn = document.getElementById('play')
+
+        this.audioTag = document.querySelector('audio')
+        this.src = audioCtx.createMediaElementSource(this.audioTag)
+        
+
         this.recordTrigger.onclick = ()=>{
             if(this.recordInterface.style.display === 'none'){
                 this.recordInterface.style.display = ''
@@ -748,12 +755,24 @@ class Recorder {
             }
         }
 
-        recordBtn.onclick = ()=> console.log('recording')
-        stopBtn.onclick = ()=> console.log('stoping')
-        playBtn.onclick = ()=> console.log('play')
-        loadBtn.onclick=()=>console.log('load')
-        saveBtn.onclick = ()=>console.log('save')
-        
+        this.recordBtn.onclick = ()=> this.record()
+        this.stopBtn.onclick = ()=> this.stop()
+        this.playBtn.onclick = ()=> this.play()
+        const loadBtn = document.getElementById('load'),
+        fileElem = document.getElementById('fileElem')
+        fileElem.addEventListener('change', handleFiles,false)
+        loadBtn.addEventListener("click", function (e) {
+            if (fileElem) {
+              fileElem.click();
+            }
+          }, false);
+
+          function handleFiles(){
+            const audio = document.querySelector('audio')
+            audio.src = URL.createObjectURL(this.files[0])
+          }
+
+
         this.chunks = []
         this.dest = audioCtx.createMediaStreamDestination()
         this.mediaRecorder = new MediaRecorder(this.dest.stream, { mimeType: 'audio/webm' })
@@ -765,21 +784,37 @@ class Recorder {
 
         this.mediaRecorder.onstop = (evt) => {
             // Make blob out of our blobs, and open it.
-            const blob = new Blob(this.chunks, { 'type': 'audio/webm; codecs=0' });
-            document.querySelector("audio").src = URL.createObjectURL(blob);
+            const blob = new Blob(this.chunks, { 'type': 'audio/ogg' });
+            const saveBtn = document.getElementById('save')
+            saveBtn.href = URL.createObjectURL(blob);
+            saveBtn.download = `rrr-session-${Date.now()}`
+            this.audioTag.src = URL.createObjectURL(blob);
         };
     }
 
-    start() {
-        console.log('starting')
+    record() {
+        console.log('recording')
         this.chunks = []
         this.mediaRecorder.start()
+        this.recordBtn.style.background = 'url(../images/recording.png)'
     }
 
     stop() {
         console.log('stoping')
         this.mediaRecorder.stop()
+        this.recordBtn.style.background = ''    
     }
+
+    play(){
+        this.src.connect(audioCtx.destination)
+        this.src.mediaElement.play()
+        this.playBtn.style.background = 'url(../images/play.png)'
+        // this.playBtn.style.backgroundSize = '100% 100%';
+        this.src.mediaElement.onended=()=>{
+            this.playBtn.style.background = ''
+        }
+    }
+
 }
 
 
