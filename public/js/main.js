@@ -801,10 +801,20 @@ class Recorder {
     }
 
     record() {
-        this.isRecording = true
-        this.chunks = []
-        this.mediaRecorder.start()
-        this.recordBtn.style.background = 'url(../images/recording.png)'
+
+        if(!this.isRecording){
+            this.isRecording = true
+            this.chunks = []
+            this.mediaRecorder.start()
+            this.recordBtn.style.background = 'url(../images/recording.png)'
+    
+        }
+
+        if(this.isPlaying){
+            this.isPlaying = false
+            this.playBtn.style.background = ''
+            this.src.mediaElement.pause()    
+        }
     }
 
     stop() {
@@ -835,18 +845,20 @@ class Recorder {
 
     play() {
 
-        if (this.audioTag.src) {
-            this.isPlaying = true
-            this.src.connect(audioCtx.destination)
-            this.src.mediaElement.play()
-            this.playBtn.style.background = 'url(../images/play.png)'
-
-            // this.animate()        
-            this.src.mediaElement.onended = () => {
-                // cancelAnimationFrame(this.animID)
-                this.isPlaying = false
-                this.playBtn.style.background = ''
-                this.progress.value = 0
+        if(!this.isRecording){
+            if (this.audioTag.src) {
+                this.isPlaying = true
+                this.src.connect(audioCtx.destination)
+                this.src.mediaElement.play()
+                this.playBtn.style.background = 'url(../images/play.png)'
+    
+                // this.animate()        
+                this.src.mediaElement.onended = () => {
+                    // cancelAnimationFrame(this.animID)
+                    this.isPlaying = false
+                    this.playBtn.style.background = ''
+                    this.progress.value = 0
+                }
             }
         }
     }
