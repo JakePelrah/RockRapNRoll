@@ -117,6 +117,9 @@ function initWebAudio() {
 class MainMenu {
     constructor() {
         
+        // setup recording
+        recorder = new Recorder()
+      
         //hide loading text
         loadingText.style.display = 'none'
 
@@ -183,6 +186,9 @@ function buildGame() {
     gameInterface.style.backgroundSize = '100% 100%'
     gameInterface.style.display = ''
 
+    //set recorder image 
+    const recordInterfaceImage = document.getElementById('record-interface-image')
+    recordInterfaceImage.src = `../genres/${currentGenre}/images/record.png`
 
     // setup game input
     const { vibeBopMap, restKeyMap, songalizerMap, vocalizerMap, pitchem: { digitMap, qwertyKeyMap, digitDetuneMap, qwertyKeyDetuneMap } } = genreMapping
@@ -269,6 +275,7 @@ function buildGame() {
         pitchemKeys.reset()
         magicFingers.reset()
         gainNode.disconnect()
+        recorder.reset()
 
         // reset reverb
         if (reverbON) {
@@ -286,8 +293,6 @@ function buildGame() {
         mainMenuDiv.style.display = ''
     }
 
-    // setup recording
-    recorder = new Recorder()
 }
 
 
@@ -756,8 +761,6 @@ class Recorder {
 
         this.recordInterface = document.getElementById('record-interface')
         this.recordTrigger = document.getElementById('open')
-        const recordImg = this.recordInterface.querySelector('img')
-        recordImg.src = `../genres/${currentGenre}/images/record.png`
         this.recordInterface.style.display = 'none'
 
         this.recordBtn = document.getElementById('record')
@@ -849,6 +852,10 @@ class Recorder {
             this.playBtn.style.background = ''
             this.src.mediaElement.pause()
         }
+    }
+
+    reset(){
+        this.src.disconnect()
     }
 
     // animate(){
