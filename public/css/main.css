@@ -45,13 +45,12 @@ select:focus {
 }
 
 #loading-text{ 
-  
    position: absolute;
    left: 285px;
    top: 185px;
    color: white;
    font-size: 20px;
-    animation: pulse 2s ease-in-out infinite;
+   animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
@@ -64,7 +63,8 @@ select:focus {
    height: 100%;
    width: 100%;
    background-image: url('../images/mainMenu.png');
-   background-size:100% 100%
+   background-size:100% 100%;
+   z-index: auto;
 }
 
 #genres {
@@ -151,21 +151,21 @@ select:focus {
 
 /* VOLUME SLIDER */
 /* https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/ */
-input[type=range] {
+input[id="volume"] {
    -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
    width: 100%; /* Specific width is required for Firefox. */
    background: transparent; /* Otherwise white in Chrome */
  }
- input[type=range]::-webkit-slider-thumb {
+ input[id="volume"]::-webkit-slider-thumb {
    -webkit-appearance: none;
  }
- input[type=range]:focus {
+ input[id="volume"]:focus {
    outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
  }
 
 
  /* Special styling for WebKit/Blink */
-input[type=range]::-webkit-slider-thumb {
+input[id="volume"]::-webkit-slider-thumb {
    -webkit-appearance: none;
    height: 18px;
    width: 10px;
@@ -175,7 +175,7 @@ input[type=range]::-webkit-slider-thumb {
 
  }
  /* All the same stuff for Firefox */
- input[type=range]::-moz-range-thumb {
+ input[id="volume"]::-moz-range-thumb {
    height: 18px;
    width: 10px;
    border-radius: 1px;
@@ -209,6 +209,7 @@ input[type=range]::-webkit-slider-thumb {
    top: 101px;
    height: 112px;
    width: 113px;
+   z-index:1 ;
 }
 #vibe-select {
    position: absolute;
@@ -224,7 +225,7 @@ input[type=range]::-webkit-slider-thumb {
    top: 88px;
    height: 80px;
    width:82px;
-   background-color: transparent;
+   z-index:1 ;
 }
 #bop-select {
    position: absolute;
@@ -297,12 +298,79 @@ input[type=range]::-webkit-slider-thumb {
 
 
 /* RECORDING */
-#recording {
+#record-interface {
    position: absolute;
-   left: 300px;
-   top: -50px;
+   left: 176px;
+   top: 0px;
 }
 
+#record-controls{
+   display: flex;
+   position: absolute;
+   left: 22px;
+   top: 40px;
+   gap: 4px;
+} 
+
+#record-controls > button{
+width: 48px;
+height: 16px;
+background-color: transparent;
+border: none;
+}
+
+#load-save{
+   display: flex;
+   position: absolute;
+   flex-direction: column;
+   left: 200px;
+   top: 28px;
+   gap: 4px;
+}
+
+#load-save > button{
+   width: 90px;
+   height: 18px;
+   background-color: transparent;
+   }
+#open{
+   position: absolute;
+   left: 498px;
+   top: 2px;
+   width: 63px;
+   height: 50px;
+   background-color: transparent;
+   border:none;
+}
+
+progress {
+   /* Reset the default appearance */
+   -webkit-appearance: none;
+   -moz-appearance: none;
+        appearance: none;
+        border: none;
+    width: 147px; 
+    height: 2px;
+    /* border: 1px solid #09c; */
+}
+
+progress::-moz-progress-bar { 
+   background-color: black;
+   border-radius: 0px; 
+   color: #DD0806;
+ }
+
+ progress::-webkit-progress-bar {
+   background-color: black;
+   border-radius: 0px;
+   color: #DD0806;
+
+ }
+#recording-progress{
+   position: absolute;
+   left: 25px;
+   top: 31px;    
+}
 /*//////////////////////// EFFECTS ////////////////////////*/
 
 #reverb{

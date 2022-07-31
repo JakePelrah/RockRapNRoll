@@ -10,7 +10,7 @@
 
 <body>
     <div id="game-wrapper" class="wrapper no-select">
-        
+
         <support id="support"> Help me test RRR by submitting bugs. Thank you!
             <a href="mailto:%20jpelrah@wpi.edu?subject=RRR%20Bug%20Submission&amp;body=Briefly%20describe%20the%20bug.%20Also%20provide%20your%20operating%20system%28Win%2COSX%2CLinux...%29%20and%20the%20browser%28Chrome%2C%20Firefox...%29%20used%20to%20access%20the%20game.%0A%0AThank%20you%20for%20your%20contribution%21%20-%20Jake"
                 id="bug-link">Report a Bug</a>
@@ -103,18 +103,33 @@
             <button id="keymap-trigger" tabindex="-1"></button>
             <img id="keymap-image" src="">
 
-            
 
-            <audio controls id="playback"></audio>
-            <button id="record">Record</button>
-            <button id="stop">Stop</button>
 
-          
+            <div id="record-interface">
+
+                <img id="record-image">
+                <progress id="recording-progress" max="100" value="70"></progress>
+
+                <div id="record-controls">
+                    <button id="record"></button>
+                    <button id="stop"></button>
+                    <button id="play"></button>
+                </div>
+
+                <div id="load-save">
+                    <button id="load"></button>
+                    <button id="save"></button>
+                </div>
+
+            </div>
+
+            <button id="open"></button>
+
 
         </div>
     </div>
 
-   <script src="js/main.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>

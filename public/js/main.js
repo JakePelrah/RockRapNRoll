@@ -642,7 +642,6 @@ class Vocalizer {
         this.triggers = document.getElementById(vocalizerTriggersId).querySelectorAll('button')
 
         samples.forEach((sample, i) => {
-            console.log(sample)
             this.triggers[i].setAttribute('data-sample-id', sample.id)
             this.triggers[i].onclick = () => this.onClick(this.triggers[i])
         })
@@ -727,12 +726,28 @@ class Vocalizer {
 
 class Recorder {
     constructor() {
-        this.recordButton = document.getElementById('record')
-        this.stopButton = document.getElementById('stop')
+        this.recordInterface = document.getElementById('record-interface')
+        this.recordTrigger = document.getElementById('open')
+        const recordImg = this.recordInterface.querySelector('img')
+        recordImg.src = `../genres/${currentGenre}/images/record.png`
+        this.recordInterface.style.display = 'none'
 
-        this.recordButton.onclick = ()=> this.start()
-        this.stopButton.onclick = ()=> this.stop()
+        const [recordBtn, stopBtn ,playBtn, loadBtn, saveBtn ] = this.recordInterface.querySelectorAll('button')
+        this.recordTrigger.onclick = ()=>{
+            if(this.recordInterface.style.display === 'none'){
+                this.recordInterface.style.display = ''
+            }
+            else{
+               this.recordInterface.style.display = 'none' 
+            }
+        }
 
+        recordBtn.onclick = ()=> console.log('recording')
+        stopBtn.onclick = ()=> console.log('stoping')
+        playBtn.onclick = ()=> console.log('play')
+        loadBtn.onclick=()=>console.log('load')
+        saveBtn.onclick = ()=>console.log('save')
+        
         this.chunks = []
         this.dest = audioCtx.createMediaStreamDestination()
         this.mediaRecorder = new MediaRecorder(this.dest.stream, { mimeType: 'audio/webm' })
