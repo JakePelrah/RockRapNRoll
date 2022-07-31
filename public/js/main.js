@@ -204,7 +204,6 @@ function buildGame() {
     // setup key map overlay
     const keyImage = document.getElementById('keymap-image')
     keyImage.src = `../genres/${currentGenre}/images/keymap.png`
-    keyImage.setAttribute('draggable', false)
     keyImage.style.display = 'none'
     keyImage.onclick = () => {
         keyImage.style.display = 'none'

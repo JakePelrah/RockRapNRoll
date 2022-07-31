@@ -259,6 +259,11 @@ input[id="volume"]::-webkit-slider-thumb {
    height: 32px;
    background: transparent;
    border: none;
+   
+}
+
+#keymap-trigger:focus{
+   outline: none;
 }
 #keymap-image {
    position: absolute;
