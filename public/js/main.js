@@ -419,6 +419,9 @@ class Songalizer {
         this.timerWorker = null;
 
         this.isPlaying = false
+        this.prevIsPlaying = false
+        this.previewSource = null
+            
         this.currentTrackIndex = 0
         this.currentSource = null
         this.selectedSong = null
@@ -500,13 +503,14 @@ class Songalizer {
         })
 
         songalizerTitleImages.forEach((songImg, i) => {
-            this.isPlaying = false
-            this.previewSample = null
+            
             songImg.onclick = () => {
 
                 if (!songalizer.isPlaying) {
-                    this.isPlaying = !this.isPlaying
-                    if (this.isPlaying) {
+                
+                    this.prevIsPlaying = !this.prevIsPlaying
+
+                    if (this.prevIsPlaying) {
                         const id = songImg.getAttribute('data-sample-id')
                         this.previewSample = playSampleById({ id })
                         songImg.src = `../genres/${currentGenre}/images/asong_title_${i + 1}.png`
@@ -515,16 +519,18 @@ class Songalizer {
                             songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
                         }
                     }
-                    else {
-                        this.previewSample.stop()
-                        songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
-                    }
-                    songImg.onblur = () => {
-                        this.isPlaying = false
+                    else{
+                        this.prevIsPlaying = false
                         this.previewSample.stop()
                         songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
                     }
                 }
+            }
+
+            songImg.onblur = () => {
+                this.prevIsPlaying = false
+                this.previewSample.stop()
+                songImg.src = `../genres/${currentGenre}/images/song_title_${i + 1}.png`
             }
         })
     }
