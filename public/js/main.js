@@ -693,7 +693,7 @@ class Vocalizer {
         trigger.disabled = true
         trigger.style.opacity = .5
         trigger.style.backgroundColor = 'white'
-        trigger.style.filter = 'blur(4px)'
+        trigger.style.filter = 'blur(2px)'
         const id = trigger.getAttribute('data-sample-id')
         const { audioBuffer } = samplesBuffer.find(x => x.id === id)
         this.tracks.push({ id, audioBuffer })

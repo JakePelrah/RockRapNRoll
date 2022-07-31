@@ -137,10 +137,10 @@ select:focus {
 #vocalizer {
    display: grid;
    position: absolute;
-   left: 551px;
-   top: 96px;
-   grid-template-columns: 34px 34px;
-   gap: 5px 2px;
+   left: 554px;
+   top: 98px;
+   grid-template-columns: 32px 32px;
+   gap: 4px 2px;
 }
 #vocalizer>button {
    height: 29px;
@@ -223,8 +223,8 @@ input[id="volume"]::-webkit-slider-thumb {
    position: absolute;
    left: 433px;
    top: 88px;
-   height: 80px;
-   width:82px;
+   height: 79px;
+   width:81px;
    z-index:1 ;
 }
 #bop-select {
