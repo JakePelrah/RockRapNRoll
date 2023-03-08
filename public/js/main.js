@@ -19,7 +19,7 @@ let vibe = null
 let vocalizer = null
 let mainMenu = null
 
-let recorder = null
+
 
 
 window.onload = () => {
@@ -117,8 +117,7 @@ function initWebAudio() {
 class MainMenu {
     constructor() {
         
-        // setup recording
-        recorder = new Recorder()
+     
       
         //hide loading text
         loadingText.style.display = 'none'
@@ -186,10 +185,7 @@ function buildGame() {
     gameInterface.style.backgroundSize = '100% 100%'
     gameInterface.style.display = ''
 
-    //set recorder image 
-    const recordInterfaceImage = document.getElementById('record-interface-image')
-    recordInterfaceImage.src = `../genres/${currentGenre}/images/record.png`
-    
+
 
     // setup game input
     const { vibeBopMap, restKeyMap, songalizerMap, vocalizerMap, pitchem: { digitMap, qwertyKeyMap, digitDetuneMap, qwertyKeyDetuneMap } } = genreMapping
@@ -275,7 +271,7 @@ function buildGame() {
         pitchemKeys.reset()
         magicFingers.reset()
         gainNode.disconnect()
-        recorder.reset()
+     
 
         // reset reverb
         if (reverbON) {
@@ -308,11 +304,11 @@ function playSampleById({ id, start = 0, detuneAmt = 0 }) {
     if (reverbON) {
         gainNode.connect(currentIR)
         currentIR.connect(audioCtx.destination)
-        currentIR.connect(recorder.dest)
+   
     }
     else {
         gainNode.connect(audioCtx.destination)
-        gainNode.connect(recorder.dest)
+
     }
 
     src.start(start)
@@ -753,143 +749,9 @@ class Vocalizer {
 }
 
 
-class Recorder {
-    constructor() {
-        this.isRecording = false
-        this.isPlaying = false
-        this.currentSrc = null
-
-        this.recordInterface = document.getElementById('record-interface')
-        this.recordInterface.style.display = 'none'
-        this.recordTrigger = document.getElementById('open')
-       
-
-        this.recordBtn = document.getElementById('record')
-        this.stopBtn = document.getElementById('stop')
-        this.playBtn = document.getElementById('play')
-        this.progress = document.getElementById('progress')
-
-        this.audioTag = document.querySelector('audio')
-        this.src = audioCtx.createMediaElementSource(this.audioTag)
-
-        this.animID = null
-
-        this.recordTrigger.onclick = () => {
-            if (this.recordInterface.style.display === 'none') {
-                this.recordInterface.style.display = ''
-            }
-            else {
-                this.recordInterface.style.display = 'none'
-            }
-        }
-
-        this.recordBtn.onclick = () => this.record()
-        this.stopBtn.onclick = () => this.stop()
-        this.playBtn.onclick = () => this.play()
-        const loadBtn = document.getElementById('load'),
-            fileElem = document.getElementById('fileElem')
-        fileElem.addEventListener('change', handleFiles, false)
-        loadBtn.addEventListener("click", function (e) {
-            if (fileElem) {
-                fileElem.click();
-            }
-        }, false);
-
-        function handleFiles() {
-            const audio = document.querySelector('audio')
-            audio.src = URL.createObjectURL(this.files[0])
-        }
 
 
-        this.chunks = []
-        this.dest = audioCtx.createMediaStreamDestination()
-        this.mediaRecorder = new MediaRecorder(this.dest.stream, { mimeType: 'audio/webm' })
 
-        this.mediaRecorder.ondataavailable = (evt) => {
-            // push each chunk (blobs) in an array
-            this.chunks.push(evt.data);
-        };
-
-        this.mediaRecorder.onstop = (evt) => {
-            // Make blob out of our blobs, and open it.
-            const blob = new Blob(this.chunks, { 'type': 'audio/wav' });
-
-            const url = URL.createObjectURL(blob);
-            const saveBtn = document.getElementById('save')
-            saveBtn.download = `rrr-session-${Date.now()}`
-            saveBtn.href = url
-            this.audioTag.src = url
-        };
-    }
-
-    record() {
-
-        if (!this.isRecording) {
-            this.isRecording = true
-            this.chunks = []
-            this.mediaRecorder.start()
-            this.recordBtn.style.background = 'url(../images/recording.png)'
-
-        }
-
-        if (this.isPlaying) {
-            this.isPlaying = false
-            this.playBtn.style.background = ''
-            this.src.mediaElement.pause()
-        }
-    }
-
-    stop() {
-
-        if (this.isRecording) {
-            this.isRecording = false
-            this.mediaRecorder.stop()
-            this.recordBtn.style.background = ''
-            // cancelAnimationFrame(this.animID)
-        }
-
-        if (this.isPlaying) {
-            this.isPlaying = false
-            this.playBtn.style.background = ''
-            this.src.mediaElement.pause()
-        }
-    }
-
-    reset(){
-        this.src.disconnect()
-        this.recordInterface.style.display = 'none'
-    }
-
-    // animate(){
-    //     console.log(this.src.mediaElement.currentTime)
-    //     console.log(this.src.mediaElement.duration)
-
-    //     this.progress.max = this.src.mediaElement.duration
-    //     this.progress.value = this.src.mediaElement.currentTime
-    //     this.animID  = requestAnimationFrame(()=> this.animate())
-    //     }
-
-
-    play() {
-
-        if (!this.isRecording) {
-            if (this.audioTag.src) {
-                this.isPlaying = true
-                this.src.connect(audioCtx.destination)
-                this.src.mediaElement.play()
-                this.playBtn.style.background = 'url(../images/play.png)'
-
-                // this.animate()        
-                this.src.mediaElement.onended = () => {
-                    // cancelAnimationFrame(this.animID)
-                    this.isPlaying = false
-                    this.playBtn.style.background = ''
-                    this.progress.value = 0
-                }
-            }
-        }
-    }
-}
 
 
 
