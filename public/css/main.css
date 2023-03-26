@@ -1,6 +1,7 @@
 body {
    background-color: black;
-   font-family: 'Courier New', Courier, monospace
+   font-family: 'Courier New', Courier, monospace;
+   padding:2em;
 }
 
 
@@ -26,15 +27,25 @@ select:focus {
 }
 
 .wrapper {
+   justify-content: center;
    margin: auto;
    position: absolute;
-   top: 50%;
+   top: 35em;
    left: 50%;
    width: 640px;
    height: 480px;
    -moz-transform: translateX(-50%) translateY(-50%);
    -webkit-transform: translateX(-50%) translateY(-50%);
    transform: translateX(-50%) translateY(-50%);
+}
+
+#references{
+   color: white;
+   justify-content: center;
+   margin: auto;
+   position: absolute;
+   top: 52em;
+   padding-bottom: 100px;
 }
 
 
@@ -419,3 +430,18 @@ progress::-moz-progress-bar {
 #reverb-select > option{
    background-color: #ffffff;
 }
+
+
+
+#history{
+   color: white;
+}
+
+a{
+   color:#DD0806
+}
+
+li{
+   padding: 10px;
+}
+

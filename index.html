@@ -19,9 +19,21 @@
   gtag('config', 'G-CQ401MGHKN');
 </script>
 <body>
-    <div id="game-wrapper" class="wrapper no-select">
+    <div id="history">
+        <h1>A brief history of Rock Rap N' Roll</h1>
+        <h4 style="cursor: pointer;" id="email-container">By <a id="email" href="#">Jake Pelrah</a></h4>
+        <script>
+            const email = document.getElementById('email')
+            const cont = document.getElementById('email-container')
+            cont.onmouseenter = ()=> email.innerText = 'pelrahjsp@gmail.com'
+            cont.onmouseleave = ()=> email.innerText = 'Jake Pelrah'
+        </script>
 
-    
+        <p style="color: aliceblue;" >Rock Rap 'N Roll was a music education game authored by Barry Schuler, Nick Tenbrock and Gary Levenberg at Medior Inc and published by Paramount Interactive. Released in 1993 RRR allowed the user to
+            construct songs in various styles from studio produced music clips. Mega Rock Rap N' Roll was an extension of RRR that included more music genres. </p>
+      
+    </div>
+    <div id="game-wrapper" class="wrapper no-select">
 
         <div id="main-menu">
             <!-- generate available genres here -->
@@ -137,7 +149,23 @@
         </div>
     </div>
 
+
     <script src="js/main.js"></script>
+   <ul id="references" >
+            <li>
+                Audiovisual Identity Database. (2023, March 12). Paramount Digital Entertainment. Audiovisual Identity Database. Retrieved March 26, 2023, from <a href="https://avid.miraheze.org/wiki/Paramount_Digital_Entertainment"> https://avid.miraheze.org/wiki/Paramount_Digital_Entertainment </a>
+            </li>
+            <li>
+                Rothman, M. (1993, March 4). Tech News. Variety. Retrieved March 26, 2023, from <a href="https://variety.com/1993/music/news/tech-news-4-104566/">https://variety.com/1993/music/news/tech-news-4-104566/ </a> 
+            </li>
+            <li>
+                Wikimedia Foundation. (2022, November 20). Barry Schuler. Wikipedia. Retrieved March 26, 2023, from <a href="https://en.wikipedia.org/wiki/Barry_Schuler"> https://en.wikipedia.org/wiki/Barry_Schuler </a> 
+            </li>
+            <li>
+                May, S. A. (1994, June). Rock Rap N' Roll. Commodore. Retrieved March 26, 2023, from <a href=" https://www.commodore.ca/gallery/magazines/compute/Compute-165.pdf"> </a> https://www.commodore.ca/gallery/magazines/compute/Compute-165.pdf
+            </li>
+        </ul>   
+   
 </body>
 
 </html>
