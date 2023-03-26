@@ -30,7 +30,7 @@ select:focus {
    justify-content: center;
    margin: auto;
    position: absolute;
-   top: 35em;
+   top: 38em;
    left: 50%;
    width: 640px;
    height: 480px;
@@ -44,7 +44,7 @@ select:focus {
    justify-content: center;
    margin: auto;
    position: absolute;
-   top: 52em;
+   top: 54em;
    padding-bottom: 100px;
 }
 
